@@ -3,58 +3,86 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import * as binanceActionCreator from '../actions/actions';
 import { withRouter } from 'react-router-dom';
+import { cryptoTransfer } from './../class/cryptoTransfer'
+import { SSL_OP_SSLREF2_REUSE_CERT_TYPE_BUG } from 'constants';
 
-interface BinanceCrypto{
-    dateFormatted : string;
-    temperatureC : string;
-    summary : string;
-    temperatureF : string;
+interface sortType{
+    columnName : string,
+    sortDirection : number
 }
+
 interface Props {
-    getCryptoList(): void;
-    cryptoList: Array<BinanceCrypto>;
- }
+    getCryptoList(bm: string): void;
+    sortList(sortType: sortType): void;
+    cryptoList: Array<cryptoTransfer>;
+}
 
 interface State {
-
+    sortDirection : number,
 }
 
 class USDTMarket extends React.Component<Props, State>{
     constructor(props: any) {
         super(props)
+
+        this.state = {
+            sortDirection : -1,
+        }
     }
 
-    componentDidMount(){
-        this.props.getCryptoList();
+    componentDidMount() {
+        this.props.getCryptoList("USDT");
     }
 
-    render(){
-        console.log(this.props.cryptoList);
-        let displayList = this.props.cryptoList.map((item, index) => (
-            <tr key={index}>
-                <td>{item.dateFormatted}</td>
-                <td>{item.temperatureC}</td>
-                <td>{item.summary}</td>
-                <td>{item.temperatureF}</td>
+    handleChange = (event: any) => {
+        this.props.getCryptoList(event.target.value);
+    }
+
+    handleSort = (e: any) => {
+        this.setState({
+            sortDirection : -this.state.sortDirection
+        })
+       this.props.sortList( {
+           columnName : e.target.id, 
+           sortDirection : this.state.sortDirection})
+    }
+
+    render() {
+        let displayList = this.props.cryptoList.map((crypto, index) => (
+            <tr key={crypto.symbol}>
+                <td>{crypto.symbol}</td>
+                <td>{crypto.volume}</td>
+                <td>{crypto.lowPrice}</td>
+                <td>{crypto.highPrice}</td>
+                <td>{crypto.lastPrice}</td>
+                <td>{crypto.priceChangePercent}</td>
             </tr>
         ));
 
+        let baseMarketList = <select onChange={this.handleChange}>
+            <option value="USDT">USDT</option>
+            <option value="BTC">BTC</option>
+            <option value="BNB">BNB</option>
+        </select>;
+
         return (
             <div>
-                 <table className="table" >
-                            <thead className="thead-dark">
-                                <tr>
-                                    <th scope="col">Device Id</th>
-                                    <th scope="col">EUI</th>
-                                    <th scope="col">Usage</th>
-                                    <th scope="col">User Id</th>
-                                    <th scope="col">delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {displayList}
-                            </tbody>
-                        </table>
+                {baseMarketList}
+                <table className="table" >
+                    <thead className="thead">
+                        <tr>
+                            <th scope="col" id="symbol" onClick={this.handleSort}>Symbol</th>
+                            <th scope="col" id="volume" onClick={this.handleSort}>Volume</th>
+                            <th scope="col" id="lower" onClick={this.handleSort}>Lower</th>
+                            <th scope="col" id="higher" onClick={this.handleSort}>Higher</th>
+                            <th scope="col" id="last" onClick={this.handleSort}>Last</th>
+                            <th scope="col" id="change" onClick={this.handleSort}>% change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {displayList}
+                    </tbody>
+                </table>
             </div>
         )
     }
@@ -69,7 +97,8 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        getCryptoList: () => dispatch<any>(binanceActionCreator.default.binanceActions.USDTMarketList()),
+        getCryptoList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCryptoList(p)),
+        sortList: (p: sortType) => dispatch<any>(binanceActionCreator.default.binanceActions.SortList(p)),
     }
 }
 

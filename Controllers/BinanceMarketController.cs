@@ -3,42 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using cryptowatcherR.Misc;
+using Newtonsoft.Json;
 
 namespace cryptowatcherR.Controllers
 {
     [Route("api/[controller]")]
     public class BinanceMarketController : Controller
     {
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private Uri uriGetAllCrypto = new Uri("https://api.binance.com/api/v1/ticker/24hr");
 
-        [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        [HttpGet("[action]/{baseMarket}")]
+        public IEnumerable<BinanceCryptoTransfer> GetCryptoList(BaseMarket baseMarket)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            List<BinanceCryptoTransfer> crypto24hrList = new List<BinanceCryptoTransfer>();
+            string poloniexApiData = HttpHelper.GetApiData(uriGetAllCrypto);
+
+            if (poloniexApiData != "")
             {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
-        }
-
-        public class WeatherForecast
-        {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
+                crypto24hrList = JsonConvert.DeserializeObject<List<BinanceCryptoTransfer>>(poloniexApiData);
             }
+
+            switch (baseMarket)
+            {
+                case BaseMarket.USDT:
+                    crypto24hrList = crypto24hrList.Where(p => p.Symbol.Substring(p.Symbol.Length - 4) == BaseMarket.USDT.ToString()).Select(p => p).ToList();
+                    break;
+                case BaseMarket.BTC:
+                    crypto24hrList = crypto24hrList.Where(p => p.Symbol.Substring(p.Symbol.Length - 3) == BaseMarket.BTC.ToString()).Select(p => p).ToList();
+                    break;
+                case BaseMarket.BNB:
+                    crypto24hrList = crypto24hrList.Where(p => p.Symbol.Substring(p.Symbol.Length - 3) == BaseMarket.BNB.ToString()).Select(p => p).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            foreach (var crypto in crypto24hrList)
+            {
+                crypto.Symbol = Misc.Helper.ShortenSymbol(crypto.Symbol, baseMarket);
+            }
+
+            return crypto24hrList;
         }
     }
+
 }

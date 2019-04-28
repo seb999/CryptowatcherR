@@ -1,13 +1,14 @@
 import axios from 'axios';
+import {baseMarket} from './../misc/enumeration'
 
 const cryptowatcherApiUrl = '/api/BinanceMarket/'
 
-export const USDTMarketList = () =>{
+export const GetCryptoList = (bm : string) =>{
+    console.log(bm);
     return async (dispatch  :any) =>{
       try{
-        //We are logged in the API so we don't need to pass again the userId
-        const res = await axios.get<any>(cryptowatcherApiUrl + "WeatherForecasts");
-        return dispatch(USDTMarketListSuccess(res.data));
+        const res = await axios.get<any>(cryptowatcherApiUrl + "GetCryptoList/" + bm);
+        return dispatch(GetCryptoListSuccess(res.data));
       }
       catch (error) {
         throw (error)
@@ -15,9 +16,17 @@ export const USDTMarketList = () =>{
     }
    }
    
-   export const USDTMarketListSuccess = (data :any) => {
+   export const GetCryptoListSuccess = (data :any) => {
+    
     return {
-      type: "USDT_MARKET_LIST",
+      type: "BINANCE_CRYPTO_LIST",
+      payload: data
+    }
+   }
+
+   export const SortList = (data :any) => {
+    return {
+      type: "BINANCE_CRYPTO_LIST_SORT",
       payload: data
     }
    }
