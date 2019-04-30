@@ -3,8 +3,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NavBar from './components/NavBar';
 import { NavCommand } from './components/NavBar';
 import Footer from './components/Footer';
-import USDTMarket from './components/BinanceMarket';
-import BNBMarket from './components/ComponentTemplate';
+import BinanceMarket from './components/BinanceMarket';
+import About from './components/About';
+import Contact from './components/Contact';
 
 interface State {
   redirectTo?: string;
@@ -38,8 +39,9 @@ class App extends React.Component<Props, State>{
         <div className="container">
           <Switch>
             {/* <Route exact path='/' component={Home} /> */}
-            <Route exact path='/USDTMarket' component={USDTMarket} />
-            <Route exact path='/BNBMarket' component={BNBMarket} />
+            <Route exact path='/BinanceMarket' component={BinanceMarket} />
+            <Route exact path='/About' component={About} />
+            <Route exact path='/Contact' component={Contact} />
         </Switch>
         </div>
         <Footer />

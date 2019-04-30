@@ -22,7 +22,7 @@ interface State {
 }
 
 //hello world
-class USDTMarket extends React.Component<Props, State>{
+class BinanceMarket extends React.Component<Props, State>{
     constructor(props: any) {
         super(props)
 
@@ -103,4 +103,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)((USDTMarket));
+export default connect(mapStateToProps, mapDispatchToProps)((BinanceMarket));
