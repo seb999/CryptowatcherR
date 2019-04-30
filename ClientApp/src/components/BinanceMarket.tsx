@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import * as binanceActionCreator from '../actions/actions';
 import { withRouter } from 'react-router-dom';
-import { cryptoTransfer } from './../class/cryptoTransfer'
+import { cryptoTransfer } from '../class/cryptoTransfer'
 import { SSL_OP_SSLREF2_REUSE_CERT_TYPE_BUG } from 'constants';
 
 interface sortType{
