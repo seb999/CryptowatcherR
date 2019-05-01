@@ -1,0 +1,13 @@
+.Up {
+    color: green;
+    font-weight: bold;
+}
+
+.Down {
+    color: red;
+    font-weight: bold;
+  }
+
+  .tableTh{
+      cursor: pointer;
+  }

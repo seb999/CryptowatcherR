@@ -5,10 +5,12 @@ import * as binanceActionCreator from '../actions/actions';
 import { withRouter } from 'react-router-dom';
 import { cryptoTransfer } from '../class/cryptoTransfer'
 import { SSL_OP_SSLREF2_REUSE_CERT_TYPE_BUG } from 'constants';
+import './BinanceMarket.css';
+import ChartPopup from './Popup/ChartPopup'
 
-interface sortType{
-    columnName : string,
-    sortDirection : number
+interface sortType {
+    columnName: string,
+    sortDirection: number
 }
 
 interface Props {
@@ -18,7 +20,8 @@ interface Props {
 }
 
 interface State {
-    sortDirection : number,
+    sortDirection: number,
+    showChartPopup: boolean,
 }
 
 //hello world
@@ -27,7 +30,8 @@ class BinanceMarket extends React.Component<Props, State>{
         super(props)
 
         this.state = {
-            sortDirection : -1,
+            sortDirection: -1,
+            showChartPopup: false
         }
     }
 
@@ -35,32 +39,48 @@ class BinanceMarket extends React.Component<Props, State>{
         this.props.getCryptoList("USDT");
     }
 
+    handleCloseChart = () => {
+        this.setState({ showChartPopup: false });
+    }
+
+    handleShowChart = () => {
+        this.setState({ showChartPopup: true });
+    }
+
+
     handleChange = (event: any) => {
         this.props.getCryptoList(event.target.value);
     }
 
     handleSort = (e: any) => {
         this.setState({
-            sortDirection : -this.state.sortDirection
+            sortDirection: -this.state.sortDirection
         })
-       this.props.sortList( {
-           columnName : e.target.id, 
-           sortDirection : this.state.sortDirection})
+        this.props.sortList({
+            columnName: e.target.id,
+            sortDirection: this.state.sortDirection
+        })
     }
 
     render() {
         let displayList = this.props.cryptoList.map((crypto, index) => (
             <tr key={crypto.symbol}>
-                <td>{crypto.symbol}</td>
-                <td>{crypto.volume}</td>
+                <td>
+                    <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={this.handleShowChart}><i className="fa fa-chart-line"></i></button>
+
+                    {crypto.symbol}
+                </td>
+                <td>{Math.round(crypto.volume).toLocaleString()}</td>
                 <td>{crypto.lowPrice}</td>
                 <td>{crypto.highPrice}</td>
                 <td>{crypto.lastPrice}</td>
-                <td>{crypto.priceChangePercent}</td>
+                <td className={crypto.priceChangePercent >= 0 ? "Up" : "Down"}>{crypto.priceChangePercent}</td>
+                <td>rsi</td>
+                <td>macd</td>
             </tr>
         ));
 
-        let baseMarketList = <select onChange={this.handleChange}>
+        let baseMarketList = <select onChange={this.handleChange} className="form-control mb-1 mt-1">
             <option value="USDT">USDT</option>
             <option value="BTC">BTC</option>
             <option value="BNB">BNB</option>
@@ -68,39 +88,51 @@ class BinanceMarket extends React.Component<Props, State>{
 
         return (
             <div>
-                {baseMarketList}
-                <table className="table" >
-                    <thead className="thead">
-                        <tr>
-                            <th scope="col" id="symbol" onClick={this.handleSort}>Symbol</th>
-                            <th scope="col" id="volume" onClick={this.handleSort}>Volume</th>
-                            <th scope="col" id="lower" onClick={this.handleSort}>Lower</th>
-                            <th scope="col" id="higher" onClick={this.handleSort}>Higher</th>
-                            <th scope="col" id="last" onClick={this.handleSort}>Last</th>
-                            <th scope="col" id="change" onClick={this.handleSort}>% change</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {displayList}
-                    </tbody>
-                </table>
-            </div>
-        )
-    }
-}
+                <div style={{float : "left"}}>{baseMarketList}</div>
 
-//map the props of this class to the root redux state
+                <div className="input-group mb-1 mt-1" style={{float : "right", width: 300}}>
+                    <input type="text" className="form-control" placeholder="Search crypto" aria-label="Search crypto" aria-describedby="basic-addon2"></input>
+                        <div className="input-group-append">
+                            <button className="btn btn-success" type="button">Search</button>
+                        </div>
+</div>
+
+                    <table className="table" >
+                        <thead className="thead">
+                            <tr>
+                                <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol</th>
+                                <th scope="col" id="volume" onClick={this.handleSort} className="tableTh">Volume</th>
+                                <th scope="col" id="lower" onClick={this.handleSort} className="tableTh">Lower</th>
+                                <th scope="col" id="higher" onClick={this.handleSort} className="tableTh">Higher</th>
+                                <th scope="col" id="last" onClick={this.handleSort} className="tableTh">Last</th>
+                                <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change</th>
+                                <th scope="col" id="change" onClick={this.handleSort} className="tableTh">RSI</th>
+                                <th scope="col" id="change" onClick={this.handleSort} className="tableTh">MACD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {displayList}
+                        </tbody>
+                    </table>
+
+                    <ChartPopup show={this.state.showChartPopup} hide={this.handleCloseChart} />
+                </div>
+                )
+            }
+        }
+        
+        //map the props of this class to the root redux state
 const mapStateToProps = (state: any) => {
     return {
-        cryptoList: state.cryptoList,
-    }
-}
-
+                    cryptoList: state.cryptoList,
+            }
+        }
+        
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        getCryptoList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCryptoList(p)),
+                    getCryptoList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCryptoList(p)),
         sortList: (p: sortType) => dispatch<any>(binanceActionCreator.default.binanceActions.SortList(p)),
-    }
-}
-
+                }
+            }
+            
 export default connect(mapStateToProps, mapDispatchToProps)((BinanceMarket));

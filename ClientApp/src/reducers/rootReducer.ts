@@ -19,24 +19,52 @@ const initState = {
 const rootReducer = (state = initState, action: any) => {
   const newState = { ...state };
 
+
+
   switch (action.type) {
     case "BINANCE_CRYPTO_LIST":
-    
       newState.cryptoList = action.payload;
-      console.log(newState.cryptoList);
       return newState;
 
     case "BINANCE_CRYPTO_LIST_SORT":
-    console.log(newState.cryptoList);
+      console.log(action.payload.columnName);
+
       switch (action.payload.columnName) {
         case "symbol":
-          if(action.payload.sortDirection >0)
+          if (action.payload.sortDirection > 0)
             newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.symbol < n2.symbol) ? 1 : -1).slice(0, newState.cryptoList.length);
-          if(action.payload.sortDirection <0)
-          newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.symbol > n2.symbol) ? 1 : -1).slice(0, newState.cryptoList.length);
+          if (action.payload.sortDirection < 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.symbol > n2.symbol) ? 1 : -1).slice(0, newState.cryptoList.length);
           break;
-        case "% change":
-          newState.cryptoList = newState.cryptoList.sort(p => p.highPrice);
+        case "change":
+          if (action.payload.sortDirection > 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.priceChangePercent < n2.priceChangePercent) ? 1 : -1).slice(0, newState.cryptoList.length);
+          if (action.payload.sortDirection < 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.priceChangePercent > n2.priceChangePercent) ? 1 : -1).slice(0, newState.cryptoList.length);
+          break;
+        case "volume":
+          if (action.payload.sortDirection > 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.volume < n2.volume) ? 1 : -1).slice(0, newState.cryptoList.length);
+          if (action.payload.sortDirection < 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.volume > n2.volume) ? 1 : -1).slice(0, newState.cryptoList.length);
+          break;
+        case "lower":
+          if (action.payload.sortDirection > 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.lowPrice < n2.lowPrice) ? 1 : -1).slice(0, newState.cryptoList.length);
+          if (action.payload.sortDirection < 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.lowPrice > n2.lowPrice) ? 1 : -1).slice(0, newState.cryptoList.length);
+          break;
+        case "higher":
+          if (action.payload.sortDirection > 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.highPrice < n2.highPrice) ? 1 : -1).slice(0, newState.cryptoList.length);
+          if (action.payload.sortDirection < 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.highPrice > n2.highPrice) ? 1 : -1).slice(0, newState.cryptoList.length);
+          break;
+        case "last":
+          if (action.payload.sortDirection > 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.lastPrice < n2.lastPrice) ? 1 : -1).slice(0, newState.cryptoList.length);
+          if (action.payload.sortDirection < 0)
+            newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.lastPrice > n2.lastPrice) ? 1 : -1).slice(0, newState.cryptoList.length);
           break;
       }
       console.log(newState.cryptoList);

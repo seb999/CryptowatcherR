@@ -4,5 +4,5 @@ export interface cryptoTransfer{
     highPrice : number;
     lowPrice : number;
     lastPrice : number;
-    volume : string;
+    volume : number;
 }
