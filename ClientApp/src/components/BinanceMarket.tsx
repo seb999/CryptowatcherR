@@ -62,15 +62,9 @@ class BinanceMarket extends React.Component<Props, State>{
         })
     }
 
-    handleFilter = (e:any) =>{
-        console.log(e.target.value);
-    }
-
     handleFilterChange = (e:any) =>{
         this.props.filterList(e.target.value);
     }
-
-  
 
     render() {
         let displayList = this.props.cryptoList.map((crypto, index) => (
@@ -102,9 +96,6 @@ class BinanceMarket extends React.Component<Props, State>{
 
                 <div className="input-group mb-1 mt-1" style={{ float: "right", width: 300 }}>
                     <input type="text" className="form-control" placeholder="Search crypto" aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
-                    <div className="input-group-append">
-                        <button className="btn btn-success" id="filterCoinName" type="button" >Search</button>
-                    </div>
                 </div>
 
                 <table className="table" >

@@ -14,6 +14,7 @@ function sortEggsInNest(a: number, b: number) {
 
 const initState = {
   cryptoList: new Array<cryptoTransfer>(),
+  cryptoListInitial: new Array<cryptoTransfer>(),
 }
 
 const rootReducer = (state = initState, action: any) => {
@@ -23,11 +24,14 @@ const rootReducer = (state = initState, action: any) => {
 
   switch (action.type) {
     case "BINANCE_CRYPTO_LIST_FILTER":
-    newState.cryptoList = newState.cryptoList.filter(p=>p.symbol == action.payload);
-    break;
+    newState.cryptoList = newState.cryptoListInitial;
+    
+    newState.cryptoList = newState.cryptoList.filter(p=>p.symbol.toLowerCase().substr(0,action.payload.length) == action.payload.toLowerCase());
+    return newState;
 
     case "BINANCE_CRYPTO_LIST":
       newState.cryptoList = action.payload;
+      newState.cryptoListInitial = action.payload;
       return newState;
 
     case "BINANCE_CRYPTO_LIST_SORT":
