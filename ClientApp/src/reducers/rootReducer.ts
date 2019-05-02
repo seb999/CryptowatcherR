@@ -22,13 +22,15 @@ const rootReducer = (state = initState, action: any) => {
 
 
   switch (action.type) {
+    case "BINANCE_CRYPTO_LIST_FILTER":
+    newState.cryptoList = newState.cryptoList.filter(p=>p.symbol == action.payload);
+    break;
+
     case "BINANCE_CRYPTO_LIST":
       newState.cryptoList = action.payload;
       return newState;
 
     case "BINANCE_CRYPTO_LIST_SORT":
-      console.log(action.payload.columnName);
-
       switch (action.payload.columnName) {
         case "symbol":
           if (action.payload.sortDirection > 0)

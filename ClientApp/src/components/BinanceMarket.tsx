@@ -16,6 +16,7 @@ interface sortType {
 interface Props {
     getCryptoList(bm: string): void;
     sortList(sortType: sortType): void;
+    filterList(p: string): void;
     cryptoList: Array<cryptoTransfer>;
 }
 
@@ -47,7 +48,6 @@ class BinanceMarket extends React.Component<Props, State>{
         this.setState({ showChartPopup: true });
     }
 
-
     handleChange = (event: any) => {
         this.props.getCryptoList(event.target.value);
     }
@@ -61,6 +61,16 @@ class BinanceMarket extends React.Component<Props, State>{
             sortDirection: this.state.sortDirection
         })
     }
+
+    handleFilter = (e:any) =>{
+        console.log(e.target.value);
+    }
+
+    handleFilterChange = (e:any) =>{
+        this.props.filterList(e.target.value);
+    }
+
+  
 
     render() {
         let displayList = this.props.cryptoList.map((crypto, index) => (
@@ -88,51 +98,52 @@ class BinanceMarket extends React.Component<Props, State>{
 
         return (
             <div>
-                <div style={{float : "left"}}>{baseMarketList}</div>
+                <div style={{ float: "left" }}>{baseMarketList}</div>
 
-                <div className="input-group mb-1 mt-1" style={{float : "right", width: 300}}>
-                    <input type="text" className="form-control" placeholder="Search crypto" aria-label="Search crypto" aria-describedby="basic-addon2"></input>
-                        <div className="input-group-append">
-                            <button className="btn btn-success" type="button">Search</button>
-                        </div>
-</div>
-
-                    <table className="table" >
-                        <thead className="thead">
-                            <tr>
-                                <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol</th>
-                                <th scope="col" id="volume" onClick={this.handleSort} className="tableTh">Volume</th>
-                                <th scope="col" id="lower" onClick={this.handleSort} className="tableTh">Lower</th>
-                                <th scope="col" id="higher" onClick={this.handleSort} className="tableTh">Higher</th>
-                                <th scope="col" id="last" onClick={this.handleSort} className="tableTh">Last</th>
-                                <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change</th>
-                                <th scope="col" id="change" onClick={this.handleSort} className="tableTh">RSI</th>
-                                <th scope="col" id="change" onClick={this.handleSort} className="tableTh">MACD</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {displayList}
-                        </tbody>
-                    </table>
-
-                    <ChartPopup show={this.state.showChartPopup} hide={this.handleCloseChart} />
+                <div className="input-group mb-1 mt-1" style={{ float: "right", width: 300 }}>
+                    <input type="text" className="form-control" placeholder="Search crypto" aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
+                    <div className="input-group-append">
+                        <button className="btn btn-success" id="filterCoinName" type="button" >Search</button>
+                    </div>
                 </div>
-                )
-            }
-        }
-        
-        //map the props of this class to the root redux state
+
+                <table className="table" >
+                    <thead className="thead">
+                        <tr>
+                            <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol</th>
+                            <th scope="col" id="volume" onClick={this.handleSort} className="tableTh">Volume</th>
+                            <th scope="col" id="lower" onClick={this.handleSort} className="tableTh">Lower</th>
+                            <th scope="col" id="higher" onClick={this.handleSort} className="tableTh">Higher</th>
+                            <th scope="col" id="last" onClick={this.handleSort} className="tableTh">Last</th>
+                            <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change</th>
+                            <th scope="col" id="change" onClick={this.handleSort} className="tableTh">RSI</th>
+                            <th scope="col" id="change" onClick={this.handleSort} className="tableTh">MACD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {displayList}
+                    </tbody>
+                </table>
+
+                <ChartPopup show={this.state.showChartPopup} hide={this.handleCloseChart} />
+            </div>
+        )
+    }
+}
+
+//map the props of this class to the root redux state
 const mapStateToProps = (state: any) => {
     return {
-                    cryptoList: state.cryptoList,
-            }
-        }
-        
+        cryptoList: state.cryptoList,
+    }
+}
+
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-                    getCryptoList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCryptoList(p)),
+        getCryptoList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCryptoList(p)),
         sortList: (p: sortType) => dispatch<any>(binanceActionCreator.default.binanceActions.SortList(p)),
-                }
-            }
-            
+        filterList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.FilterList(p)),
+    }
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)((BinanceMarket));

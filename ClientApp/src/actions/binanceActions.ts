@@ -30,3 +30,10 @@ export const GetCryptoList = (bm : string) =>{
       payload: data
     }
    }
+
+   export const FilterList = (data :any) => {
+    return {
+      type: "BINANCE_CRYPTO_LIST_FILTER",
+      payload: data
+    }
+   }
