@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import BinanceMarket from './components/BinanceMarket';
 import About from './components/About';
 import Contact from './components/Contact';
+import BinanceMarketCoin from './components/BinanceMarketCoin'
 
 interface State {
   redirectTo?: string;
@@ -25,6 +26,7 @@ class App extends React.Component<Props, State>{
         { type: "NavLink", path: "/BinanceMarket", text: "Binance Market", isActive: true },
         { type: "NavLink", path: "/About", text: "About", isActive: true },
         { type: "NavLink", path: "/Contact", text: "Contact", isActive: true },
+     
       ],
       redirectTo: undefined,
     };
@@ -38,10 +40,10 @@ class App extends React.Component<Props, State>{
         <NavBar commands={this.state.navCommands} />
         <div className="container">
           <Switch>
-            {/* <Route exact path='/' component={Home} /> */}
             <Route exact path='/BinanceMarket' component={BinanceMarket} />
             <Route exact path='/About' component={About} />
             <Route exact path='/Contact' component={Contact} />
+            <Route exact path='/BinanceMarketCoin' component={BinanceMarketCoin}  />
         </Switch>
         </div>
         <Footer />

@@ -4,7 +4,6 @@ import { Dispatch } from 'redux';
 import * as binanceActionCreator from '../actions/actions';
 import { withRouter } from 'react-router-dom';
 import { cryptoTransfer } from '../class/cryptoTransfer'
-import { SSL_OP_SSLREF2_REUSE_CERT_TYPE_BUG } from 'constants';
 import './BinanceMarket.css';
 import ChartPopup from './Popup/ChartPopup'
 
@@ -13,20 +12,28 @@ interface sortType {
     sortDirection: number
 }
 
-interface Props {
+interface AppFnProps {
     getCryptoList(bm: string): void;
     sortList(sortType: sortType): void;
     filterList(p: string): void;
+    selectedCoin(p: string): void;
+}
+
+interface AppObjectProps {
+    history?: any;
     cryptoList: Array<cryptoTransfer>;
 }
+
+interface AppProps
+    extends AppObjectProps,
+      AppFnProps {}
 
 interface State {
     sortDirection: number,
     showChartPopup: boolean,
 }
 
-//hello world
-class BinanceMarket extends React.Component<Props, State>{
+class BinanceMarket extends React.Component<AppProps, State>{
     constructor(props: any) {
         super(props)
 
@@ -66,13 +73,17 @@ class BinanceMarket extends React.Component<Props, State>{
         this.props.filterList(e.target.value);
     }
 
+    handleBinanceCoin = (p:any) => {
+        this.props.selectedCoin(p);
+        this.props.history.push("/BinanceMarketCoin")
+    }
+
     render() {
         let displayList = this.props.cryptoList.map((crypto, index) => (
             <tr key={crypto.symbol}>
                 <td>
-                    <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={this.handleShowChart}><i className="fa fa-chart-line"></i></button>
-
-                    {crypto.symbol}
+                    <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={() => this.handleBinanceCoin(crypto.symbol)}><i className="fa fa-chart-line"></i></button>
+                    {crypto.symbolShort}
                 </td>
                 <td>{Math.round(crypto.volume).toLocaleString()}</td>
                 <td>{crypto.lowPrice}</td>
@@ -80,7 +91,10 @@ class BinanceMarket extends React.Component<Props, State>{
                 <td>{crypto.lastPrice}</td>
                 <td className={crypto.priceChangePercent >= 0 ? "Up" : "Down"}>{crypto.priceChangePercent}</td>
                 <td>rsi</td>
-                <td>macd</td>
+                <td>
+                    macd
+                    <button style={{ marginLeft: 10 }} data-toggle="tooltip" title="AI prediction" className="btn btn-outline-info btn-sm" onClick={this.handleShowChart}><i className="fas fa-cogs"></i></button>
+                </td>
             </tr>
         ));
 
@@ -134,6 +148,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
         getCryptoList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCryptoList(p)),
         sortList: (p: sortType) => dispatch<any>(binanceActionCreator.default.binanceActions.SortList(p)),
         filterList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.FilterList(p)),
+        selectedCoin: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.SelectedCoin(p)),
     }
 }
 

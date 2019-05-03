@@ -1,5 +1,6 @@
 public class BinanceCryptoTransfer{
     public string Symbol { get; set; }
+    public string SymbolShort { get; set; }
     public double PriceChange { get; set; }
     public double PriceChangePercent { get; set; }
     public double PrevClosePrice { get; set; }

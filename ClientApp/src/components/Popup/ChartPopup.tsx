@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Modal, Button, Container } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import * as Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official'
+import HighchartsReact from 'highcharts-react-official';
+import { withRouter } from 'react-router-dom';
+
 
 interface Props {
     hide(): void,
@@ -44,7 +46,8 @@ class ChartPopup extends React.Component<Props, State>{
                                 <HighchartsReact
                                     highcharts={Highcharts}
                                     constructorType={'chart'}
-                                    options={options}/>
+                                    //options={options}
+                                    />
                             </div>
 
                         </form>
@@ -60,4 +63,4 @@ class ChartPopup extends React.Component<Props, State>{
     }
 }
 
-export default ChartPopup
+export default (ChartPopup)

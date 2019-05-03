@@ -1,4 +1,5 @@
 import { cryptoTransfer } from './../class/cryptoTransfer'
+import { string } from 'prop-types';
 
 function sortEggsInNest(a: number, b: number) {
   console.log(a);
@@ -15,19 +16,17 @@ function sortEggsInNest(a: number, b: number) {
 const initState = {
   cryptoList: new Array<cryptoTransfer>(),
   cryptoListInitial: new Array<cryptoTransfer>(),
+  selectedCoin : string
 }
 
 const rootReducer = (state = initState, action: any) => {
   const newState = { ...state };
 
-
-
   switch (action.type) {
     case "BINANCE_CRYPTO_LIST_FILTER":
-    newState.cryptoList = newState.cryptoListInitial;
-    
-    newState.cryptoList = newState.cryptoList.filter(p=>p.symbol.toLowerCase().substr(0,action.payload.length) == action.payload.toLowerCase());
-    return newState;
+      newState.cryptoList = newState.cryptoListInitial;
+      newState.cryptoList = newState.cryptoList.filter(p => p.symbol.toLowerCase().substr(0, action.payload.length) == action.payload.toLowerCase());
+      return newState;
 
     case "BINANCE_CRYPTO_LIST":
       newState.cryptoList = action.payload;
@@ -73,8 +72,12 @@ const rootReducer = (state = initState, action: any) => {
             newState.cryptoList = newState.cryptoList.sort((n1, n2) => (n1.lastPrice > n2.lastPrice) ? 1 : -1).slice(0, newState.cryptoList.length);
           break;
       }
-      console.log(newState.cryptoList);
       return newState;
+
+      case "BINANCE_CRYPTO_LIST_SELECTED_COIN":
+        newState.selectedCoin = action.payload;
+        return newState;
+
 
   }
   return state;

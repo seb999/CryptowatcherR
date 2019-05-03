@@ -37,3 +37,10 @@ export const GetCryptoList = (bm : string) =>{
       payload: data
     }
    }
+
+   export const SelectedCoin = (data :any) => {
+    return {
+      type: "BINANCE_CRYPTO_LIST_SELECTED_COIN",
+      payload: data
+    }
+   }

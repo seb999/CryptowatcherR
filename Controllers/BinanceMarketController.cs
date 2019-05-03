@@ -17,12 +17,26 @@ namespace cryptowatcherR.Controllers
         public IEnumerable<BinanceCryptoTransfer> GetCryptoList(BaseMarket baseMarket)
         {
             List<BinanceCryptoTransfer> crypto24hrList = new List<BinanceCryptoTransfer>();
-            string poloniexApiData = HttpHelper.GetApiData(uriGetAllCrypto);
 
-            if (poloniexApiData != "")
-            {
-                crypto24hrList = JsonConvert.DeserializeObject<List<BinanceCryptoTransfer>>(poloniexApiData);
-            }
+         
+                // string poloniexApiData = HttpHelper.GetApiData(uriGetAllCrypto);
+                // if (poloniexApiData != "")
+                // {
+                //     crypto24hrList = JsonConvert.DeserializeObject<List<BinanceCryptoTransfer>>(poloniexApiData);
+                // }
+          
+                crypto24hrList = new List<BinanceCryptoTransfer>();
+                crypto24hrList.Add(new BinanceCryptoTransfer()
+                {
+                    Symbol = "BTCUSDT",
+                    Volume = 999999,
+                    LastPrice = 99999,
+                    HighPrice = 99999,
+                    LowPrice = 99999,
+                    OpenPrice = 99999,
+                    PriceChangePercent = 10,
+                });
+       
 
             switch (baseMarket)
             {
@@ -41,7 +55,7 @@ namespace cryptowatcherR.Controllers
 
             foreach (var crypto in crypto24hrList)
             {
-                crypto.Symbol = Misc.Helper.ShortenSymbol(crypto.Symbol, baseMarket);
+                crypto.SymbolShort = Misc.Helper.ShortenSymbol(crypto.Symbol, baseMarket);
             }
 
             return crypto24hrList;

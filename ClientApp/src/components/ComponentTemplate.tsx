@@ -1,13 +1,14 @@
 import * as React from 'react';
+import { withRouter } from 'react-router-dom';
 
-interface Props {
- }
+// interface Props {
+//  }
 
-interface State {
+// interface State {
 
-}
+// }
 
-class BNBMarket extends React.Component<Props, State>{
+class BNBMarket extends React.Component<any>{
     constructor(props: any) {
         super(props)
     }
@@ -20,4 +21,4 @@ class BNBMarket extends React.Component<Props, State>{
 
 }
 
-export default BNBMarket
+export default withRouter(BNBMarket)

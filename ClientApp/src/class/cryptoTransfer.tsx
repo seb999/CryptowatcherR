@@ -1,5 +1,6 @@
 export interface cryptoTransfer{
     symbol : string;
+    symbolShort : string;
     priceChangePercent : number;
     highPrice : number;
     lowPrice : number;
