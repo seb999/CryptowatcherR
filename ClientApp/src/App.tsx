@@ -4,9 +4,11 @@ import NavBar from './components/NavBar';
 import { NavCommand } from './components/NavBar';
 import Footer from './components/Footer';
 import BinanceMarket from './components/BinanceMarket';
+import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
 import BinanceMarketCoin from './components/BinanceMarketCoin'
+import './App.css';
 
 interface State {
   redirectTo?: string;
@@ -22,7 +24,7 @@ class App extends React.Component<Props, State>{
 
     this.state = {
       navCommands: [
-        { type: "NavLink", path: "/", text: "Home", isActive: true },
+        { type: "NavLink", path: "/Home", text: "Home", isActive: true },
         { type: "NavLink", path: "/BinanceMarket", text: "Binance Market", isActive: true },
         { type: "NavLink", path: "/About", text: "About", isActive: true },
         { type: "NavLink", path: "/Contact", text: "Contact", isActive: true },
@@ -36,11 +38,12 @@ class App extends React.Component<Props, State>{
 
     return (
       <BrowserRouter>
-      <div>
+      <div className="main-container">
         <NavBar commands={this.state.navCommands} />
-        <div className="container">
+        <div className="container ">
           <Switch>
             <Route exact path='/BinanceMarket' component={BinanceMarket} />
+            <Route exact path='/Home' component={Home} />
             <Route exact path='/About' component={About} />
             <Route exact path='/Contact' component={Contact} />
             <Route exact path='/BinanceMarketCoin' component={BinanceMarketCoin}  />

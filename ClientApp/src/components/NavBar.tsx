@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom'
 import logo from '../images/Logo.png'
-import './NavBar.css';
-import MyNavLink from './MyNavLink'
+import './Css/NavBar.css';
+import MyNavLink from './Element/MyNavLink'
 
 export interface NavCommand {
   type: string,
@@ -25,6 +25,7 @@ class NavBar extends React.Component<Props, State> {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         {/* <a className="navbar-brand" href="/"><img src={logo} className="logo" /></a> */}
+        <h3 className="brand">Cryptowatcher 2.0</h3>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

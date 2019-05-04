@@ -6,4 +6,8 @@ export interface cryptoTransfer{
     lowPrice : number;
     lastPrice : number;
     volume : number;
+    RSI : number;
+    MACD : number;
+    MACDHist : number;
+    MACDSign : number;
 }

@@ -1,39 +1,41 @@
 import { cryptoTransfer } from './../class/cryptoTransfer'
-import { string } from 'prop-types';
-
-function sortEggsInNest(a: number, b: number) {
-  console.log(a);
-  console.log(b);
-  if (a > b) {
-    return 1;
-  } else if (b > a) {
-    return -1;
-  } else {
-    return 0;
-  }
-}
+import { string, number } from 'prop-types';
 
 const initState = {
   cryptoList: new Array<cryptoTransfer>(),
   cryptoListInitial: new Array<cryptoTransfer>(),
-  selectedCoin : string
+  selectedCoin : string,
 }
 
 const rootReducer = (state = initState, action: any) => {
   const newState = { ...state };
 
   switch (action.type) {
-    case "BINANCE_CRYPTO_LIST_FILTER":
+    case "BINANCE_COIN_MACD":
+      var indexSymbol = newState.cryptoList.findIndex(p => p.symbol.toLowerCase() == action.payload.symbol.toLowerCase());
+      newState.cryptoList[indexSymbol].MACD = action.payload.data.macd;
+      newState.cryptoList[indexSymbol].MACDHist = action.payload.data.macdHist;
+      newState.cryptoList[indexSymbol].MACDSign = action.payload.data.macdSign;
+      newState.cryptoList = newState.cryptoList.slice(0, newState.cryptoList.length);
+      return newState
+
+    case "BINANCE_COIN_RSI":
+      var indexSymbol = newState.cryptoList.findIndex(p => p.symbol.toLowerCase() == action.payload.symbol.toLowerCase());
+      newState.cryptoList[indexSymbol].RSI = action.payload.data;
+      newState.cryptoList = newState.cryptoList.slice(0, newState.cryptoList.length);
+      return newState
+
+    case "BINANCE_COIN_LIST_FILTER":
       newState.cryptoList = newState.cryptoListInitial;
       newState.cryptoList = newState.cryptoList.filter(p => p.symbol.toLowerCase().substr(0, action.payload.length) == action.payload.toLowerCase());
       return newState;
 
-    case "BINANCE_CRYPTO_LIST":
+    case "BINANCE_COIN_LIST":
       newState.cryptoList = action.payload;
       newState.cryptoListInitial = action.payload;
       return newState;
 
-    case "BINANCE_CRYPTO_LIST_SORT":
+    case "BINANCE_COIN_LIST_SORT":
       switch (action.payload.columnName) {
         case "symbol":
           if (action.payload.sortDirection > 0)
@@ -74,7 +76,7 @@ const rootReducer = (state = initState, action: any) => {
       }
       return newState;
 
-      case "BINANCE_CRYPTO_LIST_SELECTED_COIN":
+      case "BINANCE_COIN_LIST_SELECTED_COIN":
         newState.selectedCoin = action.payload;
         return newState;
 
