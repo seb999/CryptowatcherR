@@ -14,7 +14,7 @@ class About extends React.Component<Props, State>{
 
     render(){
         return (
-            <div>About this application</div>
+            <div>About this applicationddd</div>
         )
     }
 

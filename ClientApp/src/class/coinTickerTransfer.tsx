@@ -1,4 +1,4 @@
-export interface cryptoTransfer{
+export interface coinTickerTransfer{
     symbol : string;
     symbolShort : string;
     priceChangePercent : number;

@@ -22,6 +22,25 @@ export const GetCoinListSuccess = (data: any) => {
   }
 }
 
+export const GetCoin = (symbol: string, interval : string) => {
+  return async (dispatch: any) => {
+    try {
+      const res = await axios.get<any>(cryptowatcherApiUrl + "GetCoin/" + symbol + "/" + interval);
+      return dispatch(GetCoinSuccess(res.data));
+    }
+    catch (error) {
+      throw (error)
+    }
+  }
+}
+
+export const GetCoinSuccess = (data: any) => {
+  return {
+    type: "BINANCE_COIN",
+    payload: data
+  }
+}
+
 export const GetRSI = (symbol: string, interval : string) => {
   return async (dispatch: any) => {
     try {

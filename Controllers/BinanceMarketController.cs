@@ -60,7 +60,7 @@ namespace cryptowatcherR.Controllers
         public List<CoinTransfer> GetCoin(string symbol, string interval)
         {
             List<CoinTransfer> quotationHistory = new List<CoinTransfer>();
-            string url = string.Format("https://api.binance.com/api/v1/klines?symbol={0}&interval={1}", symbol, interval);
+            string url = string.Format("https://api.binance.com/api/v1/klines?symbol={0}&interval={1}&limit=1000", symbol, interval);
 
             string payload = HttpHelper.GetApiData(new Uri(url));
 
@@ -96,7 +96,8 @@ namespace cryptowatcherR.Controllers
         public double GetRSI(string symbol, string interval)
         {
             List<CoinTransfer> coinList = GetCoin(symbol, interval);
-            return TradeIndicator.CalculateRsi(14, coinList); ;
+            TradeIndicator.CalculateRsiList(14, ref coinList);
+            return coinList[0].RSI;
         }
 
         [HttpGet("[action]/{symbol}/{interval}")]

@@ -7,7 +7,7 @@ import BinanceMarket from './components/BinanceMarket';
 import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
-import BinanceMarketCoin from './components/BinanceMarketCoin'
+import BinanceCoin from './components/BinanceCoin'
 import './App.css';
 
 interface State {
@@ -46,7 +46,7 @@ class App extends React.Component<Props, State>{
             <Route exact path='/Home' component={Home} />
             <Route exact path='/About' component={About} />
             <Route exact path='/Contact' component={Contact} />
-            <Route exact path='/BinanceMarketCoin' component={BinanceMarketCoin}  />
+            <Route exact path='/BinanceCoin' component={BinanceCoin}  />
         </Switch>
         </div>
         <Footer />
