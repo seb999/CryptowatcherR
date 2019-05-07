@@ -37,14 +37,14 @@ class BinanceCoin extends React.Component<Props, State>{
             chartTypeSelected: "candlestick",
             chartIndicatorSelected: "--",
             chartTypeList: ['candlestick', 'line', 'area'],
-            chartIntervalList: ['1d', '12h', '8h' , '6h', '4h', '2h', '1h', '30m', '15m', '5m'],
-            chartIndicatorList: ['--', 'Rsi',  'Macd'],
+            chartIntervalList: ['1d', '12h', '8h', '6h', '4h', '2h', '1h', '30m', '15m', '5m'],
+            chartIndicatorList: ['--', 'Rsi', 'Macd'],
         }
     }
 
     componentDidMount() {
         //this.props.getCoin(this.props.fullSymbol, '1d');
-        this.props.getCoin('BTCUSDT', '1d');
+        // this.props.getCoin('BTCUSDT', '1d');
     }
 
     handleChartTypeChange = (e: any) => {
@@ -66,14 +66,9 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     render() {
-
         var ohlc = [] as any;
         var volume = [] as any;
         var rsi = [] as any;
-
-      
-
-        console.log(ohlc);
 
         this.props.coin.map((data) => (
             ohlc.push([
@@ -92,7 +87,7 @@ class BinanceCoin extends React.Component<Props, State>{
                 data.rsi
             ])
         ));
-        console.log(ohlc);
+
         let options: Highcharts.Options = {
             title: {
                 text: this.props.fullSymbol
@@ -152,22 +147,22 @@ class BinanceCoin extends React.Component<Props, State>{
             ]
         }
 
-       // options.series.remove();
-
         return (
             <div>
                 <div className="row">
                     <div className="col-md-8">
                         <HighchartsReact
-                            highcharts={Highcharts}
-                            containerProps={{ style: { height: "600px" } }}
-                            constructorType={'stockChart'}
                             options={options}
+                            highcharts={Highcharts}
+                            constructorType={'stockChart'}
+                            allowChartUpdate={true}
+                            updateArgs={[true, true, true]}
+                            containerProps={{ style: { height: "600px" } }}
                         />
                     </div>
                     <div className="col-md-4">
                         <div className="row">
-                            <div className="card mt-5" style={{ width: 18 + 'rem' }}>
+                            <div className="card mt-5" style={{ width: 100 + '%' }}>
                                 <div className="card-body">
                                     <h5 className="card-title">Chart settings</h5>
                                     <div className="row">
@@ -190,11 +185,41 @@ class BinanceCoin extends React.Component<Props, State>{
                             </div>
                         </div>
                         <div className="row">
-                            <div className="card mt-3" style={{ width: 18 + 'rem' }}>
+                            <div className="card mt-3" style={{ width: 100 + '%' }}>
                                 <div className="card-body">
-                                    <h5 className="card-title">AI prediction</h5>
-                                    <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <h5 className="card-title">AI tendancy prediction</h5>
+
+                                    <table className="table" >
+                                        <thead className="thead">
+                                            <tr>
+                                                <th>Model</th>
+                                                <th>Prediction, metrics</th>
+                                  
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style={{fontSize: 'smaller'}}>Volume</td>
+                                                <td> <i className="fas fa-arrow-up" style={{ color: 'green' }}> </i> 50%</td>
+                                              
+                                            </tr>
+                                            <tr>
+                                                <td style={{fontSize: 'smaller'}}>Volume, Rsi</td>
+                                                <td> <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> 30%</td>
+                                           
+                                            </tr>
+                                            <tr>
+                                                <td style={{fontSize: 'smaller'}}>Volume, Macd</td>
+                                                <td> <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> 90%</td>
+                                               
+                                            </tr>
+                                            <tr>
+                                                <td style={{fontSize: 'smaller'}}>Volume, Rsi, Macd</td>
+                                                <td> <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> 40%</td>
+                                               
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
