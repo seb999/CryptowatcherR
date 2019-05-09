@@ -6,36 +6,24 @@ const initState = {
   coinList: new Array<coinTickerTransfer>(),
   coinListInitial: new Array<coinTickerTransfer>(),
   coin: new Array<coinTransfer>(),
-  selectedCoin : string,
-  ohlc: [] as any,
-  volume: [] as any,
-  rsi: [] as any,
+  selectedCoin: string,
+  prediction: [] as any
 }
 
 const rootReducer = (state = initState, action: any) => {
   const newState = { ...state };
 
   switch (action.type) {
+    case "AI_GET_PREDICTION":
+      newState.prediction = action.payload;
+      return newState
     case "BINANCE_COIN_LIST":
       newState.coinList = action.payload;
       newState.coinListInitial = action.payload;
       return newState;
 
-      case "BINANCE_COIN":
+    case "BINANCE_COIN":
       newState.coin = action.payload;
-      return newState;
-
-      case "BINANCE_COIN_SPECIAL":
-      newState.ohlc = [];
-      action.payload.map((data : any) => (
-        newState.ohlc.push([
-            data.closeTime,
-            data.open,
-            data.high,
-            data.low,
-            data.close
-        ])
-    ));
       return newState;
 
     case "BINANCE_COIN_MACD":
@@ -57,7 +45,7 @@ const rootReducer = (state = initState, action: any) => {
       newState.coinList = newState.coinList.filter(p => p.symbol.toLowerCase().substr(0, action.payload.length) == action.payload.toLowerCase());
       return newState;
 
-    
+
 
     case "BINANCE_COIN_LIST_SORT":
       switch (action.payload.columnName) {
@@ -100,9 +88,9 @@ const rootReducer = (state = initState, action: any) => {
       }
       return newState;
 
-      case "BINANCE_COIN_LIST_SELECTED_COIN":
-        newState.selectedCoin = action.payload;
-        return newState;
+    case "BINANCE_COIN_LIST_SELECTED_COIN":
+      newState.selectedCoin = action.payload;
+      return newState;
 
 
   }

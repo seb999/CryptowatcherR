@@ -172,12 +172,12 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        getCoinList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCoinList(p)),
-        sortList: (columnName: string, sortDirection: number) => dispatch<any>(binanceActionCreator.default.binanceActions.SortList(columnName, sortDirection)),
-        filterList: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.FilterList(p)),
-        selectedCoin: (p: string) => dispatch<any>(binanceActionCreator.default.binanceActions.SelectedCoin(p)),
-        getRSI: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetRSI(symbol, interval)),
-        getMACD: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetMACD(symbol, interval)),
+        getCoinList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.GetCoinList(p)),
+        sortList: (columnName: string, sortDirection: number) => dispatch<any>(binanceActionCreator.binanceActions.SortList(columnName, sortDirection)),
+        filterList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.FilterList(p)),
+        selectedCoin: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.SelectedCoin(p)),
+        getRSI: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetRSI(symbol, interval)),
+        getMACD: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetMACD(symbol, interval)),
     }
 }
 

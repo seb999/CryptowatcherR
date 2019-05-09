@@ -9,13 +9,12 @@ import DropDown from './Element/DropDown'
 
 interface AppFnProps {
     getCoin(symbol: string, interval: string): void;
+    getPrediction(symbol: string): void;
 }
 interface AppObjectProps {
     coin: Array<coinTransfer>
     fullSymbol: string;
-    ohlc: [];
-
-
+    prediction: Array<any>;
 }
 
 interface Props
@@ -50,6 +49,7 @@ class BinanceCoin extends React.Component<Props, State>{
     componentDidMount() {
         //this.props.getCoin(this.props.fullSymbol, '1d');
         this.props.getCoin('ETHUSDT', '1d');
+        this.props.getPrediction('BTCUSDT');
 
         let chartObj = this.state.chart.current.chart;
         chartObj.showLoading();
@@ -86,29 +86,34 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     render() {
+        let predictionList = this.props.prediction.map((model, index) => (
+            <tr key={index}>
+                <td style={{ fontSize: 'smaller' }}>{model.modelName}</td>
+                <td> <i className="fas fa-arrow-up" style={{ color: 'green' }}> </i> {model.futurPrice}</td>
+            </tr>
+        ));
 
-        console.log(this.props.ohlc)
-        // var ohlc = [] as any;
-        // var volume = [] as any;
-        // var rsi = [] as any;
+        var ohlc = [] as any;
+        var volume = [] as any;
+        var rsi = [] as any;
 
-        // this.props.coin.map((data) => (
-        //     ohlc.push([
-        //         data.closeTime,
-        //         data.open,
-        //         data.high,
-        //         data.low,
-        //         data.close
-        //     ]),
-        //     volume.push([
-        //         data.closeTime,
-        //         data.volume
-        //     ]),
-        //     rsi.push([
-        //         data.closeTime,
-        //         data.rsi
-        //     ])
-        // ));
+        this.props.coin.map((data) => (
+            ohlc.push([
+                data.closeTime,
+                data.open,
+                data.high,
+                data.low,
+                data.close
+            ]),
+            volume.push([
+                data.closeTime,
+                data.volume
+            ]),
+            rsi.push([
+                data.closeTime,
+                data.rsi
+            ])
+        ));
 
         let options: Highcharts.Options = {
             chart: {
@@ -122,13 +127,12 @@ class BinanceCoin extends React.Component<Props, State>{
             title: {
                 text: this.props.fullSymbol
             },
-            // plotOptions: {
-            //     candlestick: {
-            //         upColor: '#00e600',
-            //         color: '#ff0000',
-            //     },
-
-            // },
+            plotOptions: {
+                candlestick: {
+                    upColor: '#00e600',
+                    color: '#ff0000',
+                },
+            },
             yAxis: [{
                 labels: {
                     align: 'left'
@@ -160,25 +164,24 @@ class BinanceCoin extends React.Component<Props, State>{
                 {
                     type: 'candlestick',
                     name: this.props.fullSymbol,
-                    data: this.props.ohlc
+                    data: ohlc
                 },
-                // {
-                //     type: 'column',
-                //     name: 'Volume',
-                //     data: volume,
-                //     yAxis: 1
-                // },
-                // {
-                //     type: 'line',
-                //     name: 'RSI',
-                //     data: volume,
-                //     yAxis: 2,
-                // }
+                {
+                    type: 'column',
+                    name: 'Volume',
+                    data: volume,
+                    yAxis: 1
+                },
+                {
+                    type: 'line',
+                    name: 'RSI',
+                    data: volume,
+                    yAxis: 2,
+                }
             ]
         }
 
         return (
-
             <div>
                 <div className="row">
                     <div className="col-md-8">
@@ -222,46 +225,26 @@ class BinanceCoin extends React.Component<Props, State>{
                                 <div className="card-body">
                                     <h5 className="card-title">AI tendancy prediction</h5>
 
+                                    {this.props.prediction.length>0 ?  
                                     <table className="table" >
                                         <thead className="thead">
                                             <tr>
                                                 <th>Model</th>
                                                 <th>Prediction, metrics</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td style={{ fontSize: 'smaller' }}>Volume</td>
-                                                <td> <i className="fas fa-arrow-up" style={{ color: 'green' }}> </i> 50%</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td style={{ fontSize: 'smaller' }}>Volume, Rsi</td>
-                                                <td> <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> 30%</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td style={{ fontSize: 'smaller' }}>Volume, Macd</td>
-                                                <td> <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> 90%</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td style={{ fontSize: 'smaller' }}>Volume, Rsi, Macd</td>
-                                                <td> <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> 40%</td>
-
-                                            </tr>
+                                            {predictionList}
                                         </tbody>
                                     </table>
+                                    : 
+                                    <p ><i className="fas fa-exclamation-circle btn-outline-info"></i> No AI model available at the moment </p>}
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
-
         )
     }
 }
@@ -270,13 +253,14 @@ const mapStateToProps = (state: any) => {
     return {
         fullSymbol: state.selectedCoin,
         coin: state.coin,
-        ohlc: state.ohlc,
+        prediction: state.prediction,
     }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        getCoin: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCoin(symbol, interval)).then(() => { }),
+        getCoin: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetCoin(symbol, interval)).then(() => { }),
+        getPrediction: (symbol: string) => dispatch<any>(binanceActionCreator.aiActions.GetPrediction(symbol))
     }
 }
 

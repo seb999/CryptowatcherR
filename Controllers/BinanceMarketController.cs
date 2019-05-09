@@ -93,6 +93,22 @@ namespace cryptowatcherR.Controllers
             return quotationHistory;
         }
 
+        public CoinTickerTransfer GetCoinLastValue(string symbol)
+        {
+            string url = string.Format("https://api.binance.com/api/v1/ticker/24hr?symbol={0}", symbol);
+            string payload = HttpHelper.GetApiData(new Uri(url));
+            CoinTickerTransfer coinLastValue = new CoinTickerTransfer();
+
+            if (payload != "")
+            {
+                coinLastValue = JsonConvert.DeserializeObject<CoinTickerTransfer>(payload);
+            }
+
+            return coinLastValue;
+        }
+
+        #region Indicator functions
+
         [HttpGet("[action]/{symbol}/{interval}")]
         public double GetRSI(string symbol, string interval)
         {
@@ -108,6 +124,8 @@ namespace cryptowatcherR.Controllers
             TradeIndicator.CalculateMacdList(ref coinList);
             return coinList[0];
         }
+
+        #endregion
     }
 
 }

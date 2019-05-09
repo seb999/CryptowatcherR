@@ -1,3 +1,5 @@
 import * as binanceActions from './binanceActions';
+import * as aiActions from './aiActions';
 
-export default {binanceActions}
+export {binanceActions}
+export {aiActions}

@@ -36,8 +36,7 @@ export const GetCoin = (symbol: string, interval : string) => {
 
 export const GetCoinSuccess = (data: any) => {
   return {
-    //type: "BINANCE_COIN",
-    type: "BINANCE_COIN_SPECIAL",
+    type: "BINANCE_COIN",
     payload: data
   }
 }
