@@ -20,18 +20,18 @@ namespace cryptowatcherR.Controllers
             List<CoinTickerTransfer> crypto24hrList = new List<CoinTickerTransfer>();
 
             //FOR HOME
-            // string data = HttpHelper.GetApiData(uriCoinList);
-            // if (data != "")
-            // {
-            //     crypto24hrList = JsonConvert.DeserializeObject<List<CoinTickerTransfer>>(data);
-            // }
+            string data = HttpHelper.GetApiData(uriCoinList);
+            if (data != "")
+            {
+                crypto24hrList = JsonConvert.DeserializeObject<List<CoinTickerTransfer>>(data);
+            }
 
             //FOR OFFICE
-            crypto24hrList = new List<CoinTickerTransfer>();
-            crypto24hrList.Add(new CoinTickerTransfer()
-            {
-                Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
-            });
+            // crypto24hrList = new List<CoinTickerTransfer>();
+            // crypto24hrList.Add(new CoinTickerTransfer()
+            // {
+            //     Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            // });
 
 
             switch (baseMarket)

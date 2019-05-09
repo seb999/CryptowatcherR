@@ -49,7 +49,7 @@ class App extends React.Component<Props, State>{
             <Route exact path='/BinanceCoin' component={BinanceCoin}  />
         </Switch>
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </BrowserRouter>
     );

@@ -131,7 +131,7 @@ class BinanceMarket extends React.Component<Props, State>{
         return (
             <div>
                 <div style={{ float: "left" }}>
-                <DropDown itemList={this.state.marketList} onClick={this.handleChangeReferenceCoin} selectedItem={this.state.marketSelected}></DropDown>
+                <DropDown spin={false} itemList={this.state.marketList} onClick={this.handleChangeReferenceCoin} selectedItem={this.state.marketSelected}></DropDown>
                 </div>
 
                 <div className="input-group mb-1 mt-1" style={{ float: "right", width: 300 }}>

@@ -4,9 +4,12 @@ import { string, number } from 'prop-types';
 
 const initState = {
   coinList: new Array<coinTickerTransfer>(),
+  coinListInitial: new Array<coinTickerTransfer>(),
   coin: new Array<coinTransfer>(),
-  cryptoListInitial: new Array<coinTickerTransfer>(),
   selectedCoin : string,
+  ohlc: [] as any,
+  volume: [] as any,
+  rsi: [] as any,
 }
 
 const rootReducer = (state = initState, action: any) => {
@@ -15,11 +18,24 @@ const rootReducer = (state = initState, action: any) => {
   switch (action.type) {
     case "BINANCE_COIN_LIST":
       newState.coinList = action.payload;
-      newState.cryptoListInitial = action.payload;
+      newState.coinListInitial = action.payload;
       return newState;
 
       case "BINANCE_COIN":
       newState.coin = action.payload;
+      return newState;
+
+      case "BINANCE_COIN_SPECIAL":
+      newState.ohlc = [];
+      action.payload.map((data : any) => (
+        newState.ohlc.push([
+            data.closeTime,
+            data.open,
+            data.high,
+            data.low,
+            data.close
+        ])
+    ));
       return newState;
 
     case "BINANCE_COIN_MACD":
@@ -37,7 +53,7 @@ const rootReducer = (state = initState, action: any) => {
       return newState
 
     case "BINANCE_COIN_LIST_FILTER":
-      newState.coinList = newState.cryptoListInitial;
+      newState.coinList = newState.coinListInitial;
       newState.coinList = newState.coinList.filter(p => p.symbol.toLowerCase().substr(0, action.payload.length) == action.payload.toLowerCase());
       return newState;
 

@@ -13,50 +13,70 @@ interface AppFnProps {
 interface AppObjectProps {
     coin: Array<coinTransfer>
     fullSymbol: string;
+    ohlc: [];
+
+
 }
 
 interface Props
-    extends AppObjectProps,
-    AppFnProps { }
+    extends AppObjectProps, AppFnProps { }
 
 interface State {
-    chartTypeSelected: any,
-    chartTypeList: Array<string>;
+    // chartTypeSelected: any,
+    // chartTypeList: Array<string>;
     chartIntervalSelected: string,
     chartIntervalList: Array<string>;
     chartIndicatorSelected: string,
     chartIndicatorList: Array<string>;
+    chart: any;
 }
 
 class BinanceCoin extends React.Component<Props, State>{
+
     constructor(props: any) {
         super(props);
 
         this.state = {
+            // chartTypeSelected: "candlestick",
+            // chartTypeList: ['candlestick', 'line', 'area'],
             chartIntervalSelected: "1d",
-            chartTypeSelected: "candlestick",
-            chartIndicatorSelected: "--",
-            chartTypeList: ['candlestick', 'line', 'area'],
             chartIntervalList: ['1d', '12h', '8h', '6h', '4h', '2h', '1h', '30m', '15m', '5m'],
+            chartIndicatorSelected: "--",
             chartIndicatorList: ['--', 'Rsi', 'Macd'],
-        }
+            chart: React.createRef()
+        };
     }
 
     componentDidMount() {
         //this.props.getCoin(this.props.fullSymbol, '1d');
-        // this.props.getCoin('BTCUSDT', '1d');
+        this.props.getCoin('ETHUSDT', '1d');
+
+        let chartObj = this.state.chart.current.chart;
+        chartObj.showLoading();
+        setTimeout(() => chartObj.hideLoading(), 1000);
     }
 
-    handleChartTypeChange = (e: any) => {
-        this.setState({
-            chartTypeSelected: e
-        })
-    }
+    // handleChartTypeChange = (e: any) => {
+    //     this.setState({
+    //         chartTypeSelected: e,
+    //         chartOptions: {
+    //             series: [
+    //                 { data: this.props.ohlc, type: e}
+    //             ]
+    //         }
+    //     });
+    // }
 
     handleChartIntervalChange = (e: any) => {
+        this.props.getCoin('ETHUSDT', e);
+
         this.setState({
-            chartIntervalSelected: e
+            chartIntervalSelected: e,
         })
+
+        let chartObj = this.state.chart.current.chart;
+        chartObj.showLoading();
+        setTimeout(() => chartObj.hideLoading(), 1200);
     }
 
     handleChartIndicatorChange = (e: any) => {
@@ -66,29 +86,39 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     render() {
-        var ohlc = [] as any;
-        var volume = [] as any;
-        var rsi = [] as any;
 
-        this.props.coin.map((data) => (
-            ohlc.push([
-                data.closeTime,
-                data.open,
-                data.high,
-                data.low,
-                data.close
-            ]),
-            volume.push([
-                data.closeTime,
-                data.volume
-            ]),
-            rsi.push([
-                data.closeTime,
-                data.rsi
-            ])
-        ));
+        console.log(this.props.ohlc)
+        // var ohlc = [] as any;
+        // var volume = [] as any;
+        // var rsi = [] as any;
+
+        // this.props.coin.map((data) => (
+        //     ohlc.push([
+        //         data.closeTime,
+        //         data.open,
+        //         data.high,
+        //         data.low,
+        //         data.close
+        //     ]),
+        //     volume.push([
+        //         data.closeTime,
+        //         data.volume
+        //     ]),
+        //     rsi.push([
+        //         data.closeTime,
+        //         data.rsi
+        //     ])
+        // ));
 
         let options: Highcharts.Options = {
+            chart: {
+                events: {
+                    load() {
+                        this.showLoading();
+                        setTimeout(this.hideLoading.bind(this), 1200);
+                    }
+                }
+            },
             title: {
                 text: this.props.fullSymbol
             },
@@ -128,26 +158,27 @@ class BinanceCoin extends React.Component<Props, State>{
             },
             series: [
                 {
-                    type: this.state.chartTypeSelected,
+                    type: 'candlestick',
                     name: this.props.fullSymbol,
-                    data: ohlc
+                    data: this.props.ohlc
                 },
-                {
-                    type: 'column',
-                    name: 'Volume',
-                    data: volume,
-                    yAxis: 1
-                },
-                {
-                    type: 'line',
-                    name: 'RSI',
-                    data: volume,
-                    yAxis: 2,
-                }
+                // {
+                //     type: 'column',
+                //     name: 'Volume',
+                //     data: volume,
+                //     yAxis: 1
+                // },
+                // {
+                //     type: 'line',
+                //     name: 'RSI',
+                //     data: volume,
+                //     yAxis: 2,
+                // }
             ]
         }
 
         return (
+
             <div>
                 <div className="row">
                     <div className="col-md-8">
@@ -156,29 +187,31 @@ class BinanceCoin extends React.Component<Props, State>{
                             highcharts={Highcharts}
                             constructorType={'stockChart'}
                             allowChartUpdate={true}
-                            updateArgs={[true, true, true]}
+                            updateArgs={[true, true, false]}
                             containerProps={{ style: { height: "600px" } }}
+                            ref={this.state.chart}
                         />
                     </div>
+
                     <div className="col-md-4">
                         <div className="row">
                             <div className="card mt-5" style={{ width: 100 + '%' }}>
                                 <div className="card-body">
-                                    <h5 className="card-title">Chart settings</h5>
-                                    <div className="row">
-                                        <div className="col-md-5">Type</div>
-                                        <div className="col-md-7">
-                                            <DropDown itemList={this.state.chartTypeList} onClick={this.handleChartTypeChange} selectedItem={this.state.chartTypeSelected}></DropDown>
-                                        </div>
+                                    <h5 className="card-title">Settings</h5>
+                                    {/* <div className="row">
+                                    <div className="col-md-5">Type</div>
+                                    <div className="col-md-7">
+                                        <DropDown itemList={this.state.chartTypeList} onClick={this.handleChartTypeChange} selectedItem={this.state.chartTypeSelected}></DropDown>
                                     </div>
+                                </div> */}
                                     <div className="row">
                                         <div className="col-md-5">Interval</div>
-                                        <div className="col-md-7"><DropDown itemList={this.state.chartIntervalList} onClick={this.handleChartIntervalChange} selectedItem={this.state.chartIntervalSelected}></DropDown></div>
+                                        <div className="col-md-7"><DropDown spin={false} itemList={this.state.chartIntervalList} onClick={this.handleChartIntervalChange} selectedItem={this.state.chartIntervalSelected}></DropDown></div>
                                     </div>
                                     <div className="row">
                                         <div className="col-md-5">indicators</div>
                                         <div className="col-md-7">
-                                            <DropDown itemList={this.state.chartIndicatorList} onClick={this.handleChartIndicatorChange} selectedItem={this.state.chartIndicatorSelected}></DropDown>
+                                            <DropDown spin={false} itemList={this.state.chartIndicatorList} onClick={this.handleChartIndicatorChange} selectedItem={this.state.chartIndicatorSelected}></DropDown>
                                         </div>
                                     </div>
                                 </div>
@@ -194,29 +227,29 @@ class BinanceCoin extends React.Component<Props, State>{
                                             <tr>
                                                 <th>Model</th>
                                                 <th>Prediction, metrics</th>
-                                  
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td style={{fontSize: 'smaller'}}>Volume</td>
+                                                <td style={{ fontSize: 'smaller' }}>Volume</td>
                                                 <td> <i className="fas fa-arrow-up" style={{ color: 'green' }}> </i> 50%</td>
-                                              
+
                                             </tr>
                                             <tr>
-                                                <td style={{fontSize: 'smaller'}}>Volume, Rsi</td>
+                                                <td style={{ fontSize: 'smaller' }}>Volume, Rsi</td>
                                                 <td> <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> 30%</td>
-                                           
+
                                             </tr>
                                             <tr>
-                                                <td style={{fontSize: 'smaller'}}>Volume, Macd</td>
+                                                <td style={{ fontSize: 'smaller' }}>Volume, Macd</td>
                                                 <td> <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> 90%</td>
-                                               
+
                                             </tr>
                                             <tr>
-                                                <td style={{fontSize: 'smaller'}}>Volume, Rsi, Macd</td>
+                                                <td style={{ fontSize: 'smaller' }}>Volume, Rsi, Macd</td>
                                                 <td> <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> 40%</td>
-                                               
+
                                             </tr>
                                         </tbody>
                                     </table>
@@ -227,8 +260,8 @@ class BinanceCoin extends React.Component<Props, State>{
                     </div>
                 </div>
 
-
             </div>
+
         )
     }
 }
@@ -237,12 +270,13 @@ const mapStateToProps = (state: any) => {
     return {
         fullSymbol: state.selectedCoin,
         coin: state.coin,
+        ohlc: state.ohlc,
     }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        getCoin: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCoin(symbol, interval)),
+        getCoin: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.default.binanceActions.GetCoin(symbol, interval)).then(() => { }),
     }
 }
 

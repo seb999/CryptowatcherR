@@ -5,6 +5,7 @@ interface Props {
     itemList: Array<string>;
     onClick(p:any): void;
     selectedItem: string;
+    spin:boolean;
 }
 
 interface State {
@@ -20,6 +21,7 @@ class DropDown extends React.Component<Props, State> {
             <div className="dropdown">
                 <button className="btn btn-outline-info dropdown-toggle mt-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {this.props.selectedItem}
+                    {this.props.spin ? <span className="spinner-border spinner-border-sm ml-1" role="status" aria-hidden="true"></span> : ""}
             </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {this.props.itemList.map((item, index) => {
