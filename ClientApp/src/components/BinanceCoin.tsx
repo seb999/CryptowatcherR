@@ -14,7 +14,7 @@ interface AppFnProps {
 interface AppObjectProps {
     coin: Array<coinTransfer>
     fullSymbol: string;
-    prediction: Array<any>;
+    prediction: Array<any> ;
 }
 
 interface Props
@@ -28,6 +28,7 @@ interface State {
     chartIndicatorSelected: string,
     chartIndicatorList: Array<string>;
     chart: any;
+    pageFirstLoaded : boolean;
 }
 
 class BinanceCoin extends React.Component<Props, State>{
@@ -42,7 +43,8 @@ class BinanceCoin extends React.Component<Props, State>{
             chartIntervalList: ['1d', '12h', '8h', '6h', '4h', '2h', '1h', '30m', '15m', '5m'],
             chartIndicatorSelected: "--",
             chartIndicatorList: ['--', 'Rsi', 'Macd'],
-            chart: React.createRef()
+            chart: React.createRef(),
+            pageFirstLoaded : false
         };
     }
 
@@ -54,6 +56,17 @@ class BinanceCoin extends React.Component<Props, State>{
         let chartObj = this.state.chart.current.chart;
         chartObj.showLoading();
         setTimeout(() => chartObj.hideLoading(), 1000);
+
+        
+    }
+
+    componentDidUpdate(nextProps: any){
+        if(this.props != nextProps)
+        {
+            this.setState ({
+                pageFirstLoaded : true
+            })
+        }
     }
 
     // handleChartTypeChange = (e: any) => {
@@ -237,9 +250,10 @@ class BinanceCoin extends React.Component<Props, State>{
                                             {predictionList}
                                         </tbody>
                                     </table>
-                                    : 
-                                    <p ><i className="fas fa-exclamation-circle btn-outline-info"></i> No AI model available at the moment </p>}
-                                </div>
+                                    : this.state.pageFirstLoaded == true ? 
+                                    <p ><i className="fas fa-exclamation-circle btn-outline-info"></i> No AI model available at the moment </p>
+                                        : <div></div>}
+                                    </div>
                             </div>
                         </div>
                     </div>
