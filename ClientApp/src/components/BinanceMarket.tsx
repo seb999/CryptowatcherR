@@ -33,6 +33,8 @@ interface State {
     showChartPopup: boolean,
     marketSelected: any,
     marketList: Array<string>;
+    showSpinner : boolean;
+    opacity : any;
 }
 
 class BinanceMarket extends React.Component<Props, State>{
@@ -45,6 +47,8 @@ class BinanceMarket extends React.Component<Props, State>{
             sortDirection: 1,
             showChartPopup: false,
             sortColumn: "",
+            showSpinner: true,
+            opacity : 0.5,
             sorterVisibility: [
                 { columnId: "symbol", visibility: false },
                 { columnId: "volume", visibility: false },
@@ -59,9 +63,21 @@ class BinanceMarket extends React.Component<Props, State>{
         this.props.getCoinList("USDT");
     }
 
+    componentDidUpdate(nextProps: any){
+        if(this.props != nextProps)
+        {
+            this.setState ({
+                showSpinner : false,
+                opacity : 1
+            })
+        }
+    }
+
     handleChangeReferenceCoin = (p: any) => {
         this.setState({
-            marketSelected: p
+            marketSelected: p,
+            showSpinner : true,
+            opacity : 0.5,
         })
         this.props.getCoinList(p);
     }
@@ -71,7 +87,7 @@ class BinanceMarket extends React.Component<Props, State>{
         let sortDirection = -this.state.sortDirection;
         sorterArray.forEach(p => p.visibility = false);
         let sorterIndex = sorterArray.findIndex(p => p.columnId == e.target.id);
-        if(sorterIndex >=0) sorterArray[sorterIndex].visibility = true;
+        if (sorterIndex >= 0) sorterArray[sorterIndex].visibility = true;
 
         if (this.state.sortColumn == e.target.id) {
             this.setState({
@@ -131,31 +147,32 @@ class BinanceMarket extends React.Component<Props, State>{
         return (
             <div>
                 <div style={{ float: "left" }}>
-                <DropDown spin={false} itemList={this.state.marketList} onClick={this.handleChangeReferenceCoin} selectedItem={this.state.marketSelected}></DropDown>
+                    <DropDown spin={this.state.showSpinner} itemList={this.state.marketList} onClick={this.handleChangeReferenceCoin} selectedItem={this.state.marketSelected}></DropDown>
                 </div>
 
                 <div className="input-group mb-1 mt-1" style={{ float: "right", width: 300 }}>
                     <input type="text" className="form-control" placeholder="Search crypto" aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
                 </div>
-
-                <table className="table" >
-                    <thead className="thead thead-light">
-                        <tr>
-                            <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[0].visibility} /></th>
-                            <th scope="col" id="volume" onClick={this.handleSort} className="tableTh">Volume<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[1].visibility} /></th>
-                            <th scope="col" id="lower" onClick={this.handleSort} className="tableTh">Lower<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[2].visibility} /></th>
-                            <th scope="col" id="higher" onClick={this.handleSort} className="tableTh">Higher<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[3].visibility} /></th>
-                            <th scope="col" id="last" onClick={this.handleSort} className="tableTh">Last<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[4].visibility} /></th>
-                            <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[5].visibility} /></th>
-                            <th scope="col" id="rsi">RSI</th>
-                            <th scope="col" id="macd">MACD</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {displayList}
-                    </tbody>
-                </table>
+               <div style={{opacity : this.state.opacity}} >
+                    <table className="table" >
+                        <thead className="thead thead-light">
+                            <tr>
+                                <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[0].visibility} /></th>
+                                <th scope="col" id="volume" onClick={this.handleSort} className="tableTh">Volume<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[1].visibility} /></th>
+                                <th scope="col" id="lower" onClick={this.handleSort} className="tableTh">Lower<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[2].visibility} /></th>
+                                <th scope="col" id="higher" onClick={this.handleSort} className="tableTh">Higher<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[3].visibility} /></th>
+                                <th scope="col" id="last" onClick={this.handleSort} className="tableTh">Last<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[4].visibility} /></th>
+                                <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[5].visibility} /></th>
+                                <th scope="col" id="rsi">RSI</th>
+                                <th scope="col" id="macd">MACD</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {displayList}
+                        </tbody>
+                    </table>
+                </div>
 
                 {/* <ChartPopup show={this.state.showChartPopup} hide={this.handleCloseChart} /> */}
             </div>

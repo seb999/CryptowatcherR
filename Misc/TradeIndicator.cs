@@ -19,9 +19,9 @@ namespace cryptowatcherR.Misc
 
             if (returnCode == Core.RetCode.Success && outNBElements > 0)
             {
-                for (int i = 0; i <= outNBElements; i++)
+                for (int i = 0; i <= outNBElements-1; i++)
                 {
-                    quotationList[i].RSI = Math.Round(rsiValues[i], 2);
+                    quotationList[i+beginIndex].RSI = Math.Round(rsiValues[i], 2);
                 }
             }
         }
@@ -41,14 +41,9 @@ namespace cryptowatcherR.Misc
             {
                 for (int i = 0; i < outNBElements; i++)
                 {
-                    //Remove this after RSI validation
-                    // quotationList[i+26].MACD = Math.Round(outMACD[i],2);
-                    // quotationList[i+26].MACDHist = Math.Round(outMACDHist[i],2);
-                    // quotationList[i+26].MACDSign = Math.Round(outMACDSignal[i],2);
-
-                    quotationList[i].MACD = Math.Round(outMACD[i],2);
-                    quotationList[i].MACDHist = Math.Round(outMACDHist[i],2);
-                    quotationList[i].MACDSign = Math.Round(outMACDSignal[i],2);
+                    quotationList[i+beginIndex].MACD = Math.Round(outMACD[i],2);
+                    quotationList[i+beginIndex].MACDHist = Math.Round(outMACDHist[i],2);
+                    quotationList[i+beginIndex].MACDSign = Math.Round(outMACDSignal[i],2);
                 }                 
             }
         }

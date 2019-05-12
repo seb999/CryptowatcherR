@@ -11,3 +11,7 @@
   .tableTh{
       cursor: pointer;
   }
+
+  .loader{
+      opacity: 0.5;
+  }

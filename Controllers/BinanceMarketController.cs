@@ -89,6 +89,9 @@ namespace cryptowatcherR.Controllers
                     quotationHistory.Add(newQuotation);
                 }
             }
+            
+            //Add RSI calculation to the list
+            TradeIndicator.CalculateRsiList(14, ref quotationHistory);
 
             return quotationHistory;
         }
@@ -114,7 +117,7 @@ namespace cryptowatcherR.Controllers
         {
             List<CoinTransfer> coinList = GetCoin(symbol, interval);
             TradeIndicator.CalculateRsiList(14, ref coinList);
-            return coinList[0].RSI;
+            return coinList.Last().RSI;
         }
 
         [HttpGet("[action]/{symbol}/{interval}")]
@@ -122,7 +125,7 @@ namespace cryptowatcherR.Controllers
         {
             List<CoinTransfer> coinList = GetCoin(symbol, interval);
             TradeIndicator.CalculateMacdList(ref coinList);
-            return coinList[0];
+            return coinList.Last();
         }
 
         #endregion

@@ -6,6 +6,7 @@ import * as binanceActionCreator from '../actions/actions';
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
 import DropDown from './Element/DropDown'
+import CoinChart from './Element/CoinChart'
 
 interface AppFnProps {
     getCoin(symbol: string, interval: string): void;
@@ -14,7 +15,7 @@ interface AppFnProps {
 interface AppObjectProps {
     coin: Array<coinTransfer>
     fullSymbol: string;
-    prediction: Array<any> ;
+    prediction: Array<any>;
 }
 
 interface Props
@@ -27,12 +28,11 @@ interface State {
     chartIntervalList: Array<string>;
     chartIndicatorSelected: string,
     chartIndicatorList: Array<string>;
-    chart: any;
-    pageFirstLoaded : boolean;
+    pageFirstLoaded: boolean;
+    showSpinner: boolean;
 }
 
 class BinanceCoin extends React.Component<Props, State>{
-
     constructor(props: any) {
         super(props);
 
@@ -41,34 +41,29 @@ class BinanceCoin extends React.Component<Props, State>{
             // chartTypeList: ['candlestick', 'line', 'area'],
             chartIntervalSelected: "1d",
             chartIntervalList: ['1d', '12h', '8h', '6h', '4h', '2h', '1h', '30m', '15m', '5m'],
-            chartIndicatorSelected: "--",
-            chartIndicatorList: ['--', 'Rsi', 'Macd'],
-            chart: React.createRef(),
-            pageFirstLoaded : false
+            chartIndicatorSelected: "Volume",
+            chartIndicatorList: ['Volume', 'Rsi', 'Macd'],
+            pageFirstLoaded: false,
+            showSpinner: true
         };
     }
 
     componentDidMount() {
         //this.props.getCoin(this.props.fullSymbol, '1d');
-        this.props.getCoin('ETHUSDT', '1d');
+        this.props.getCoin('BTCUSDT', '1d');
         this.props.getPrediction('BTCUSDT');
-
-        let chartObj = this.state.chart.current.chart;
-        chartObj.showLoading();
-        setTimeout(() => chartObj.hideLoading(), 1000);
-
-        
     }
 
-    componentDidUpdate(nextProps: any){
-        if(this.props != nextProps)
-        {
-            this.setState ({
-                pageFirstLoaded : true
+    componentDidUpdate(nextProps: any) {
+        if (this.props != nextProps) {
+            this.setState({
+                pageFirstLoaded: true,
+                showSpinner: false
             })
         }
     }
 
+    //There is a bug in highchart when change type. I keep the code for now
     // handleChartTypeChange = (e: any) => {
     //     this.setState({
     //         chartTypeSelected: e,
@@ -81,15 +76,10 @@ class BinanceCoin extends React.Component<Props, State>{
     // }
 
     handleChartIntervalChange = (e: any) => {
-        this.props.getCoin('ETHUSDT', e);
-
+        this.props.getCoin('BTCUSDT', e);
         this.setState({
             chartIntervalSelected: e,
         })
-
-        let chartObj = this.state.chart.current.chart;
-        chartObj.showLoading();
-        setTimeout(() => chartObj.hideLoading(), 1200);
     }
 
     handleChartIndicatorChange = (e: any) => {
@@ -102,111 +92,15 @@ class BinanceCoin extends React.Component<Props, State>{
         let predictionList = this.props.prediction.map((model, index) => (
             <tr key={index}>
                 <td style={{ fontSize: 'smaller' }}>{model.modelName}</td>
-                <td> <i className="fas fa-arrow-up" style={{ color: 'green' }}> </i> {model.futurPrice}</td>
+                <td><i className="fas fa-arrow-up" style={{ color: 'green' }}> </i> {model.futurPrice}</td>
             </tr>
         ));
-
-        var ohlc = [] as any;
-        var volume = [] as any;
-        var rsi = [] as any;
-
-        this.props.coin.map((data) => (
-            ohlc.push([
-                data.closeTime,
-                data.open,
-                data.high,
-                data.low,
-                data.close
-            ]),
-            volume.push([
-                data.closeTime,
-                data.volume
-            ]),
-            rsi.push([
-                data.closeTime,
-                data.rsi
-            ])
-        ));
-
-        let options: Highcharts.Options = {
-            chart: {
-                events: {
-                    load() {
-                        this.showLoading();
-                        setTimeout(this.hideLoading.bind(this), 1200);
-                    }
-                }
-            },
-            title: {
-                text: this.props.fullSymbol
-            },
-            plotOptions: {
-                candlestick: {
-                    upColor: '#00e600',
-                    color: '#ff0000',
-                },
-            },
-            yAxis: [{
-                labels: {
-                    align: 'left'
-                },
-                height: '60%',
-                resize: {
-                    enabled: true
-                }
-            }, {
-                labels: {
-                    align: 'left'
-                },
-                top: '60%',
-                height: '15%',
-                offset: 0
-            },
-            {
-                labels: {
-                    align: 'left'
-                },
-                top: '75%',
-                height: '15%',
-                offset: 0
-            }],
-            tooltip: {
-                split: false
-            },
-            series: [
-                {
-                    type: 'candlestick',
-                    name: this.props.fullSymbol,
-                    data: ohlc
-                },
-                {
-                    type: 'column',
-                    name: 'Volume',
-                    data: volume,
-                    yAxis: 1
-                },
-                {
-                    type: 'line',
-                    name: 'RSI',
-                    data: volume,
-                    yAxis: 2,
-                }
-            ]
-        }
 
         return (
             <div>
                 <div className="row">
                     <div className="col-md-8">
-                        <HighchartsReact
-                            options={options}
-                            highcharts={Highcharts}
-                            constructorType={'stockChart'}
-                            allowChartUpdate={true}
-                            updateArgs={[true, true, false]}
-                            containerProps={{ style: { height: "600px" } }}
-                            ref={this.state.chart}
-                        />
+                        <CoinChart data={this.props.coin} symbol={this.props.fullSymbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
                     </div>
 
                     <div className="col-md-4">
@@ -237,23 +131,39 @@ class BinanceCoin extends React.Component<Props, State>{
                             <div className="card mt-3" style={{ width: 100 + '%' }}>
                                 <div className="card-body">
                                     <h5 className="card-title">AI tendancy prediction</h5>
-
-                                    {this.props.prediction.length>0 ?  
-                                    <table className="table" >
-                                        <thead className="thead">
-                                            <tr>
-                                                <th>Model</th>
-                                                <th>Prediction, metrics</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {predictionList}
-                                        </tbody>
-                                    </table>
-                                    : this.state.pageFirstLoaded == true ? 
-                                    <p ><i className="fas fa-exclamation-circle btn-outline-info"></i> No AI model available at the moment </p>
-                                        : <div></div>}
+                                    {this.state.showSpinner ? <div className="d-flex justify-content-center"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
+                                    {this.props.prediction.length > 0 ?
+                                        <table className="table" >
+                                            <thead className="thead">
+                                                <tr>
+                                                    <th>Model</th>
+                                                    <th>Prediction, metrics</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {predictionList}
+                                            </tbody>
+                                        </table>
+                                        : this.state.pageFirstLoaded == true ?
+                                            <p ><i className="fas fa-exclamation-circle btn-outline-info"></i> No AI model available at the moment </p>
+                                            : <div></div>}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="card mt-3" style={{ width: 100 + '%' }}>
+                                <div className="card-body">
+                                    <h5 className="card-title">Indicators</h5>
+                                    {this.state.showSpinner ? <div className="d-flex justify-content-center"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
+                                    <div className="row">
+                                        <div className="col-md-5">Rsi(14)</div>
+                                        <div className="col-md-7">--</div>
                                     </div>
+                                    <div className="row">
+                                        <div className="col-md-5">Macd(12,26)</div>
+                                        <div className="col-md-7">--</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
