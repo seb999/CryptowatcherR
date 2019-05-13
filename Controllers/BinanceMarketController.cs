@@ -92,6 +92,7 @@ namespace cryptowatcherR.Controllers
             
             //Add RSI calculation to the list
             TradeIndicator.CalculateRsiList(14, ref quotationHistory);
+            TradeIndicator.CalculateMacdList(ref quotationHistory);
 
             return quotationHistory;
         }

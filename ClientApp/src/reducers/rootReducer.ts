@@ -7,7 +7,11 @@ const initState = {
   coinListInitial: new Array<coinTickerTransfer>(),
   coin: new Array<coinTransfer>(),
   selectedCoin: string,
-  prediction: [] as any
+  prediction: [] as any,
+  rsi: number,
+  macd: number,
+  macdSign: number,
+  macdHist: number
 }
 
 const rootReducer = (state = initState, action: any) => {
@@ -24,6 +28,10 @@ const rootReducer = (state = initState, action: any) => {
 
     case "BINANCE_COIN":
       newState.coin = action.payload;
+      newState.rsi = action.payload != undefined ? action.payload[action.payload.length-1].rsi : 0;
+      newState.macd = action.payload != undefined ? action.payload[action.payload.length-1].macd : 0;
+      newState.macdSign = action.payload != undefined ? action.payload[action.payload.length-1].macdSign : 0;
+      newState.macdHist = action.payload != undefined ? action.payload[action.payload.length-1].macdHist : 0;
       return newState;
 
     case "BINANCE_COIN_MACD":

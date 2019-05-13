@@ -16,6 +16,10 @@ interface AppObjectProps {
     coin: Array<coinTransfer>
     fullSymbol: string;
     prediction: Array<any>;
+    rsi: number;
+    macd: number;
+    macdSign: number;
+    macdHist: number;
 }
 
 interface Props
@@ -30,7 +34,6 @@ interface State {
     chartIndicatorList: Array<string>;
     pageFirstLoaded: boolean;
     showSpinner: boolean;
-    RSI: number;
 }
 
 class BinanceCoin extends React.Component<Props, State>{
@@ -46,7 +49,6 @@ class BinanceCoin extends React.Component<Props, State>{
             chartIndicatorList: ['Volume', 'Rsi', 'Macd'],
             pageFirstLoaded: false,
             showSpinner: true,
-            RSI: 0,
         };
     }
 
@@ -61,7 +63,6 @@ class BinanceCoin extends React.Component<Props, State>{
             this.setState({
                 pageFirstLoaded: true,
                 showSpinner: false,
-                RSI: this.props.coin != undefined ? this.props.coin[this.props.coin.length-1].rsi : 0,
             })
         }
     }
@@ -159,13 +160,13 @@ class BinanceCoin extends React.Component<Props, State>{
                                     <h5 className="card-title">Indicators</h5>
                                     {this.state.showSpinner ? <div className="d-flex justify-content-center"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
                                     <div className="row">
-                                        <div className="col-md-5">Rsi(14)</div>
+                                        <div className="col-md-6">Rsi(14)</div>
                                         {console.log(this.props.coin)}
-                                        <div className="col-md-7">{this.state.RSI}</div>
+                                        <div className="col-md-6">{this.props.rsi}</div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-md-5">Macd(12,26)</div>
-                                        <div className="col-md-7">--</div>
+                                        <div className="col-md-6">Macd(12,26) Hist</div>
+                                        <div className="col-md-6 ">{this.props.macdHist}</div>
                                     </div>
                                 </div>
                             </div>
@@ -182,6 +183,10 @@ const mapStateToProps = (state: any) => {
         fullSymbol: state.selectedCoin,
         coin: state.coin,
         prediction: state.prediction,
+        rsi: state.rsi,
+        macd: state.macd,
+        macdSign: state.macdSign,
+        macdHist: state.macdHist,
     }
 }
 
