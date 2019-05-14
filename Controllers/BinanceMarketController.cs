@@ -98,6 +98,10 @@ namespace cryptowatcherR.Controllers
             string url = string.Format("https://api.binance.com/api/v1/ticker/24hr?symbol={0}", symbol);
             string payload = HttpHelper.GetApiData(new Uri(url));
             CoinTickerTransfer coinLastValue = new CoinTickerTransfer();
+             if (payload != "")
+            {
+                coinLastValue = JsonConvert.DeserializeObject<CoinTickerTransfer>(payload);
+            }
 
             //Add indicator RSI / MACD
             CoinTransfer ct = CalculateIndicator(symbol, "2h");
@@ -105,11 +109,6 @@ namespace cryptowatcherR.Controllers
             coinLastValue.MACD = ct.MACD;
             coinLastValue.MACDSign = ct.MACDSign;
             coinLastValue.MACDHist = ct.MACDHist;
-
-            if (payload != "")
-            {
-                coinLastValue = JsonConvert.DeserializeObject<CoinTickerTransfer>(payload);
-            }
 
             return coinLastValue;
         }
@@ -123,22 +122,6 @@ namespace cryptowatcherR.Controllers
             TradeIndicator.CalculateIndicator(ref coinList);
             return coinList.Last();
         }
-
-        // [HttpGet("[action]/{symbol}/{interval}")]
-        // public double GetRSI(string symbol, string interval)
-        // {
-        //     List<CoinTransfer> coinList = GetCoin(symbol, interval);
-        //     TradeIndicator.CalculateRsiList(14, ref coinList);
-        //     return coinList.Last().RSI;
-        // }
-
-        // [HttpGet("[action]/{symbol}/{interval}")]
-        // public CoinTransfer GetMACD(string symbol, string interval)
-        // {
-        //     List<CoinTransfer> coinList = GetCoin(symbol, interval);
-        //     TradeIndicator.CalculateMacdList(ref coinList);
-        //     return coinList.Last();
-        // }
 
         #endregion
     }

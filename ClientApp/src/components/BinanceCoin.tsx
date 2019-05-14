@@ -53,9 +53,9 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     componentDidMount() {
-        //this.props.getCoin(this.props.fullSymbol, '1d');
-        this.props.getCoin('BTCUSDT', '1d');
-        this.props.getPrediction('BTCUSDT');
+        this.props.getCoin(this.props.fullSymbol, '1d');
+        //this.props.getCoin('BTCUSDT', '1d');
+        this.props.getPrediction(this.props.fullSymbol);
     }
 
     componentDidUpdate(nextProps: any) {
@@ -80,7 +80,7 @@ class BinanceCoin extends React.Component<Props, State>{
     // }
 
     handleChartIntervalChange = (e: any) => {
-        this.props.getCoin('BTCUSDT', e);
+        this.props.getCoin(this.props.fullSymbol, e);
         this.setState({
             chartIntervalSelected: e,
         })
@@ -161,7 +161,6 @@ class BinanceCoin extends React.Component<Props, State>{
                                     {this.state.showSpinner ? <div className="d-flex justify-content-center"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
                                     <div className="row">
                                         <div className="col-md-6">Rsi(14)</div>
-                                        {console.log(this.props.coin)}
                                         <div className="col-md-6">{this.props.rsi}</div>
                                     </div>
                                     <div className="row">

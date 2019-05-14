@@ -44,7 +44,7 @@ export const GetCoinSuccess = (data: any) => {
 export const GetIndicator = (symbol: string, interval : string) => {
   return async (dispatch: any) => {
     try {
-      const res = await axios.get<any>(cryptowatcherApiUrl + "GetIndicator/" + symbol + "/" + interval);
+      const res = await axios.get<any>(cryptowatcherApiUrl + "CalculateIndicator/" + symbol + "/" + interval);
       return dispatch(GetIndicatorSuccess(res.data, symbol));
     }
     catch (error) {
@@ -59,44 +59,6 @@ export const GetIndicatorSuccess = (data: any, symbol: string) => {
     payload: {data : data, symbol : symbol}
   }
 }
-
-// export const GetRSI = (symbol: string, interval : string) => {
-//   return async (dispatch: any) => {
-//     try {
-//       const res = await axios.get<any>(cryptowatcherApiUrl + "GetRSI/" + symbol + "/" + interval);
-//       return dispatch(GetRSISuccess(res.data, symbol));
-//     }
-//     catch (error) {
-//       throw (error)
-//     }
-//   }
-// }
-
-// export const GetRSISuccess = (data: any, symbol: string) => {
-//   return {
-//     type: "BINANCE_COIN_RSI",
-//     payload: {data : data, symbol : symbol}
-//   }
-// }
-
-// export const GetMACD = (symbol: string, interval : string) => {
-//   return async (dispatch: any) => {
-//     try {
-//       const res = await axios.get<any>(cryptowatcherApiUrl + "GetMACD/" + symbol + "/" + interval);
-//       return dispatch(GetMACDSuccess(res.data, symbol));
-//     }
-//     catch (error) {
-//       throw (error)
-//     }
-//   }
-// }
-
-// export const GetMACDSuccess = (data: any, symbol: string) => {
-//   return {
-//     type: "BINANCE_COIN_MACD",
-//     payload: {data : data, symbol : symbol}
-//   }
-// }
 
 export const SortList = (columnName: string, sortDirection: number) => {
   return {
