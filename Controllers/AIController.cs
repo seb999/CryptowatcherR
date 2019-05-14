@@ -9,33 +9,10 @@ using Newtonsoft.Json;
 using System.IO;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using static CryptowatcherR.Misc.Prediction;
 
 namespace cryptowatcherR.Controllers
 {
-    public class BevrageData
-        {
-            [LoadColumn(0)]
-            public string FullName { get; set; }
-
-            [LoadColumn(1)]
-            public float Price { get; set; }
-
-            [LoadColumn(2)]
-            public float Volume { get; set; }
-
-            [LoadColumn(3)]
-            public string Type { get; set; }
-
-            [LoadColumn(4)]
-            public string Country { get; set; }
-        }
-
-        public class BevragePrediction
-        {
-            [ColumnName("Score")]
-            public float Price { get; set; }
-        }
-
 
     [Route("api/[controller]")]
     public class AIController : Controller
@@ -55,7 +32,6 @@ namespace cryptowatcherR.Controllers
             return Directory.GetFiles(rootFolder, symbol + "*", SearchOption.AllDirectories).Length > 0 ? true : false;
         }
 
-        
         [HttpGet("[action]/{symbol}")]
         public List<PredictionTransfer> GetPrediction(string symbol)
         {
@@ -76,33 +52,36 @@ namespace cryptowatcherR.Controllers
             foreach (var modelPath in modelPathList)
             {
                 PredictionTransfer prediction = new PredictionTransfer();
-                var fromIndex = Path.GetFileName(modelPath).IndexOf("_")+1;
-                var toIndex = Path.GetFileName(modelPath).Length-fromIndex-4;
+                var fromIndex = Path.GetFileName(modelPath).IndexOf("_") + 1;
+                var toIndex = Path.GetFileName(modelPath).Length - fromIndex - 4;
 
                 prediction.ModelName = Path.GetFileName(modelPath).Substring(fromIndex, toIndex);
-                prediction.FuturPrice = Math.Round(CalculatePrediction(coinTicker, modelPath).Price, 2);
-                prediction.Metrics = 20;
-                
+                prediction.FuturPrice = Math.Round(CalculatePrediction(coinTicker, modelPath).Change, 2);
                 predictionList.Add(prediction);
             }
 
             return predictionList;
         }
 
-        private BevragePrediction CalculatePrediction(CoinTickerTransfer coinTicker, string modelPath)
+        private CoinPrediction CalculatePrediction(CoinTickerTransfer coinTicker, string modelPath)
         {
             MLContext mlContext = new MLContext();
 
+            // STEP 5: We load the model 
             ITransformer loadedModel;
             using (var stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 loadedModel = mlContext.Model.Load(stream);
             }
 
-            var predictionFunction = mlContext.Model.CreatePredictionEngine<BevrageData, BevragePrediction>(loadedModel);
-            BevragePrediction result = predictionFunction.Predict(new BevrageData { FullName = "Cheap Lager", Type = "Öl", Volume = 500, Country = "Sverige" });
-        
-            //var metrics = mlContext.Regression.Evaluate(result, "Label", "Score");
+            var predictionFunction = mlContext.Model.CreatePredictionEngine<CoinData, CoinPrediction>(loadedModel);
+            CoinPrediction result = predictionFunction.Predict(new CoinData
+            {
+                Volume = (float)coinTicker.Volume,
+                Open = (float)coinTicker.OpenPrice,
+                RSI = (float)coinTicker.RSI,
+                MACDHist = (float)coinTicker.MACDHist,
+            });
 
             return result;
         }

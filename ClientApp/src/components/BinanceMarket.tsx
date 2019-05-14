@@ -13,8 +13,7 @@ interface AppFnProps {
     filterList(symbol: string): void;
     selectedCoin(symbol: string): void;
     sortList(columnName: string, sortDirection: number): void;
-    getRSI(symbol: string, interval: string): void;
-    getMACD(symbol: string, interval: string): void;
+    getIndicator(symbol: string, interval: string): void;
 }
 
 interface AppObjectProps {
@@ -117,8 +116,7 @@ class BinanceMarket extends React.Component<Props, State>{
     }
 
     handleCalculateIndicators = (symbol: any) => {
-        this.props.getRSI(symbol, '1d');
-        this.props.getMACD(symbol, '1d');
+        this.props.getIndicator(symbol, '1d');
     }
 
     render() {
@@ -193,8 +191,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
         sortList: (columnName: string, sortDirection: number) => dispatch<any>(binanceActionCreator.binanceActions.SortList(columnName, sortDirection)),
         filterList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.FilterList(p)),
         selectedCoin: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.SelectedCoin(p)),
-        getRSI: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetRSI(symbol, interval)),
-        getMACD: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetMACD(symbol, interval)),
+        getIndicator: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetIndicator(symbol, interval)),
     }
 }
 

@@ -25,5 +25,7 @@ namespace cryptowatcherR.ClassTransfer
         //Trade Indicators
         public double RSI { get; set; }
         public double MACD { get; set; }
+         public double MACDSign { get; set; }
+        public double MACDHist { get; set; }
     }
 }

@@ -26,14 +26,6 @@ namespace cryptowatcherR.Controllers
                 crypto24hrList = JsonConvert.DeserializeObject<List<CoinTickerTransfer>>(data);
             }
 
-            //FOR OFFICE
-            // crypto24hrList = new List<CoinTickerTransfer>();
-            // crypto24hrList.Add(new CoinTickerTransfer()
-            // {
-            //     Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
-            // });
-
-
             switch (baseMarket)
             {
                 case BaseMarket.USDT:
@@ -89,19 +81,30 @@ namespace cryptowatcherR.Controllers
                     quotationHistory.Add(newQuotation);
                 }
             }
-            
+
             //Add RSI calculation to the list
-            TradeIndicator.CalculateRsiList(14, ref quotationHistory);
-            TradeIndicator.CalculateMacdList(ref quotationHistory);
+            TradeIndicator.CalculateIndicator(ref quotationHistory);
 
             return quotationHistory;
         }
 
+        /// <summary>
+        /// Get last quotation of a coin with indicators
+        /// </summary>
+        /// <param name="symbol">The symbol (ex : BTCUSDT)</param>
+        /// <returns>The CoinTickerTransfer</returns>
         public CoinTickerTransfer GetCoinLastValue(string symbol)
         {
             string url = string.Format("https://api.binance.com/api/v1/ticker/24hr?symbol={0}", symbol);
             string payload = HttpHelper.GetApiData(new Uri(url));
             CoinTickerTransfer coinLastValue = new CoinTickerTransfer();
+
+            //Add indicator RSI / MACD
+            CoinTransfer ct = CalculateIndicator(symbol, "2h");
+            coinLastValue.RSI = ct.RSI;
+            coinLastValue.MACD = ct.MACD;
+            coinLastValue.MACDSign = ct.MACDSign;
+            coinLastValue.MACDHist = ct.MACDHist;
 
             if (payload != "")
             {
@@ -114,20 +117,28 @@ namespace cryptowatcherR.Controllers
         #region Indicator functions
 
         [HttpGet("[action]/{symbol}/{interval}")]
-        public double GetRSI(string symbol, string interval)
+        public CoinTransfer CalculateIndicator(string symbol, string interval)
         {
             List<CoinTransfer> coinList = GetCoin(symbol, interval);
-            TradeIndicator.CalculateRsiList(14, ref coinList);
-            return coinList.Last().RSI;
-        }
-
-        [HttpGet("[action]/{symbol}/{interval}")]
-        public CoinTransfer GetMACD(string symbol, string interval)
-        {
-            List<CoinTransfer> coinList = GetCoin(symbol, interval);
-            TradeIndicator.CalculateMacdList(ref coinList);
+            TradeIndicator.CalculateIndicator(ref coinList);
             return coinList.Last();
         }
+
+        // [HttpGet("[action]/{symbol}/{interval}")]
+        // public double GetRSI(string symbol, string interval)
+        // {
+        //     List<CoinTransfer> coinList = GetCoin(symbol, interval);
+        //     TradeIndicator.CalculateRsiList(14, ref coinList);
+        //     return coinList.Last().RSI;
+        // }
+
+        // [HttpGet("[action]/{symbol}/{interval}")]
+        // public CoinTransfer GetMACD(string symbol, string interval)
+        // {
+        //     List<CoinTransfer> coinList = GetCoin(symbol, interval);
+        //     TradeIndicator.CalculateMacdList(ref coinList);
+        //     return coinList.Last();
+        // }
 
         #endregion
     }

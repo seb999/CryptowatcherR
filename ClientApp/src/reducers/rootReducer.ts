@@ -34,19 +34,28 @@ const rootReducer = (state = initState, action: any) => {
       newState.macdHist = action.payload != undefined ? action.payload[action.payload.length-1].macdHist : 0;
       return newState;
 
-    case "BINANCE_COIN_MACD":
+    case "BINANCE_COIN_INDICATOR":
       var indexSymbol = newState.coinList.findIndex(p => p.symbol.toLowerCase() == action.payload.symbol.toLowerCase());
+      newState.coinList[indexSymbol].RSI = action.payload.data.rsi;
       newState.coinList[indexSymbol].MACD = action.payload.data.macd;
       newState.coinList[indexSymbol].MACDHist = action.payload.data.macdHist;
       newState.coinList[indexSymbol].MACDSign = action.payload.data.macdSign;
       newState.coinList = newState.coinList.slice(0, newState.coinList.length);
       return newState
 
-    case "BINANCE_COIN_RSI":
-      var indexSymbol = newState.coinList.findIndex(p => p.symbol.toLowerCase() == action.payload.symbol.toLowerCase());
-      newState.coinList[indexSymbol].RSI = action.payload.data;
-      newState.coinList = newState.coinList.slice(0, newState.coinList.length);
-      return newState
+    // case "BINANCE_COIN_MACD":
+    //   var indexSymbol = newState.coinList.findIndex(p => p.symbol.toLowerCase() == action.payload.symbol.toLowerCase());
+    //   newState.coinList[indexSymbol].MACD = action.payload.data.macd;
+    //   newState.coinList[indexSymbol].MACDHist = action.payload.data.macdHist;
+    //   newState.coinList[indexSymbol].MACDSign = action.payload.data.macdSign;
+    //   newState.coinList = newState.coinList.slice(0, newState.coinList.length);
+    //   return newState
+
+    // case "BINANCE_COIN_RSI":
+    //   var indexSymbol = newState.coinList.findIndex(p => p.symbol.toLowerCase() == action.payload.symbol.toLowerCase());
+    //   newState.coinList[indexSymbol].RSI = action.payload.data;
+    //   newState.coinList = newState.coinList.slice(0, newState.coinList.length);
+    //   return newState
 
     case "BINANCE_COIN_LIST_FILTER":
       newState.coinList = newState.coinListInitial;
