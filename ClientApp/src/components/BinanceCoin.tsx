@@ -13,6 +13,7 @@ interface AppFnProps {
     getPrediction(symbol: string): void;
 }
 interface AppObjectProps {
+    match: any;
     coin: Array<coinTransfer>
     fullSymbol: string;
     prediction: Array<any>;
@@ -53,9 +54,9 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     componentDidMount() {
-        this.props.getCoin(this.props.fullSymbol, '1d');
-        //this.props.getCoin('BTCUSDT', '1d');
-        this.props.getPrediction(this.props.fullSymbol);
+        console.log(this.props.match.params.symbol);
+        //this.props.getCoin(this.props.match.params.symbol, '1d');
+        //this.props.getPrediction(this.props.match.params.symbol);
     }
 
     componentDidUpdate(nextProps: any) {
@@ -80,7 +81,7 @@ class BinanceCoin extends React.Component<Props, State>{
     // }
 
     handleChartIntervalChange = (e: any) => {
-        this.props.getCoin(this.props.fullSymbol, e);
+        this.props.getCoin(this.props.match.params.symbol, e);
         this.setState({
             chartIntervalSelected: e,
         })
@@ -96,7 +97,11 @@ class BinanceCoin extends React.Component<Props, State>{
         let predictionList = this.props.prediction.map((model, index) => (
             <tr key={index}>
                 <td style={{ fontSize: 'smaller' }}>{model.modelName}</td>
-                <td><i className="fas fa-arrow-up" style={{ color: 'green' }}> </i> {model.futurPrice}</td>
+                <td>
+                    {model.futurPrice}
+                    {model.futurPrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
+                    {model.futurPrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                </td>
             </tr>
         ));
 
@@ -141,7 +146,7 @@ class BinanceCoin extends React.Component<Props, State>{
                                             <thead className="thead">
                                                 <tr>
                                                     <th>Model</th>
-                                                    <th>Prediction, metrics</th>
+                                                    <th>Prediction</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

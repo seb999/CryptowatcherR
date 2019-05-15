@@ -10,4 +10,5 @@ export interface coinTickerTransfer{
     MACD : number;
     MACDHist : number;
     MACDSign : number;
+    FuturePrice : number;
 }

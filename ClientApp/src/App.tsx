@@ -24,8 +24,7 @@ class App extends React.Component<Props, State>{
 
     this.state = {
       navCommands: [
-        { type: "NavLink", path: "/Home", text: "Home", isActive: true },
-        { type: "NavLink", path: "/BinanceMarket", text: "Binance Market", isActive: true },
+        { type: "NavLink", path: "/BinanceMarket", text: "Market", isActive: true },
         { type: "NavLink", path: "/About", text: "About", isActive: true },
         { type: "NavLink", path: "/Contact", text: "Contact", isActive: true },
      
@@ -42,14 +41,14 @@ class App extends React.Component<Props, State>{
         <NavBar commands={this.state.navCommands} />
         <div className="container ">
           <Switch>
+            <Route exact path='/' component={BinanceMarket} />
             <Route exact path='/BinanceMarket' component={BinanceMarket} />
-            <Route exact path='/Home' component={Home} />
             <Route exact path='/About' component={About} />
             <Route exact path='/Contact' component={Contact} />
-            <Route exact path='/BinanceCoin' component={BinanceCoin}  />
+            <Route exact path='/BinanceCoin/:symbol' component={BinanceCoin}  />
         </Switch>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </BrowserRouter>
     );

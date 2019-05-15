@@ -12,41 +12,52 @@ namespace cryptowatcherR.Controllers
     [Route("api/[controller]")]
     public class BinanceMarketController : Controller
     {
+        /// <summary>
+        /// Return list of coin with last value for default page
+        /// </summary>
+        /// <param name="baseMarket">The base market : USDT or BNB or BTC</param>
+        /// <returns></returns>
         [HttpGet("[action]/{baseMarket}")]
         public List<CoinTickerTransfer> GetCoinList(BaseMarket baseMarket)
         {
             Uri uriCoinList = new Uri("https://api.binance.com/api/v1/ticker/24hr");
 
-            List<CoinTickerTransfer> crypto24hrList = new List<CoinTickerTransfer>();
+            List<CoinTickerTransfer> coinList = new List<CoinTickerTransfer>();
 
             //FOR HOME
-            string data = HttpHelper.GetApiData(uriCoinList);
-            if (data != "")
+            // string data = HttpHelper.GetApiData(uriCoinList);
+            // if (data != "")
+            // {
+            //     crypto24hrList = JsonConvert.DeserializeObject<List<CoinTickerTransfer>>(data);
+            // }
+
+             //FOR OFFICE
+            coinList = new List<CoinTickerTransfer>();
+            coinList.Add(new CoinTickerTransfer()
             {
-                crypto24hrList = JsonConvert.DeserializeObject<List<CoinTickerTransfer>>(data);
-            }
+                Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            });
 
             switch (baseMarket)
             {
                 case BaseMarket.USDT:
-                    crypto24hrList = crypto24hrList.Where(p => p.Symbol.Substring(p.Symbol.Length - 4) == BaseMarket.USDT.ToString()).Select(p => p).ToList();
+                    coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - 4) == BaseMarket.USDT.ToString()).Select(p => p).ToList();
                     break;
                 case BaseMarket.BTC:
-                    crypto24hrList = crypto24hrList.Where(p => p.Symbol.Substring(p.Symbol.Length - 3) == BaseMarket.BTC.ToString()).Select(p => p).ToList();
+                    coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - 3) == BaseMarket.BTC.ToString()).Select(p => p).ToList();
                     break;
                 case BaseMarket.BNB:
-                    crypto24hrList = crypto24hrList.Where(p => p.Symbol.Substring(p.Symbol.Length - 3) == BaseMarket.BNB.ToString()).Select(p => p).ToList();
+                    coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - 3) == BaseMarket.BNB.ToString()).Select(p => p).ToList();
                     break;
                 default:
                     break;
             }
 
-            foreach (var crypto in crypto24hrList)
-            {
-                crypto.SymbolShort = Misc.Helper.ShortenSymbol(crypto.Symbol, baseMarket);
-            }
-
-            return crypto24hrList;
+            //Shorten Symbol and add Prediction
+            Misc.Helper.ShortenSymbol(ref coinList, baseMarket);
+            AIController.CalculatePredictionDefaultModel(ref coinList);
+          
+            return coinList;
         }
 
         [HttpGet("[action]/{symbol}/{interval}")]
@@ -82,7 +93,7 @@ namespace cryptowatcherR.Controllers
                 }
             }
 
-            //Add RSI calculation to the list
+            //Add Indicators to the list
             TradeIndicator.CalculateIndicator(ref quotationHistory);
 
             return quotationHistory;

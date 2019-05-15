@@ -11,7 +11,7 @@ import DropDown from './Element/DropDown'
 interface AppFnProps {
     getCoinList(baseMarket: string): void;
     filterList(symbol: string): void;
-    selectedCoin(symbol: string): void;
+    //selectedCoin(symbol: string): void;
     sortList(columnName: string, sortDirection: number): void;
     getIndicator(symbol: string, interval: string): void;
 }
@@ -111,8 +111,8 @@ class BinanceMarket extends React.Component<Props, State>{
     }
 
     handleShowCoinDetail = (symbol: any) => {
-        this.props.selectedCoin(symbol);
-        this.props.history.push("/BinanceCoin")
+        //this.props.selectedCoin(symbol); Obsolete, we don;t keep in Redux cause F5 will loose it
+        this.props.history.push("/BinanceCoin/" + symbol);
     }
 
     handleCalculateIndicators = (symbol: any) => {
@@ -131,14 +131,19 @@ class BinanceMarket extends React.Component<Props, State>{
                 <td>{coin.highPrice}</td>
                 <td>{coin.lastPrice}</td>
                 <td className={coin.priceChangePercent >= 0 ? "Up" : "Down"}>{coin.priceChangePercent}</td>
-                <td>{coin.RSI === undefined ? "--" : coin.RSI}</td>
+                <td>{coin.RSI === undefined ? <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button> : coin.RSI}</td>
                 <td>
-                    {coin.MACD === undefined ? "--" :
+                    {coin.MACD === undefined ? <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button> :
                         <div style={{ fontSize: 10 }}>
                             Macd {coin.MACD} <br />Sign {coin.MACDSign} <br />Hist {coin.MACDHist}</div>
                     }
                 </td>
-                <td> <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button></td>
+                {/* <td> <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button></td> */}
+                <td>
+                    {coin.FuturePrice == 0 ?  "N/A" : ""}
+                    {coin.FuturePrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
+                    {coin.FuturePrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                </td>
             </tr>
         ));
 
@@ -163,7 +168,8 @@ class BinanceMarket extends React.Component<Props, State>{
                                 <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[5].visibility} /></th>
                                 <th scope="col" id="rsi">RSI</th>
                                 <th scope="col" id="macd">MACD</th>
-                                <th></th>
+                                {/* <th scope="col" id="macd"></th> */}
+                                <th>AI</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -190,7 +196,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
         getCoinList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.GetCoinList(p)),
         sortList: (columnName: string, sortDirection: number) => dispatch<any>(binanceActionCreator.binanceActions.SortList(columnName, sortDirection)),
         filterList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.FilterList(p)),
-        selectedCoin: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.SelectedCoin(p)),
+        //selectedCoin: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.SelectedCoin(p)), Obsolete
         getIndicator: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetIndicator(symbol, interval)),
     }
 }

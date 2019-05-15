@@ -56,7 +56,7 @@ namespace cryptowatcherR.Controllers
                 var toIndex = Path.GetFileName(modelPath).Length - fromIndex - 4;
 
                 prediction.ModelName = Path.GetFileName(modelPath).Substring(fromIndex, toIndex);
-                prediction.FuturPrice = Math.Round(CalculatePrediction(coinTicker, modelPath).Change, 2);
+                prediction.FuturPrice = Math.Round(CalculatePrediction(coinTicker, modelPath).FuturePrice, 2);
                 predictionList.Add(prediction);
             }
 
@@ -84,6 +84,36 @@ namespace cryptowatcherR.Controllers
             });
 
             return result;
+        }
+
+        /// <summary>
+        ///  Calculate prediction with default Model (Fast tree for home page)
+        /// </summary>
+        /// <param name="coinList">The list of coinTicketTransfer</param>
+        /// <returns>void</returns>
+        public static void CalculatePredictionDefaultModel(ref List<CoinTickerTransfer> coinList)
+        {
+            MLContext mlContext = new MLContext();
+
+            foreach (var coinTicker in coinList)
+            {
+                string modelPath = @"AIModel\" + coinTicker.Symbol + "-Fast Tree.zip";
+                ITransformer loadedModel;
+                using (var stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    loadedModel = mlContext.Model.Load(stream);
+                }
+                var predictionFunction = mlContext.Model.CreatePredictionEngine<CoinData, CoinPrediction>(loadedModel);
+                CoinPrediction prediction = predictionFunction.Predict(new CoinData
+                {
+                    Volume = (float)coinTicker.Volume,
+                    Open = (float)coinTicker.OpenPrice,
+                    RSI = (float)coinTicker.RSI,
+                    MACDHist = (float)coinTicker.MACDHist,
+                });
+
+                coinTicker.FuturePrice = prediction.FuturePrice;
+            }
         }
     }
 }
