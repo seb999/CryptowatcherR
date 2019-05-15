@@ -27,7 +27,17 @@ class CoinChart extends React.Component<Props, State> {
             let chartObj = this.state.chart.current.chart;
             chartObj.showLoading();
             setTimeout(() => chartObj.hideLoading(), 1200);
+
+            chartObj.yAxis.plotBands= [{
+                from: 500,
+                to: 3000,
+                color: 'rgba(68, 170, 213, 0.2)',
+                label: {
+                    text: 'Last quarter year\'s value range'
+                }
+            }]
         }
+        
     }
 
     render() {
@@ -71,6 +81,11 @@ class CoinChart extends React.Component<Props, State> {
                     color: '#ff0000',
                 },
             },
+            yAxis: {
+                title: {
+                    text: 'Exchange rate'
+                },
+            },
             tooltip: { split: false },
             // xAxis: {
             //     categories: 
@@ -91,8 +106,18 @@ class CoinChart extends React.Component<Props, State> {
 
         if (this.props.indicator == "Rsi") {
             options.yAxis = [
+               
                 { labels: { align: 'left' }, height: '80%' },
                 { labels: { align: 'left' }, top: '80%', height: '20%', offset: 0 },
+                { title: {text: 'RSI'}},
+                {plotBands: [{
+                    from: 30,
+                    to: 70,
+                    color: 'rgba(68, 170, 213, 0.2)',
+                    label: {
+                        text: 'Last quarter year\'s value range'
+                    }
+                }]},
             ];
             options.series = [
                 { type: 'candlestick', name: this.props.symbol, data: ohlc, yAxis: 0 },

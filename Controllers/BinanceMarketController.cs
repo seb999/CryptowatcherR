@@ -25,18 +25,18 @@ namespace cryptowatcherR.Controllers
             List<CoinTickerTransfer> coinList = new List<CoinTickerTransfer>();
 
             //FOR HOME
-            // string data = HttpHelper.GetApiData(uriCoinList);
-            // if (data != "")
-            // {
-            //     crypto24hrList = JsonConvert.DeserializeObject<List<CoinTickerTransfer>>(data);
-            // }
+            string data = HttpHelper.GetApiData(uriCoinList);
+            if (data != "")
+            {
+                coinList = JsonConvert.DeserializeObject<List<CoinTickerTransfer>>(data);
+            }
 
              //FOR OFFICE
-            coinList = new List<CoinTickerTransfer>();
-            coinList.Add(new CoinTickerTransfer()
-            {
-                Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
-            });
+            // coinList = new List<CoinTickerTransfer>();
+            // coinList.Add(new CoinTickerTransfer()
+            // {
+            //     Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            // });
 
             switch (baseMarket)
             {
@@ -56,7 +56,7 @@ namespace cryptowatcherR.Controllers
             //Shorten Symbol and add Prediction
             Misc.Helper.ShortenSymbol(ref coinList, baseMarket);
             AIController.CalculatePredictionDefaultModel(ref coinList);
-          
+            
             return coinList;
         }
 

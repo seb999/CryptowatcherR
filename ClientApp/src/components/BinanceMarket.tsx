@@ -131,18 +131,14 @@ class BinanceMarket extends React.Component<Props, State>{
                 <td>{coin.highPrice}</td>
                 <td>{coin.lastPrice}</td>
                 <td className={coin.priceChangePercent >= 0 ? "Up" : "Down"}>{coin.priceChangePercent}</td>
-                <td>{coin.RSI === undefined ? <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button> : coin.RSI}</td>
-                <td>
-                    {coin.MACD === undefined ? <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button> :
-                        <div style={{ fontSize: 10 }}>
-                            Macd {coin.MACD} <br />Sign {coin.MACDSign} <br />Hist {coin.MACDHist}</div>
-                    }
-                </td>
+                <td>{coin.RSI === undefined ? <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button> : 
+                 <div> <div style={{float : "left"}}>{coin.RSI}</div>   <div style={{ fontSize: 10, float: "right" }}> Macd {coin.MACD} <br />Sign {coin.MACDSign} <br />Hist {coin.MACDHist}</div></div> 
+                }</td>
                 {/* <td> <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button></td> */}
                 <td>
-                    {coin.FuturePrice == 0 ?  "N/A" : ""}
-                    {coin.FuturePrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
-                    {coin.FuturePrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                    {coin.futurePrice == 0 ?  "N/A" : ""}
+                    {coin.futurePrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
+                    {coin.futurePrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
                 </td>
             </tr>
         ));
@@ -166,10 +162,8 @@ class BinanceMarket extends React.Component<Props, State>{
                                 <th scope="col" id="higher" onClick={this.handleSort} className="tableTh">Higher<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[3].visibility} /></th>
                                 <th scope="col" id="last" onClick={this.handleSort} className="tableTh">Last<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[4].visibility} /></th>
                                 <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[5].visibility} /></th>
-                                <th scope="col" id="rsi">RSI</th>
-                                <th scope="col" id="macd">MACD</th>
-                                {/* <th scope="col" id="macd"></th> */}
-                                <th>AI</th>
+                                <th scope="col" id="rsi">RSI / MACD</th>
+                                <th>Future</th>
                             </tr>
                         </thead>
                         <tbody>

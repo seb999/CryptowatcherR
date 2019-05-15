@@ -54,9 +54,8 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     componentDidMount() {
-        console.log(this.props.match.params.symbol);
-        //this.props.getCoin(this.props.match.params.symbol, '1d');
-        //this.props.getPrediction(this.props.match.params.symbol);
+        this.props.getCoin(this.props.match.params.symbol, '1d');
+        this.props.getPrediction(this.props.match.params.symbol);
     }
 
     componentDidUpdate(nextProps: any) {
@@ -97,10 +96,10 @@ class BinanceCoin extends React.Component<Props, State>{
         let predictionList = this.props.prediction.map((model, index) => (
             <tr key={index}>
                 <td style={{ fontSize: 'smaller' }}>{model.modelName}</td>
-                <td>
-                    {model.futurPrice}
+                <td style={{ fontSize: 'smaller' }}>
                     {model.futurPrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
                     {model.futurPrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                    &nbsp;{model.futurPrice}
                 </td>
             </tr>
         ));
@@ -109,7 +108,7 @@ class BinanceCoin extends React.Component<Props, State>{
             <div>
                 <div className="row">
                     <div className="col-md-8">
-                        <CoinChart data={this.props.coin} symbol={this.props.fullSymbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
+                        <CoinChart data={this.props.coin} symbol={this.props.match.params.symbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
                     </div>
 
                     <div className="col-md-4">
@@ -139,14 +138,14 @@ class BinanceCoin extends React.Component<Props, State>{
                         <div className="row">
                             <div className="card mt-3" style={{ width: 100 + '%' }}>
                                 <div className="card-body">
-                                    <h5 className="card-title">AI tendancy prediction</h5>
+                                    <h5 className="card-title">AI prediction</h5>
                                     {this.state.showSpinner ? <div className="d-flex justify-content-center"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
                                     {this.props.prediction.length > 0 ?
                                         <table className="table" >
                                             <thead className="thead">
                                                 <tr>
                                                     <th>Model</th>
-                                                    <th>Prediction</th>
+                                                    <th>Future</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -159,18 +158,27 @@ class BinanceCoin extends React.Component<Props, State>{
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="row mb-3">
                             <div className="card mt-3" style={{ width: 100 + '%' }}>
                                 <div className="card-body">
                                     <h5 className="card-title">Indicators</h5>
                                     {this.state.showSpinner ? <div className="d-flex justify-content-center"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
-                                    <div className="row">
+                                    <div className="row" style={{ fontSize: 'smaller' }}>
                                         <div className="col-md-6">Rsi(14)</div>
-                                        <div className="col-md-6">{this.props.rsi}</div>
+                                        <div className="col-md-6">
+                                            {this.props.rsi > 70 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                                            {this.props.rsi < 30 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
+                                            {this.props.rsi >= 30 &&  this.props.rsi <= 70? <i className="fas fa-arrows-alt" style={{ color: 'orange' }}></i> : ""}
+                                            &nbsp;{this.props.rsi}
+                                        </div>
                                     </div>
-                                    <div className="row">
+                                    <div className="row" style={{ fontSize: 'smaller' }}>
                                         <div className="col-md-6">Macd(12,26) Hist</div>
-                                        <div className="col-md-6 ">{this.props.macdHist}</div>
+                                        <div className="col-md-6 ">
+                                        {this.props.macdHist > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
+                                            {this.props.macdHist <= 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                                        &nbsp;{this.props.macdHist}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

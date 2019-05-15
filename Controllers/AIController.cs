@@ -23,10 +23,10 @@ namespace cryptowatcherR.Controllers
         /// <param name="symbol">The symbol name</param>
         /// <returns>The booleen value true / false</returns>
         [HttpGet("[action]/{symbol}")]
-        public bool CheckModelExist(string symbol)
+        public static bool CheckModelExist(string symbol)
         {
             //l'un ou l'autre a tester sous MAC
-            var rootFolder = Environment.CurrentDirectory + "\\AIModel\\";
+            var rootFolder = Environment.CurrentDirectory + "/AIModel/";
             //var rootFolder = Directory.Exists(rootFolder + "\\AIModel\\" + symbol);
 
             return Directory.GetFiles(rootFolder, symbol + "*", SearchOption.AllDirectories).Length > 0 ? true : false;
@@ -94,10 +94,13 @@ namespace cryptowatcherR.Controllers
         public static void CalculatePredictionDefaultModel(ref List<CoinTickerTransfer> coinList)
         {
             MLContext mlContext = new MLContext();
+            
 
             foreach (var coinTicker in coinList)
             {
-                string modelPath = @"AIModel\" + coinTicker.Symbol + "-Fast Tree.zip";
+                if(CheckModelExist(coinTicker.Symbol) != true) continue;
+
+                string modelPath = "AIModel/" + coinTicker.Symbol + "-Fast Tree.zip";
                 ITransformer loadedModel;
                 using (var stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
