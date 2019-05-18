@@ -74,7 +74,6 @@ class CoinChart extends React.Component<Props, State> {
                     }
                 }
             },
-            title: { text: this.props.symbol },
             plotOptions: {
                 candlestick: {
                     upColor: '#00e600',

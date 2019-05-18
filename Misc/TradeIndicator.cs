@@ -8,7 +8,7 @@ namespace cryptowatcherR.Misc
 {
     public static class TradeIndicator{
 
-         public static void CalculateIndicator(ref List<CoinTransfer> quotationList)
+         public static void CalculateIndicator(ref List<QuotationTransfer> quotationList)
         {
             var data = quotationList.Select(p => p.Close).ToArray();
             int beginIndex;

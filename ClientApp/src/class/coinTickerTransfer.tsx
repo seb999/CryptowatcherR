@@ -6,7 +6,7 @@ export interface coinTickerTransfer{
     lowPrice : number;
     lastPrice : number;
     volume : number;
-    RSI : number;
+    rsi : number;
     MACD : number;
     MACDHist : number;
     MACDSign : number;

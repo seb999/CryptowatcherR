@@ -7,7 +7,7 @@ using cryptowatcherR.ClassTransfer;
 namespace cryptowatcherR.Misc
 {
     public static class Helper{
-        public static void ShortenSymbol(ref List<CoinTickerTransfer> coinList, BaseMarket baseMarket)
+        public static void ShortenSymbol(ref List<SymbolTransfer> coinList, BaseMarket baseMarket)
         {
             foreach (var item in coinList)
             {

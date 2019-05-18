@@ -2,7 +2,7 @@ using System;
 
 namespace cryptowatcherR.ClassTransfer
 {
-    public class CoinTransfer
+    public class QuotationTransfer
     {
         public double OpenTime { get; set; }
         public double Open { get; set; }

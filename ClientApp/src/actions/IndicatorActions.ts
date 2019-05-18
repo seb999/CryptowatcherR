@@ -1,13 +1,13 @@
 import axios from 'axios';
-import { baseMarket } from './../misc/enumeration'
+import { baseMarket } from '../misc/enumeration'
 
-const cryptowatcherApiUrl = '/api/BinanceMarket/'
+const cryptowatcherApiUrl = '/api/Binance/'
 
-export const GetSymbolList = (market: string) => {
+export const GetCoinList = (symbol: string) => {
   return async (dispatch: any) => {
     try {
-      const res = await axios.get<any>(cryptowatcherApiUrl + "GetSymbolList/" + market);
-      return dispatch(GetSymbolListSuccess(res.data));
+      const res = await axios.get<any>(cryptowatcherApiUrl + "GetCoinList/" + symbol);
+      return dispatch(GetCoinListSuccess(res.data));
     }
     catch (error) {
       throw (error)
@@ -15,37 +15,18 @@ export const GetSymbolList = (market: string) => {
   }
 }
 
-export const GetSymbolListSuccess = (data: any) => {
+export const GetCoinListSuccess = (data: any) => {
   return {
-    type: "BINANCE_SYMBOL_LIST",
+    type: "BINANCE_COIN_LIST",
     payload: data
   }
 }
 
-export const GetSymbol = (symbol: string) => {
-  return async (dispatch: any) => {
-    try {
-      const res = await axios.get<any>(cryptowatcherApiUrl + "GetSymbol/" + symbol);
-      return dispatch(GetSymbolSuccess(res.data));
-    }
-    catch (error) {
-      throw (error)
-    }
-  }
-}
-
-export const GetSymbolSuccess = (data: any) => {
-  return {
-    type: "BINANCE_SYMBOL",
-    payload: data
-  }
-}
-
-export const GetChartData = (symbol: string, interval : string) => {
+export const GetCoin = (symbol: string, interval : string) => {
   return async (dispatch: any) => {
     try {
       const res = await axios.get<any>(cryptowatcherApiUrl + "GetChartData/" + symbol + "/" + interval);
-      return dispatch(GetChartDataSuccess(res.data));
+      return dispatch(GetCoinSuccess(res.data));
     }
     catch (error) {
       throw (error)
@@ -53,9 +34,9 @@ export const GetChartData = (symbol: string, interval : string) => {
   }
 }
 
-export const GetChartDataSuccess = (data: any) => {
+export const GetCoinSuccess = (data: any) => {
   return {
-    type: "BINANCE_CHART_DATA",
+    type: "BINANCE_COIN",
     payload: data
   }
 }
@@ -74,21 +55,21 @@ export const GetIndicator = (symbol: string, interval : string) => {
 
 export const GetIndicatorSuccess = (data: any, symbol: string) => {
   return {
-    type: "BINANCE_SYMBOL_INDICATOR",
+    type: "BINANCE_COIN_INDICATOR",
     payload: {data : data, symbol : symbol}
   }
 }
 
 export const SortList = (columnName: string, sortDirection: number) => {
   return {
-    type: "BINANCE_SYMBOL_LIST_SORT",
+    type: "BINANCE_COIN_LIST_SORT",
     payload: {columnName : columnName, sortDirection: sortDirection}
   }
 }
 
 export const FilterList = (data: any) => {
   return {
-    type: "BINANCE_SYMBOL_LIST_FILTER",
+    type: "BINANCE_COIN_LIST_FILTER",
     payload: data
   }
 }

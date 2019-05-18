@@ -3,7 +3,7 @@ using System;
 
 namespace cryptowatcherR.ClassTransfer
 {
-    public class CoinTickerTransfer
+    public class SymbolTransfer
     {
         public string Symbol { get; set; }
         public string SymbolShort { get; set; }

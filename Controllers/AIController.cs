@@ -17,21 +17,6 @@ namespace cryptowatcherR.Controllers
     [Route("api/[controller]")]
     public class AIController : Controller
     {
-        /// <summary>
-        /// Check if AI model files exist for symbol
-        /// </summary>
-        /// <param name="symbol">The symbol name</param>
-        /// <returns>The booleen value true / false</returns>
-        [HttpGet("[action]/{symbol}")]
-        public static bool CheckModelExist(string symbol)
-        {
-            //l'un ou l'autre a tester sous MAC
-            var rootFolder = Environment.CurrentDirectory + "/AIModel/";
-            //var rootFolder = Directory.Exists(rootFolder + "\\AIModel\\" + symbol);
-
-            return Directory.GetFiles(rootFolder, symbol + "*", SearchOption.AllDirectories).Length > 0 ? true : false;
-        }
-
         [HttpGet("[action]/{symbol}")]
         public List<PredictionTransfer> GetPrediction(string symbol)
         {
@@ -46,16 +31,17 @@ namespace cryptowatcherR.Controllers
 
             //2 - Get Last data from Binance API
             BinanceMarketController bmC = new BinanceMarketController();
-            CoinTickerTransfer coinTicker = bmC.GetCoinLastValue(symbol);
+            SymbolTransfer coinTicker = bmC.GetSymbol(symbol);
 
             //3 - Iterate throw model and fire prediction
             foreach (var modelPath in modelPathList)
             {
                 PredictionTransfer prediction = new PredictionTransfer();
-                var fromIndex = Path.GetFileName(modelPath).IndexOf("_") + 1;
+                
+                var fromIndex = Path.GetFileName(modelPath).IndexOf("-") + 1;
                 var toIndex = Path.GetFileName(modelPath).Length - fromIndex - 4;
-
                 prediction.ModelName = Path.GetFileName(modelPath).Substring(fromIndex, toIndex);
+                
                 prediction.FuturPrice = Math.Round(CalculatePrediction(coinTicker, modelPath).FuturePrice, 2);
                 predictionList.Add(prediction);
             }
@@ -63,27 +49,13 @@ namespace cryptowatcherR.Controllers
             return predictionList;
         }
 
-        private CoinPrediction CalculatePrediction(CoinTickerTransfer coinTicker, string modelPath)
+        private CoinPrediction CalculatePrediction(SymbolTransfer coin, string modelPath)
         {
-            MLContext mlContext = new MLContext();
+            //Load model
+            ITransformer loadedModel = LoadModel(modelPath);
 
-            // STEP 5: We load the model 
-            ITransformer loadedModel;
-            using (var stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                loadedModel = mlContext.Model.Load(stream);
-            }
-
-            var predictionFunction = mlContext.Model.CreatePredictionEngine<CoinData, CoinPrediction>(loadedModel);
-            CoinPrediction result = predictionFunction.Predict(new CoinData
-            {
-                Volume = (float)coinTicker.Volume,
-                Open = (float)coinTicker.OpenPrice,
-                RSI = (float)coinTicker.RSI,
-                MACDHist = (float)coinTicker.MACDHist,
-            });
-
-            return result;
+            //Predict future price
+            return PredictFuturePrice(coin, loadedModel);
         }
 
         /// <summary>
@@ -91,32 +63,53 @@ namespace cryptowatcherR.Controllers
         /// </summary>
         /// <param name="coinList">The list of coinTicketTransfer</param>
         /// <returns>void</returns>
-        public static void CalculatePredictionDefaultModel(ref List<CoinTickerTransfer> coinList)
+        internal static void CalculatePredictionDefaultModel(ref List<SymbolTransfer> coinList)
+        {
+            foreach (var coin in coinList)
+            {
+                if (CheckModelExist(coin.Symbol) != true) continue;
+
+                string modelPath = "AIModel/" + coin.Symbol + "-Fast Tree.zip";
+
+                //Load model
+                ITransformer loadedModel = LoadModel(modelPath);
+
+                //Predict future price
+                coin.FuturePrice = PredictFuturePrice(coin, loadedModel).FuturePrice;
+            }
+        }
+
+        private static bool CheckModelExist(string symbol)
+        {
+            var rootFolder = Environment.CurrentDirectory + "/AIModel/";
+            return Directory.GetFiles(rootFolder, symbol + "*", SearchOption.AllDirectories).Length > 0 ? true : false;
+        }
+
+        private static ITransformer LoadModel(string modelPath)
         {
             MLContext mlContext = new MLContext();
-            
 
-            foreach (var coinTicker in coinList)
+            ITransformer loadedModel;
+            using (var stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                if(CheckModelExist(coinTicker.Symbol) != true) continue;
-
-                string modelPath = "AIModel/" + coinTicker.Symbol + "-Fast Tree.zip";
-                ITransformer loadedModel;
-                using (var stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    loadedModel = mlContext.Model.Load(stream);
-                }
-                var predictionFunction = mlContext.Model.CreatePredictionEngine<CoinData, CoinPrediction>(loadedModel);
-                CoinPrediction prediction = predictionFunction.Predict(new CoinData
-                {
-                    Volume = (float)coinTicker.Volume,
-                    Open = (float)coinTicker.OpenPrice,
-                    RSI = (float)coinTicker.RSI,
-                    MACDHist = (float)coinTicker.MACDHist,
-                });
-
-                coinTicker.FuturePrice = prediction.FuturePrice;
+                loadedModel = mlContext.Model.Load(stream);
             }
+            return loadedModel;
+        }
+
+        private static CoinPrediction PredictFuturePrice(SymbolTransfer coin, ITransformer model)
+        {
+            MLContext mlContext = new MLContext();
+            var predictionFunction = mlContext.Model.CreatePredictionEngine<CoinData, CoinPrediction>(model);
+            CoinPrediction prediction = predictionFunction.Predict(new CoinData
+            {
+                Volume = (float)coin.Volume,
+                Open = (float)coin.OpenPrice,
+                RSI = (float)coin.RSI,
+                MACDHist = (float)coin.MACDHist,
+            });
+
+            return prediction;
         }
     }
 }

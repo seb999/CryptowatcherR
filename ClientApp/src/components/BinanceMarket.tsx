@@ -9,16 +9,15 @@ import Sorter from './Element/Sorter'
 import DropDown from './Element/DropDown'
 
 interface AppFnProps {
-    getCoinList(baseMarket: string): void;
+    getSymbolList(baseMarket: string): void;
     filterList(symbol: string): void;
-    //selectedCoin(symbol: string): void;
     sortList(columnName: string, sortDirection: number): void;
     getIndicator(symbol: string, interval: string): void;
 }
 
 interface AppObjectProps {
     history?: any;
-    coinList: Array<coinTickerTransfer>;
+    symbolList: Array<coinTickerTransfer>;
 }
 
 interface Props
@@ -59,7 +58,7 @@ class BinanceMarket extends React.Component<Props, State>{
     }
 
     componentDidMount() {
-        this.props.getCoinList("USDT");
+        this.props.getSymbolList("USDT");
     }
 
     componentDidUpdate(nextProps: any){
@@ -78,7 +77,7 @@ class BinanceMarket extends React.Component<Props, State>{
             showSpinner : true,
             opacity : 0.5,
         })
-        this.props.getCoinList(p);
+        this.props.getSymbolList(p);
     }
 
     handleSort = (e: any) => {
@@ -120,7 +119,7 @@ class BinanceMarket extends React.Component<Props, State>{
     }
 
     render() {
-        let displayList = this.props.coinList.map((coin, index) => (
+        let displayList = this.props.symbolList.map((coin, index) => (
             <tr key={coin.symbol}>
                 <td>
                     <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={() => this.handleShowCoinDetail(coin.symbol)}><i className="fa fa-chart-line"></i></button>
@@ -131,8 +130,8 @@ class BinanceMarket extends React.Component<Props, State>{
                 <td>{coin.highPrice}</td>
                 <td>{coin.lastPrice}</td>
                 <td className={coin.priceChangePercent >= 0 ? "Up" : "Down"}>{coin.priceChangePercent}</td>
-                <td>{coin.RSI === undefined ? <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button> : 
-                 <div> <div style={{float : "left"}}>{coin.RSI}</div>   <div style={{ fontSize: 10, float: "right" }}> Macd {coin.MACD} <br />Sign {coin.MACDSign} <br />Hist {coin.MACDHist}</div></div> 
+                <td>{coin.rsi === 0 ? <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button> : 
+                 <div> <div style={{float : "left"}}>{coin.rsi}</div>   <div style={{ fontSize: 10, float: "right" }}> Macd {coin.MACD} <br />Sign {coin.MACDSign} <br />Hist {coin.MACDHist}</div></div> 
                 }</td>
                 {/* <td> <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button></td> */}
                 <td>
@@ -181,16 +180,15 @@ class BinanceMarket extends React.Component<Props, State>{
 //map the props of this class to the root redux state
 const mapStateToProps = (state: any) => {
     return {
-        coinList: state.coinList,
+        symbolList: state.symbolList,
     }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        getCoinList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.GetCoinList(p)),
+        getSymbolList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.GetSymbolList(p)),
         sortList: (columnName: string, sortDirection: number) => dispatch<any>(binanceActionCreator.binanceActions.SortList(columnName, sortDirection)),
         filterList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.FilterList(p)),
-        //selectedCoin: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.SelectedCoin(p)), Obsolete
         getIndicator: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetIndicator(symbol, interval)),
     }
 }
