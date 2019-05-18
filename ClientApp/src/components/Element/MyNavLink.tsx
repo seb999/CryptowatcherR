@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './NavBar.css';
+import './../Css/NavBar.css';
 import {  NavLink } from 'react-router-dom'
 
 export interface Props {

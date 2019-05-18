@@ -3,9 +3,12 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NavBar from './components/NavBar';
 import { NavCommand } from './components/NavBar';
 import Footer from './components/Footer';
-import USDTMarket from './components/USDTMarket';
-import BTCMarket from './components/BTCMarket';
-import BNBMarket from './components/BNBMarket';
+import BinanceMarket from './components/BinanceMarket';
+import Home from './components/Home';
+import About from './components/About';
+import Contact from './components/Contact';
+import BinanceCoin from './components/BinanceCoin'
+import './App.css';
 
 interface State {
   redirectTo?: string;
@@ -21,10 +24,10 @@ class App extends React.Component<Props, State>{
 
     this.state = {
       navCommands: [
-        { type: "NavLink", path: "/", text: "Home", isActive: false },
-        { type: "NavLink", path: "/USDTMarket", text: "USDT Market", isActive: false },
-        { type: "NavLink", path: "/BTCMarket", text: "BTC Market", isActive: false },
-        { type: "NavLink", path: "/BNBMarket", text: "BNB Market", isActive: false },
+        { type: "NavLink", path: "/BinanceMarket", text: "Market", isActive: true },
+        { type: "NavLink", path: "/About", text: "About", isActive: true },
+        { type: "NavLink", path: "/Contact", text: "Contact", isActive: true },
+     
       ],
       redirectTo: undefined,
     };
@@ -34,15 +37,15 @@ class App extends React.Component<Props, State>{
 
     return (
       <BrowserRouter>
-      <div>
+      <div className="main-container">
         <NavBar commands={this.state.navCommands} />
-        <div className="container">
+        <div className="container ">
           <Switch>
-            {/* <Route exact path='/' component={Home} /> */}
-            <Route exact path='/USDTMarket' component={USDTMarket} />
-            <Route exact path='/BTCMarket' component={BTCMarket} />
-            <Route exact path='/BNBMarket' component={BNBMarket} />
-           
+            <Route exact path='/' component={BinanceMarket} />
+            <Route exact path='/BinanceMarket' component={BinanceMarket} />
+            <Route exact path='/About' component={About} />
+            <Route exact path='/Contact' component={Contact} />
+            <Route exact path='/BinanceCoin/:symbol' component={BinanceCoin}  />
         </Switch>
         </div>
         <Footer />

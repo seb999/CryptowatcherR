@@ -1,0 +1,16 @@
+.Up {
+    color: green;
+    font-weight: bold;
+}
+
+.Down {
+    color: red;
+    font-weight: bold;
+  }
+
+  .ScrollBar{
+    margin-bottom: 10px;
+    overflow-y:scroll;
+    -webkit-overflow-scrolling: touch;
+    max-height: 430px;
+  }

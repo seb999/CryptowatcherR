@@ -1,0 +1,23 @@
+.footer{
+   position:absolute;
+   left:0;
+   bottom:0;
+   right:0; 
+   height: 100px;
+}
+
+.brand {
+   color : slategray;
+   font-family: 'Times New Roman', Times, serif;
+   font-weight: 700;
+   margin-left: 20px;
+   margin-top: 10px;
+ }
+
+ .copyright {
+    color : whitesmoke;
+    margin-top: 70px;
+    padding-right: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: small;
+ }
