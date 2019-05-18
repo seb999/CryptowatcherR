@@ -104,6 +104,7 @@ class BinanceCoin extends React.Component<Props, State>{
     handleChangeSymbol = (selectedSymbol: any) => {
         this.setState({
             selectedSymbol: selectedSymbol,
+            showSpinner: true,
         })
         this.props.getChartData(selectedSymbol, '1d');
         this.props.getPrediction(selectedSymbol);
@@ -143,21 +144,22 @@ class BinanceCoin extends React.Component<Props, State>{
                             <div className="card-header">
                                 {this.state.selectedSymbol}
                                 <button style={{ marginLeft: 3, border: 0 }} data-toggle="tooltip" title="Reload" className="btn btn-outline-info btn-sm" onClick={this.handleReloadSymbol}><i className="fas fa-sync" ></i></button>
+                                {this.state.showSpinner ? <div className="d-flex float-right"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
+
                             </div>
-                            {this.state.showSpinner ? <div className="d-flex justify-content-center"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
                             <div className="card-body" style={{ paddingRight: 5 }}>
                                 {displayPriceChangePourcentage}
                                 <div className="card-text"> {this.props.lastPrice}</div>
                             </div>
                         </div>
-                        <div className="list-group scrollbar mb-2">
+                        <div className="list-group mb-2">
                             <div className="input-group mb-2">
                                 <input type="text" className="form-control" placeholder="Search..." aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
                             </div>
                             <div className="ScrollBar">
-                            {displaySymbolList}
+                                {displaySymbolList}
                             </div>
-                          
+
                         </div>
                     </div>
 
@@ -191,8 +193,10 @@ class BinanceCoin extends React.Component<Props, State>{
                         {/* Prediction panel */}
                         <div className="card mt-3 pr-1 pl-1" style={{ width: 100 + '%' }}>
                             <div className="card-body">
-                                <h5 className="card-title">AI prediction</h5>
-                                {this.state.showSpinner ? <div className="d-flex justify-content-center"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
+                                <h5 className="card-title">
+                                    AI prediction
+                                    {this.state.showSpinner ? <div className="d-flex float-right"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
+                                </h5>
                                 {this.props.prediction.length > 0 ?
                                     <table className="table" >
                                         <thead className="thead">
@@ -216,8 +220,9 @@ class BinanceCoin extends React.Component<Props, State>{
                             <div className="card-body">
                                 <h5 className="card-title">
                                     Indicators
+                                    {this.state.showSpinner ? <div className="d-flex float-right"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
+
                                 </h5>
-                                {this.state.showSpinner ? <div className="d-flex justify-content-center"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
                                 <div className="row" style={{ fontSize: 'smaller' }}>
                                     <div className="col-md-8">Rsi(14)</div>
                                     <div className="col-md-4">

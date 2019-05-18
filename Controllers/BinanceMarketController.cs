@@ -129,6 +129,32 @@ namespace cryptowatcherR.Controllers
             TradeIndicator.CalculateIndicator(ref quotation);
             return quotation.Last();
         }
+
+
+        [HttpGet("[action]/{symbol}/{interval}")]
+        public DataTransfer GetData(string symbol, string interval)
+        {
+            string apiUrl = string.Format("https://api.binance.com/api/v1/ticker/24hr?symbol={0}", symbol);
+
+            //Get data from Binance API
+            DataTransfer coin = HttpHelper.GetApiData<DataTransfer>(new Uri(apiUrl));
+
+            //Add indicator RSI / MACD
+            QuotationTransfer ct = GetIndicator(symbol, "1d");
+
+            coin.Rsi = ct.RSI;
+            coin.Macd = ct.MACD;
+            coin.MacdSign = ct.MACDSign;
+            coin.MacdHist = ct.MACDHist;
+
+            AIController aiController = new AIController();
+            coin.Prediction = aiController.GetPrediction(symbol);
+            
+            return coin;
+        }
     }
+
+
+
 
 }
