@@ -2,8 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import * as binanceActionCreator from '../actions/actions';
-import { withRouter } from 'react-router-dom';
-import { coinTickerTransfer } from '../class/coinTickerTransfer'
+import { symbolTransfer } from '../class/symbolTransfer'
 import './Css/BinanceMarket.css';
 import Sorter from './Element/Sorter'
 import DropDown from './Element/DropDown'
@@ -17,7 +16,7 @@ interface AppFnProps {
 
 interface AppObjectProps {
     history?: any;
-    symbolList: Array<coinTickerTransfer>;
+    symbolList: Array<symbolTransfer>;
 }
 
 interface Props
@@ -31,8 +30,8 @@ interface State {
     showChartPopup: boolean,
     marketSelected: any,
     marketList: Array<string>;
-    showSpinner : boolean;
-    opacity : any;
+    showSpinner: boolean;
+    opacity: any;
 }
 
 class BinanceMarket extends React.Component<Props, State>{
@@ -46,7 +45,7 @@ class BinanceMarket extends React.Component<Props, State>{
             showChartPopup: false,
             sortColumn: "",
             showSpinner: true,
-            opacity : 0.5,
+            opacity: 0.5,
             sorterVisibility: [
                 { columnId: "symbol", visibility: false },
                 { columnId: "volume", visibility: false },
@@ -61,12 +60,11 @@ class BinanceMarket extends React.Component<Props, State>{
         this.props.getSymbolList("USDT");
     }
 
-    componentDidUpdate(nextProps: any){
-        if(this.props != nextProps)
-        {
-            this.setState ({
-                showSpinner : false,
-                opacity : 1
+    componentDidUpdate(nextProps: any) {
+        if (this.props != nextProps) {
+            this.setState({
+                showSpinner: false,
+                opacity: 1
             })
         }
     }
@@ -74,8 +72,8 @@ class BinanceMarket extends React.Component<Props, State>{
     handleChangeReferenceCoin = (p: any) => {
         this.setState({
             marketSelected: p,
-            showSpinner : true,
-            opacity : 0.5,
+            showSpinner: true,
+            opacity: 0.5,
         })
         this.props.getSymbolList(p);
     }
@@ -110,7 +108,6 @@ class BinanceMarket extends React.Component<Props, State>{
     }
 
     handleShowCoinDetail = (symbol: any) => {
-        //this.props.selectedCoin(symbol); Obsolete, we don;t keep in Redux cause F5 will loose it
         this.props.history.push("/BinanceCoin/" + symbol);
     }
 
@@ -130,15 +127,23 @@ class BinanceMarket extends React.Component<Props, State>{
                 <td>{coin.highPrice}</td>
                 <td>{coin.lastPrice}</td>
                 <td className={coin.priceChangePercent >= 0 ? "Up" : "Down"}>{coin.priceChangePercent}</td>
-                <td>{coin.rsi === 0 ? <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button> : 
-                 <div> <div style={{float : "left"}}>{coin.rsi}</div>   <div style={{ fontSize: 10, float: "right" }}> Macd {coin.MACD} <br />Sign {coin.MACDSign} <br />Hist {coin.MACDHist}</div></div> 
-                }</td>
-                {/* <td> <button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button></td> */}
                 <td>
-                    {coin.futurePrice == 0 ?  "N/A" : ""}
-                    {coin.futurePrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
-                    {coin.futurePrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                    {coin.rsi === 0 ? "-":
+                        <div>
+                            <div style={{ float: "left" }}>{coin.rsi}</div>
+                            <div style={{ fontSize: 10, float: "right" }}> Macd {coin.macd} <br />Sign {coin.macdSign} <br />Hist {coin.macdHist}
+                            </div>
+                        </div>
+                    }
                 </td>
+                <td>
+                    {coin.prediction === null ? "-" :
+                        coin.prediction[0].futurePrice == 0 ? "N/A" :
+                            coin.prediction[0].futurePrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> :
+                                coin.prediction[0].futurePrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""
+                    }
+                </td>
+                <td><button style={{ marginLeft: 10, border: 0 }} data-toggle="tooltip" title="Calculate RSI / MACD and Future" className="btn btn-outline-info btn-sm" onClick={() => this.handleCalculateIndicators(coin.symbol)}><i className="fas fa-sync" ></i></button> </td>
             </tr>
         ));
 
@@ -151,7 +156,7 @@ class BinanceMarket extends React.Component<Props, State>{
                 <div className="input-group mb-1 mt-1" style={{ float: "right", width: 300 }}>
                     <input type="text" className="form-control" placeholder="Search crypto" aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
                 </div>
-               <div style={{opacity : this.state.opacity}} >
+                <div style={{ opacity: this.state.opacity }} >
                     <table className="table" >
                         <thead className="thead thead-light">
                             <tr>
@@ -163,6 +168,7 @@ class BinanceMarket extends React.Component<Props, State>{
                                 <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[5].visibility} /></th>
                                 <th scope="col" id="rsi">RSI / MACD</th>
                                 <th>Future</th>
+                                <th style={{width:20}}></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -170,8 +176,6 @@ class BinanceMarket extends React.Component<Props, State>{
                         </tbody>
                     </table>
                 </div>
-
-                {/* <ChartPopup show={this.state.showChartPopup} hide={this.handleCloseChart} /> */}
             </div>
         )
     }

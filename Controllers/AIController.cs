@@ -17,8 +17,7 @@ namespace cryptowatcherR.Controllers
     [Route("api/[controller]")]
     public class AIController : Controller
     {
-        [HttpGet("[action]/{symbol}")]
-        public List<PredictionTransfer> GetPrediction(string symbol)
+        public List<PredictionTransfer> GetPrediction(string symbol, SymbolTransfer coinTicker)
         {
             List<PredictionTransfer> predictionList = new List<PredictionTransfer>();
 
@@ -29,20 +28,16 @@ namespace cryptowatcherR.Controllers
             if (modelPathList.Length == 0)
                 return predictionList;
 
-            //2 - Get Last data from Binance API
-            BinanceMarketController bmC = new BinanceMarketController();
-            SymbolTransfer coinTicker = bmC.GetSymbol(symbol);
-
             //3 - Iterate throw model and fire prediction
             foreach (var modelPath in modelPathList)
             {
                 PredictionTransfer prediction = new PredictionTransfer();
-                
+
                 var fromIndex = Path.GetFileName(modelPath).IndexOf("-") + 1;
                 var toIndex = Path.GetFileName(modelPath).Length - fromIndex - 4;
                 prediction.ModelName = Path.GetFileName(modelPath).Substring(fromIndex, toIndex);
-                
-                prediction.FuturPrice = Math.Round(CalculatePrediction(coinTicker, modelPath).FuturePrice, 2);
+
+                prediction.FuturePrice = Math.Round(CalculatePrediction(coinTicker, modelPath).FuturePrice, 2);
                 predictionList.Add(prediction);
             }
 
@@ -63,19 +58,27 @@ namespace cryptowatcherR.Controllers
         /// </summary>
         /// <param name="coinList">The list of coinTicketTransfer</param>
         /// <returns>void</returns>
-        internal static void CalculatePredictionDefaultModel(ref List<SymbolTransfer> coinList)
+        internal static void CalculatePredictionDefaultModel(string symbol, ref QuotationTransfer coin)
         {
-            foreach (var coin in coinList)
+            if (CheckModelExist(symbol) == true)
             {
-                if (CheckModelExist(coin.Symbol) != true) continue;
-
-                string modelPath = "AIModel/" + coin.Symbol + "-Fast Tree.zip";
+                string modelPath = "AIModel/" + symbol + "-Fast Tree.zip";
 
                 //Load model
                 ITransformer loadedModel = LoadModel(modelPath);
 
                 //Predict future price
-                coin.FuturePrice = PredictFuturePrice(coin, loadedModel).FuturePrice;
+                MLContext mlContext = new MLContext();
+                var predictionFunction = mlContext.Model.CreatePredictionEngine<CoinData, CoinPrediction>(loadedModel);
+                CoinPrediction prediction = predictionFunction.Predict(new CoinData
+                {
+                    Volume = (float)coin.Volume,
+                    Open = (float)coin.Open,
+                    RSI = (float)coin.Rsi,
+                    MACDHist = (float)coin.MacdHist,
+                });
+
+                coin.FuturePrice = prediction.FuturePrice;
             }
         }
 
@@ -105,8 +108,8 @@ namespace cryptowatcherR.Controllers
             {
                 Volume = (float)coin.Volume,
                 Open = (float)coin.OpenPrice,
-                RSI = (float)coin.RSI,
-                MACDHist = (float)coin.MACDHist,
+                RSI = (float)coin.Rsi,
+                MACDHist = (float)coin.MacdHist,
             });
 
             return prediction;
