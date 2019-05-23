@@ -11,7 +11,15 @@ namespace cryptowatcherR.Misc
         {
             foreach (var item in coinList)
             {
-                item.SymbolShort = item.Symbol.Substring(0,item.Symbol.Length-baseMarket.ToString().Length);
+                if(item.Symbol.Substring(item.Symbol.Length-3) == BaseMarket.BNB.ToString()
+                ||item.Symbol.Substring(item.Symbol.Length-3) == BaseMarket.BTC.ToString())
+                {
+                    item.SymbolShort = item.Symbol.Substring(0, item.Symbol.Length-3) + "/" + baseMarket.ToString();
+                }
+                if(item.Symbol.Substring(item.Symbol.Length-4) == BaseMarket.USDT.ToString())
+                {
+                    item.SymbolShort = item.Symbol.Substring(0, item.Symbol.Length-4) + "/" + baseMarket.ToString();
+                }
             }
         }
     }

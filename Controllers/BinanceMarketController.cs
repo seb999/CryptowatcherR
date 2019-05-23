@@ -26,8 +26,10 @@ namespace cryptowatcherR.Controllers
             List<SymbolTransfer> coinList = HttpHelper.GetApiData<List<SymbolTransfer>>(apiUrl);
 
             //Filter result
-            coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - baseMarket.ToString().Length) == baseMarket.ToString()).Select(p => p).ToList();
-
+            if (baseMarket == BaseMarket.BNB ||  baseMarket == BaseMarket.BTC || baseMarket == BaseMarket.USDT)
+            {
+                coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - baseMarket.ToString().Length) == baseMarket.ToString()).Select(p => p).ToList();
+            }
             //Shorten Symbol
             Misc.Helper.ShortenSymbol(ref coinList, baseMarket);
 

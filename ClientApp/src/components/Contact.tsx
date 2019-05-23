@@ -32,7 +32,7 @@ class Contact extends React.Component<Props, State>{
 
                 <div className="row">
                     <div className="card" style={{width:200}}>
-                        <img className="card-img-top img-fluid" src={sebastienPortrait} alt="Card image cap"  ></img>
+                        <img className="card-img-top img-fluid" src={sebastienPortrait} alt="Card image cap"></img>
                         <div className="card-body">
                             <h5 className="card-title">Sebastien</h5>
                             <p className="card-text">AI data manager</p>

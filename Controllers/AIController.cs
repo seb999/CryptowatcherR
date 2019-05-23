@@ -74,8 +74,8 @@ namespace cryptowatcherR.Controllers
                 {
                     Volume = (float)coin.Volume,
                     Open = (float)coin.Open,
-                    RSI = (float)coin.Rsi,
-                    MACDHist = (float)coin.MacdHist,
+                    Rsi = (float)coin.Rsi,
+                    MacdHist = (float)coin.MacdHist,
                 });
 
                 coin.FuturePrice = prediction.FuturePrice;
@@ -108,8 +108,8 @@ namespace cryptowatcherR.Controllers
             {
                 Volume = (float)coin.Volume,
                 Open = (float)coin.OpenPrice,
-                RSI = (float)coin.Rsi,
-                MACDHist = (float)coin.MacdHist,
+                Rsi = (float)coin.Rsi,
+                MacdHist = (float)coin.MacdHist,
             });
 
             return prediction;

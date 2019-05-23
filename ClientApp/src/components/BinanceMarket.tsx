@@ -6,6 +6,7 @@ import { symbolTransfer } from '../class/symbolTransfer'
 import './Css/BinanceMarket.css';
 import Sorter from './Element/Sorter'
 import DropDown from './Element/DropDown'
+import CoinImage from './Element/CoinImage'
 
 interface AppFnProps {
     getSymbolList(baseMarket: string): void;
@@ -40,7 +41,7 @@ class BinanceMarket extends React.Component<Props, State>{
 
         this.state = {
             marketSelected: "USDT",
-            marketList: ["USDT", "BTC", "BNB"],
+            marketList: ["--", "USDT", "BTC", "BNB"],
             sortDirection: 1,
             showChartPopup: false,
             sortColumn: "",
@@ -120,6 +121,7 @@ class BinanceMarket extends React.Component<Props, State>{
             <tr key={coin.symbol}>
                 <td>
                     <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={() => this.handleShowCoinDetail(coin.symbol)}><i className="fa fa-chart-line"></i></button>
+                    <CoinImage symbol="../images/CoinIcon/BTT.png" ></CoinImage>
                     {coin.symbolShort}
                 </td>
                 <td>{Math.round(coin.volume).toLocaleString()}</td>
@@ -157,7 +159,7 @@ class BinanceMarket extends React.Component<Props, State>{
                     <input type="text" className="form-control" placeholder="Search crypto" aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
                 </div>
                 <div style={{ opacity: this.state.opacity }} >
-                    <table className="table" >
+                    <table className="table table-striped" >
                         <thead className="thead thead-light">
                             <tr>
                                 <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[0].visibility} /></th>

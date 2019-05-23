@@ -34,9 +34,9 @@ namespace cryptowatcherR.Misc
             {
                 for (int i = 0; i < outNBElements; i++)
                 {
-                    quotationList[i+beginIndex].Macd = Math.Round(outMACD[i],2);
-                    quotationList[i+beginIndex].MacdHist = Math.Round(outMACDHist[i],2);
-                    quotationList[i+beginIndex].MacdSign = Math.Round(outMACDSignal[i],2);
+                    quotationList[i+beginIndex].Macd = outMACD[i];
+                    quotationList[i+beginIndex].MacdHist = outMACDHist[i];
+                    quotationList[i+beginIndex].MacdSign = outMACDSignal[i];
                 }                 
             }
         }
