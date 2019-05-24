@@ -22,14 +22,30 @@ namespace cryptowatcherR.Controllers
         {
             Uri apiUrl = new Uri("https://api.binance.com/api/v1/ticker/24hr");
 
-            //Get data from Binance API
-            List<SymbolTransfer> coinList = HttpHelper.GetApiData<List<SymbolTransfer>>(apiUrl);
+            // //Get data from Binance API
+            // List<SymbolTransfer> coinList = HttpHelper.GetApiData<List<SymbolTransfer>>(apiUrl);
 
-            //Filter result
-            if (baseMarket == BaseMarket.BNB ||  baseMarket == BaseMarket.BTC || baseMarket == BaseMarket.USDT)
+            // //Filter result
+            // if (baseMarket == BaseMarket.BNB ||  baseMarket == BaseMarket.BTC || baseMarket == BaseMarket.USDT)
+            // {
+            //     coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - baseMarket.ToString().Length) == baseMarket.ToString()).Select(p => p).ToList();
+            // }
+
+             //FOR OFFICE
+             List<SymbolTransfer> coinList = new List<SymbolTransfer>();
+            coinList.Add(new SymbolTransfer()
             {
-                coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - baseMarket.ToString().Length) == baseMarket.ToString()).Select(p => p).ToList();
-            }
+                Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            });
+            coinList.Add(new SymbolTransfer()
+            {
+                Symbol = "ETHUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            });
+             coinList.Add(new SymbolTransfer()
+            {
+                Symbol = "ADAUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            });
+
             //Shorten Symbol
             Misc.Helper.ShortenSymbol(ref coinList, baseMarket);
 

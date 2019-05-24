@@ -6,7 +6,7 @@ import { symbolTransfer } from '../class/symbolTransfer'
 import './Css/BinanceMarket.css';
 import Sorter from './Element/Sorter'
 import DropDown from './Element/DropDown'
-import CoinImage from './Element/CoinImage'
+import CoinIcon from './Element/CoinIcon'
 
 interface AppFnProps {
     getSymbolList(baseMarket: string): void;
@@ -121,7 +121,7 @@ class BinanceMarket extends React.Component<Props, State>{
             <tr key={coin.symbol}>
                 <td>
                     <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={() => this.handleShowCoinDetail(coin.symbol)}><i className="fa fa-chart-line"></i></button>
-                    <CoinImage symbol="../images/CoinIcon/BTT.png" ></CoinImage>
+                    <CoinIcon symbol={coin.symbolShort}></CoinIcon>
                     {coin.symbolShort}
                 </td>
                 <td>{Math.round(coin.volume).toLocaleString()}</td>
@@ -130,7 +130,7 @@ class BinanceMarket extends React.Component<Props, State>{
                 <td>{coin.lastPrice}</td>
                 <td className={coin.priceChangePercent >= 0 ? "Up" : "Down"}>{coin.priceChangePercent}</td>
                 <td>
-                    {coin.rsi === 0 ? "-":
+                    {coin.rsi === 0 ? "--":
                         <div>
                             <div style={{ float: "left" }}>{coin.rsi}</div>
                             <div style={{ fontSize: 10, float: "right" }}> Macd {coin.macd} <br />Sign {coin.macdSign} <br />Hist {coin.macdHist}
@@ -139,7 +139,7 @@ class BinanceMarket extends React.Component<Props, State>{
                     }
                 </td>
                 <td>
-                    {coin.prediction === null ? "-" :
+                    {coin.prediction === null ? <i className="fas fa-random" style={{color: "grey"}}></i> :
                         coin.prediction[0].futurePrice == 0 ? "N/A" :
                             coin.prediction[0].futurePrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> :
                                 coin.prediction[0].futurePrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""
