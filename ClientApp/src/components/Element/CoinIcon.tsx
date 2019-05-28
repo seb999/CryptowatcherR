@@ -22,6 +22,9 @@ class CoinIcon extends React.Component<Props, State> {
                 case "BTC":
                     icon = <img src={require('../../images/CoinIcon/BTC.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
                     break;
+                case "ETH":
+                    icon = <img src={require('../../images/CoinIcon/ETH.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
                 case "AERGO":
                     icon = <img src={require('../../images/CoinIcon/AERGO.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
                     break;
@@ -70,12 +73,107 @@ class CoinIcon extends React.Component<Props, State> {
                 case "TRY":
                     icon = <img src={require('../../images/CoinIcon/TRY.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
                     break;
-                    case "DRGN":
-                            icon = <img src={require('../../images/CoinIcon/DRGN.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
-                            break;
-                            case "FET":
-                                    icon = <img src={require('../../images/CoinIcon/FET.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
-                                    break;
+                case "DRGN":
+                    icon = <img src={require('../../images/CoinIcon/DRGN.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "FET":
+                    icon = <img src={require('../../images/CoinIcon/FET.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "NEO":
+                    icon = <img src={require('../../images/CoinIcon/NEO.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "QTUM":
+                    icon = <img src={require('../../images/CoinIcon/QTUM.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "FET":
+                    icon = <img src={require('../../images/CoinIcon/FET.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "ADA":
+                    icon = <img src={require('../../images/CoinIcon/ADA.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "IOTA":
+                    icon = <img src={require('../../images/CoinIcon/IOTA.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "EOS":
+                    icon = <img src={require('../../images/CoinIcon/EOS.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "XRP":
+                    icon = <img src={require('../../images/CoinIcon/XRP.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "NULS":
+                    icon = <img src={require('../../images/CoinIcon/NULS.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "ICX":
+                    icon = <img src={require('../../images/CoinIcon/ICX.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "PAX":
+                    icon = <img src={require('../../images/CoinIcon/PAX.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "USDC":
+                    icon = <img src={require('../../images/CoinIcon/USDC.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "LINK":
+                    icon = <img src={require('../../images/CoinIcon/LINK.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "WAVES":
+                    icon = <img src={require('../../images/CoinIcon/WAVES.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "WAVES":
+                    icon = <img src={require('../../images/CoinIcon/WAVES.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "TFUEL":
+                    icon = <img src={require('../../images/CoinIcon/TFUEL.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "MATIC":
+                    icon = <img src={require('../../images/CoinIcon/MATIC.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "MITH":
+                    icon = <img src={require('../../images/CoinIcon/MITH.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "THETA":
+                    icon = <img src={require('../../images/CoinIcon/THETA.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "USDS":
+                    icon = <img src={require('../../images/CoinIcon/USDS.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "ONG":
+                    icon = <img src={require('../../images/CoinIcon/ONG.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "HOT":
+                    icon = <img src={require('../../images/CoinIcon/HOT.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "ZIL":
+                    icon = <img src={require('../../images/CoinIcon/ZIL.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "ZRX":
+                    icon = <img src={require('../../images/CoinIcon/ZRX.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "BAT":
+                    icon = <img src={require('../../images/CoinIcon/BAT.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "ZEC":
+                    icon = <img src={require('../../images/CoinIcon/ZEC.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "IOST":
+                    icon = <img src={require('../../images/CoinIcon/IOST.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "CELR":
+                    icon = <img src={require('../../images/CoinIcon/CELR.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "NANO":
+                    icon = <img src={require('../../images/CoinIcon/NANO.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "OMG":
+                    icon = <img src={require('../../images/CoinIcon/OMG.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "ENJ":
+                    icon = <img src={require('../../images/CoinIcon/ENJ.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+                case "BNB":
+                    icon = <img src={require('../../images/CoinIcon/BNB.png')} className="card-img-top img-fluid" style={{ height: 20, width: 20 }} />
+                    break;
+             
+
 
                 default:
                     icon = <i className="fas fa-coins"></i>
