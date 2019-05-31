@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Include="aiModel\**" CopyToOutputDirectory="Always" />
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
@@ -45,6 +46,8 @@
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
+       <!-- <None Include="aiModel\**" CopyToPublishDirectory="Always" /> -->
+      
     </ItemGroup>
   </Target>
 

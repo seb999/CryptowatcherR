@@ -22,7 +22,7 @@ namespace cryptowatcherR.Controllers
             List<PredictionTransfer> predictionList = new List<PredictionTransfer>();
 
             //1 - List models available for symbol
-            var rootFolder = Environment.CurrentDirectory + "/AIModel/";
+            var rootFolder = Environment.CurrentDirectory + "/aiModel/";
             var modelPathList = Directory.GetFiles(rootFolder, symbol + "*", SearchOption.AllDirectories);
 
             if (modelPathList.Length == 0)
@@ -62,7 +62,7 @@ namespace cryptowatcherR.Controllers
         {
             if (CheckModelExist(symbol) == true)
             {
-                string modelPath = "AIModel/" + symbol + "-Fast Tree.zip";
+                string modelPath = Environment.CurrentDirectory + "/aiModel/" + symbol + "-Fast Tree.zip";
 
                 //Load model
                 ITransformer loadedModel = LoadModel(modelPath);
@@ -84,7 +84,7 @@ namespace cryptowatcherR.Controllers
 
         private static bool CheckModelExist(string symbol)
         {
-            var rootFolder = Environment.CurrentDirectory + "/AIModel/";
+            var rootFolder = Environment.CurrentDirectory + "/aiModel/";
             return Directory.GetFiles(rootFolder, symbol + "*", SearchOption.AllDirectories).Length > 0 ? true : false;
         }
 
