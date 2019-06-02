@@ -39,7 +39,7 @@ class App extends React.Component<Props, State>{
       <BrowserRouter>
       <div className="main-container">
         <NavBar commands={this.state.navCommands} />
-        <div className="container ">
+        <div className="container mt-3">
           <Switch>
             <Route exact path='/' component={BinanceMarket} />
             <Route exact path='/BinanceMarket' component={BinanceMarket} />

@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 
 namespace cryptowatcherR.ClassTransfer
 {
@@ -22,11 +23,13 @@ namespace cryptowatcherR.ClassTransfer
         public double Volume { get; set; }
         public double QuoteVolume { get; set; }
 
-        //Trade Indicators
-        public double RSI { get; set; }
-        public double MACD { get; set; }
-        public double MACDSign { get; set; }
-        public double MACDHist { get; set; }
-        public double FuturePrice { get; set; }
+         //Indicators
+        public double Rsi { get; set; }
+        public double Macd { get; set; }
+        public double MacdSign { get; set; }
+        public double MacdHist { get; set; }
+
+        //Prediction
+        public List<PredictionTransfer> Prediction { get; set; }
     }
 }

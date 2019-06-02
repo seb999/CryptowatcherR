@@ -5,29 +5,22 @@ import { coinTransfer } from '../class/coinTransfer'
 import * as binanceActionCreator from '../actions/actions';
 import DropDown from './Element/DropDown'
 import CoinChart from './Element/CoinChart'
-import { coinTickerTransfer } from '../class/coinTickerTransfer'
+import { symbolTransfer } from '../class/symbolTransfer'
+import { predictionTransfer } from '../class/predictionTransfer'
 import './Css/BinanceCoin.css';
 
 interface AppFnProps {
     getChartData(symbol: string, interval: string): void;
-    getPrediction(symbol: string): void;
+    getData(symbol: string, interval: string): void;
     getSymbolList(baseMarket: string): void;
-    getSymbol(symbol: string): void;
     filterList(symbol: string): void;
 }
 interface AppObjectProps {
     match: any;
-    coin: Array<coinTransfer>
-    prediction: Array<any>;
-    symbolList: Array<coinTickerTransfer>;
-
-    rsi: number;
-    macd: number;
-    macdSign: number;
-    macdHist: number;
-    priceChangePercent: number,
-    volume: number,
-    lastPrice: number,
+    prediction: Array<predictionTransfer>;
+    symbolList: Array<symbolTransfer>;
+    symbolData: symbolTransfer,
+    chartData:  Array<coinTransfer>;
 }
 
 interface Props
@@ -59,10 +52,11 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     componentDidMount() {
+        this.props.getData(this.props.match.params.symbol, '1d');
         this.props.getSymbolList("USDT");
-        this.props.getSymbol(this.props.match.params.symbol);
+        // this.props.getSymbol(this.props.match.params.symbol);
         this.props.getChartData(this.props.match.params.symbol, '1d');
-        this.props.getPrediction(this.props.match.params.symbol);
+        // this.props.getPrediction(this.props.match.params.symbol);
         this.setState({
             selectedSymbol: this.props.match.params.symbol,
         })
@@ -95,7 +89,8 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     handleReloadSymbol = (p: any) => {
-        this.props.getSymbol(this.state.selectedSymbol);
+        // this.props.getSymbol(this.state.selectedSymbol);
+        this.props.getData(this.state.selectedSymbol, this.state.chartIntervalSelected);
         this.setState({
             showSpinner: true,
         })
@@ -106,16 +101,17 @@ class BinanceCoin extends React.Component<Props, State>{
             selectedSymbol: selectedSymbol,
             showSpinner: true,
         })
-        this.props.getChartData(selectedSymbol, '1d');
-        this.props.getPrediction(selectedSymbol);
-        this.props.getSymbol(selectedSymbol);
+        this.props.getChartData(selectedSymbol, this.state.chartIntervalSelected);
+        this.props.getData(selectedSymbol, this.state.chartIntervalSelected);
+        // this.props.getPrediction(selectedSymbol);
+        // this.props.getSymbol(selectedSymbol);
     }
 
     render() {
-        let displayPriceChangePourcentage = this.props.priceChangePercent >= 0 ?
-            <h5 className="Up card-title">{this.props.priceChangePercent} %</h5> :
-            <h5 className="Down card-title">{this.props.priceChangePercent} %</h5>
-
+        let displayPriceChangePourcentage = this.props.symbolData.priceChangePercent >= 0 ?
+        <h5 className="Up card-title">{this.props.symbolData.priceChangePercent} %</h5> :
+        <h5 className="Down card-title">{this.props.symbolData.priceChangePercent} %</h5>
+        
         let displaySymbolList = this.props.symbolList.map((coin, index) => (
             <button type="button" className="list-group-item list-group-item-action" onClick={() => this.handleChangeSymbol(coin.symbol)} >
                 {coin.symbol}
@@ -126,9 +122,9 @@ class BinanceCoin extends React.Component<Props, State>{
             <tr key={index}>
                 <td style={{ fontSize: 'smaller' }}>{model.modelName}</td>
                 <td style={{ fontSize: 'smaller' }}>
-                    {model.futurPrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
-                    {model.futurPrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
-                    &nbsp;{model.futurPrice}
+                    {model.futurePrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
+                    {model.futurePrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                    &nbsp;{model.futurePrice}
                 </td>
             </tr>
         ));
@@ -140,7 +136,7 @@ class BinanceCoin extends React.Component<Props, State>{
 
                     {/* Coin selector panel */}
                     <div className="col-md-2 pr-1 pl-1">
-                        <div className="card mt-5 mb-3 bg-light" style={{ width: 100 + '%' }}>
+                        <div className="card mb-3 bg-light" style={{ width: 100 + '%' }}>
                             <div className="card-header">
                                 {this.state.selectedSymbol}
                                 <button style={{ marginLeft: 3, border: 0 }} data-toggle="tooltip" title="Reload" className="btn btn-outline-info btn-sm" onClick={this.handleReloadSymbol}><i className="fas fa-sync" ></i></button>
@@ -149,7 +145,7 @@ class BinanceCoin extends React.Component<Props, State>{
                             </div>
                             <div className="card-body" style={{ paddingRight: 5 }}>
                                 {displayPriceChangePourcentage}
-                                <div className="card-text"> {this.props.lastPrice}</div>
+                                <div className="card-text"> {this.props.symbolData.lastPrice}</div>
                             </div>
                         </div>
                         <div className="list-group mb-2">
@@ -165,16 +161,16 @@ class BinanceCoin extends React.Component<Props, State>{
 
                     {/* Chart panel */}
                     <div className="col-md-7">
-                        <div className="card mt-5 pr-1 pl-1" style={{ width: 100 + '%' }}>
+                        <div className="card pr-1 pl-1" style={{ width: 100 + '%' }}>
                             <div className="card-body">
-                                <CoinChart data={this.props.coin} symbol={this.state.selectedSymbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
+                                <CoinChart data={this.props.chartData} symbol={this.state.selectedSymbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
                             </div>
                         </div>
                     </div>
 
                     {/* Settings panel */}
                     <div className="col-md-3 pr-1 pl-1">
-                        <div className="card mt-5" style={{ width: 100 + '%' }}>
+                        <div className="card" style={{ width: 100 + '%' }}>
                             <div className="card-body">
                                 <h5 className="card-title">Settings</h5>
                                 <div className="row">
@@ -226,18 +222,18 @@ class BinanceCoin extends React.Component<Props, State>{
                                 <div className="row" style={{ fontSize: 'smaller' }}>
                                     <div className="col-md-8">Rsi(14)</div>
                                     <div className="col-md-4">
-                                        {this.props.rsi >= 70 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
-                                        {this.props.rsi <= 30 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
-                                        {this.props.rsi >= 30 && this.props.rsi <= 70 ? <i className="fas fa-arrows-alt" style={{ color: 'orange' }}></i> : ""}
-                                        &nbsp;{this.props.rsi}
+                                        {this.props.symbolData.rsi >= 70 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                                        {this.props.symbolData.rsi <= 30 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
+                                        {this.props.symbolData.rsi >= 30 && this.props.symbolData.rsi <= 70 ? <i className="fas fa-arrows-alt" style={{ color: 'orange' }}></i> : ""}
+                                        &nbsp;{this.props.symbolData.rsi}
                                     </div>
                                 </div>
                                 <div className="row" style={{ fontSize: 'smaller' }}>
                                     <div className="col-md-8">Macd(12,26) Hist</div>
                                     <div className="col-md-4 ">
-                                        {this.props.macdHist > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
-                                        {this.props.macdHist <= 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
-                                        &nbsp;{this.props.macdHist}
+                                        {this.props.symbolData.macdHist > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> : ""}
+                                        {this.props.symbolData.macdHist <= 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""}
+                                        &nbsp;{this.props.symbolData.macdHist}
                                     </div>
                                 </div>
                             </div>
@@ -252,26 +248,18 @@ class BinanceCoin extends React.Component<Props, State>{
 
 const mapStateToProps = (state: any) => {
     return {
-        coin: state.coin,
         symbolList: state.symbolList,
         prediction: state.prediction,
-
-        rsi: state.rsi,
-        // macd: state.macd,
-        // macdSign: state.macdSign,
-        macdHist: state.macdHist,
-        priceChangePercent: state.priceChangePercent,
-        // volume: state.volume,
-        lastPrice: state.lastPrice,
+        symbolData: state.symbolData,
+        chartData: state.chartData,
     }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
         getChartData: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetChartData(symbol, interval)).then(() => { }),
+        getData: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetData(symbol, interval)).then(() => { }),
         getSymbolList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.GetSymbolList(p)),
-        getSymbol: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.GetSymbol(p)),
-        getPrediction: (symbol: string) => dispatch<any>(binanceActionCreator.aiActions.GetPrediction(symbol)),
         filterList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.FilterList(p)),
     }
 }

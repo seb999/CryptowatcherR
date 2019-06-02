@@ -20,22 +20,3 @@ export const CheckModelExistSuccess = (data: any) => {
     payload: data
   }
 }
-
-export const GetPrediction = (symbol: string) => {
-  return async (dispatch: any) => {
-    try {
-      const res = await axios.get<any>(aiApiUrl + "GetPrediction/" + symbol);
-      return dispatch(GetPredictionSuccess(res.data));
-    }
-    catch (error) {
-      throw (error)
-    }
-  }
-}
-
-export const GetPredictionSuccess = (data: any) => {
-  return {
-    type: "AI_GET_PREDICTION",
-    payload: data
-  }
-}

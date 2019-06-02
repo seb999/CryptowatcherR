@@ -22,11 +22,11 @@ export const GetSymbolListSuccess = (data: any) => {
   }
 }
 
-export const GetSymbol = (symbol: string) => {
+export const GetIndicator = (symbol: string, interval : string) => {
   return async (dispatch: any) => {
     try {
-      const res = await axios.get<any>(cryptowatcherApiUrl + "GetSymbol/" + symbol);
-      return dispatch(GetSymbolSuccess(res.data));
+      const res = await axios.get<any>(cryptowatcherApiUrl + "GetIndicator/" + symbol + "/" + interval);
+      return dispatch(GetIndicatorSuccess(res.data, symbol));
     }
     catch (error) {
       throw (error)
@@ -34,9 +34,28 @@ export const GetSymbol = (symbol: string) => {
   }
 }
 
-export const GetSymbolSuccess = (data: any) => {
+export const GetIndicatorSuccess = (data: any, symbol: string) => {
   return {
-    type: "BINANCE_SYMBOL",
+    type: "BINANCE_SYMBOL_INDICATOR",
+    payload: {data : data, symbol : symbol}
+  }
+}
+
+export const GetData = (symbol: string, interval : string) => {
+  return async (dispatch: any) => {
+    try {
+      const res = await axios.get<any>(cryptowatcherApiUrl + "GetSymbolData/" + symbol + "/" + interval);
+      return dispatch(GetDataSuccess(res.data));
+    }
+    catch (error) {
+      throw (error)
+    }
+  }
+}
+
+export const GetDataSuccess = (data: any) => {
+  return {
+    type: "BINANCE_SYMBOL_DATA",
     payload: data
   }
 }
@@ -57,25 +76,6 @@ export const GetChartDataSuccess = (data: any) => {
   return {
     type: "BINANCE_CHART_DATA",
     payload: data
-  }
-}
-
-export const GetIndicator = (symbol: string, interval : string) => {
-  return async (dispatch: any) => {
-    try {
-      const res = await axios.get<any>(cryptowatcherApiUrl + "GetIndicator/" + symbol + "/" + interval);
-      return dispatch(GetIndicatorSuccess(res.data, symbol));
-    }
-    catch (error) {
-      throw (error)
-    }
-  }
-}
-
-export const GetIndicatorSuccess = (data: any, symbol: string) => {
-  return {
-    type: "BINANCE_SYMBOL_INDICATOR",
-    payload: {data : data, symbol : symbol}
   }
 }
 

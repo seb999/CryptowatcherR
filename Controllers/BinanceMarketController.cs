@@ -22,19 +22,75 @@ namespace cryptowatcherR.Controllers
         {
             Uri apiUrl = new Uri("https://api.binance.com/api/v1/ticker/24hr");
 
-            //Get data from Binance API
+            // //Get data from Binance API
             List<SymbolTransfer> coinList = HttpHelper.GetApiData<List<SymbolTransfer>>(apiUrl);
 
             //Filter result
-            coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - baseMarket.ToString().Length) == baseMarket.ToString()).Select(p => p).ToList();
+            if (baseMarket == BaseMarket.BNB ||  baseMarket == BaseMarket.BTC || baseMarket == BaseMarket.USDT)
+            {
+                coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - baseMarket.ToString().Length) == baseMarket.ToString()).Select(p => p).ToList();
+                //Remove obsolete coins
+                coinList = coinList.Where(p=>p.Volume != 0 && p.OpenPrice != 0).Select(p=>p).ToList();
+            }
 
-            //Shorten Symbol and add Prediction
+             //FOR OFFICE
+            //  List<SymbolTransfer> coinList = new List<SymbolTransfer>();
+            // coinList.Add(new SymbolTransfer()
+            // {
+            //     Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            // });
+            // coinList.Add(new SymbolTransfer()
+            // {
+            //     Symbol = "ETHUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            // });
+            //  coinList.Add(new SymbolTransfer()
+            // {
+            //     Symbol = "ADAUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            // });
+
+            //Shorten Symbol
             Misc.Helper.ShortenSymbol(ref coinList, baseMarket);
 
-            //Add Prediction
-            AIController.CalculatePredictionDefaultModel(ref coinList);
-
             return coinList;
+        }
+
+        [HttpGet("[action]/{symbol}/{interval}")]
+        public QuotationTransfer GetIndicator(string symbol, string interval)
+        {
+            List<QuotationTransfer> quotation = new List<QuotationTransfer>();
+            string apiUrl = string.Format("https://api.binance.com/api/v1/klines?symbol={0}&interval={1}&limit=1000", symbol, interval);
+
+            //Get data from Binance API
+            List<List<double>> coinQuotation = HttpHelper.GetApiData<List<List<double>>>(new Uri(apiUrl));
+
+            foreach (var item in coinQuotation)
+            {
+                QuotationTransfer newQuotation = new QuotationTransfer()
+                {
+                    OpenTime = item[0],
+                    Open = item[1],
+                    High = item[2],
+                    Low = item[3],
+                    Close = item[4],
+                    Volume = item[5],
+                    CloseTime = item[6],
+                    QuoteAssetVolume = item[7],
+                    NumberOfTrades = item[8],
+                    BuyBaseAssetVolume = item[9],
+                    BuyQuoteAssetVolume = item[10],
+                    Ignore = item[11],
+                };
+                quotation.Add(newQuotation);
+            }
+
+            //Add Indicators to the list
+            TradeIndicator.CalculateIndicator(ref quotation);
+
+            //Add Default Prediction
+            var result = quotation.Last();
+            AIController.CalculatePredictionDefaultModel(symbol, ref result);
+
+            return result;
         }
 
         [HttpGet("[action]/{symbol}/{interval}")]
@@ -72,13 +128,8 @@ namespace cryptowatcherR.Controllers
             return quotation;
         }
 
-        /// <summary>
-        /// Get last quotation of a coin with indicators
-        /// </summary>
-        /// <param name="symbol">The symbol (ex : BTCUSDT)</param>
-        /// <returns>The CoinTickerTransfer</returns>
-        [HttpGet("[action]/{symbol}")]
-        public SymbolTransfer GetSymbol(string symbol)
+        [HttpGet("[action]/{symbol}/{interval}")]
+        public SymbolTransfer GetSymbolData(string symbol, string interval)
         {
             string apiUrl = string.Format("https://api.binance.com/api/v1/ticker/24hr?symbol={0}", symbol);
 
@@ -87,74 +138,16 @@ namespace cryptowatcherR.Controllers
 
             //Add indicator RSI / MACD
             QuotationTransfer ct = GetIndicator(symbol, "1d");
+            coin.Rsi = ct.Rsi;
+            coin.Macd = ct.Macd;
+            coin.MacdSign = ct.MacdSign;
+            coin.MacdHist = ct.MacdHist;
 
-            coin.RSI = ct.RSI;
-            coin.MACD = ct.MACD;
-            coin.MACDSign = ct.MACDSign;
-            coin.MACDHist = ct.MACDHist;
-
-            return coin;
-        }
-
-        [HttpGet("[action]/{symbol}/{interval}")]
-        public QuotationTransfer GetIndicator(string symbol, string interval)
-        {
-            List<QuotationTransfer> quotation = new List<QuotationTransfer>();
-            string apiUrl = string.Format("https://api.binance.com/api/v1/klines?symbol={0}&interval={1}&limit=1000", symbol, interval);
-
-            //Get data from Binance API
-            List<List<double>> coinQuotation = HttpHelper.GetApiData<List<List<double>>>(new Uri(apiUrl));
-
-            foreach (var item in coinQuotation)
-            {
-                QuotationTransfer newQuotation = new QuotationTransfer()
-                {
-                    OpenTime = item[0],
-                    Open = item[1],
-                    High = item[2],
-                    Low = item[3],
-                    Close = item[4],
-                    Volume = item[5],
-                    CloseTime = item[6],
-                    QuoteAssetVolume = item[7],
-                    NumberOfTrades = item[8],
-                    BuyBaseAssetVolume = item[9],
-                    BuyQuoteAssetVolume = item[10],
-                    Ignore = item[11],
-                };
-                quotation.Add(newQuotation);
-            }
-
-            //Add Indicators to the list
-            TradeIndicator.CalculateIndicator(ref quotation);
-            return quotation.Last();
-        }
-
-
-        [HttpGet("[action]/{symbol}/{interval}")]
-        public DataTransfer GetData(string symbol, string interval)
-        {
-            string apiUrl = string.Format("https://api.binance.com/api/v1/ticker/24hr?symbol={0}", symbol);
-
-            //Get data from Binance API
-            DataTransfer coin = HttpHelper.GetApiData<DataTransfer>(new Uri(apiUrl));
-
-            //Add indicator RSI / MACD
-            QuotationTransfer ct = GetIndicator(symbol, "1d");
-
-            coin.Rsi = ct.RSI;
-            coin.Macd = ct.MACD;
-            coin.MacdSign = ct.MACDSign;
-            coin.MacdHist = ct.MACDHist;
-
+            //Add Prediction sub list
             AIController aiController = new AIController();
-            coin.Prediction = aiController.GetPrediction(symbol);
-            
+            coin.Prediction = aiController.GetPrediction(symbol, coin);
+
             return coin;
         }
     }
-
-
-
-
 }
