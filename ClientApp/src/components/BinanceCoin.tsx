@@ -108,9 +108,6 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     render() {
-
-        console.log(this.props.prediction);
-
         let displayPriceChangePourcentage = this.props.symbolData.priceChangePercent >= 0 ?
         <h5 className="Up card-title">{this.props.symbolData.priceChangePercent} %</h5> :
         <h5 className="Down card-title">{this.props.symbolData.priceChangePercent} %</h5>
@@ -139,7 +136,7 @@ class BinanceCoin extends React.Component<Props, State>{
 
                     {/* Coin selector panel */}
                     <div className="col-md-2 pr-1 pl-1">
-                        <div className="card mt-5 mb-3 bg-light" style={{ width: 100 + '%' }}>
+                        <div className="card mb-3 bg-light" style={{ width: 100 + '%' }}>
                             <div className="card-header">
                                 {this.state.selectedSymbol}
                                 <button style={{ marginLeft: 3, border: 0 }} data-toggle="tooltip" title="Reload" className="btn btn-outline-info btn-sm" onClick={this.handleReloadSymbol}><i className="fas fa-sync" ></i></button>
@@ -164,7 +161,7 @@ class BinanceCoin extends React.Component<Props, State>{
 
                     {/* Chart panel */}
                     <div className="col-md-7">
-                        <div className="card mt-5 pr-1 pl-1" style={{ width: 100 + '%' }}>
+                        <div className="card pr-1 pl-1" style={{ width: 100 + '%' }}>
                             <div className="card-body">
                                 <CoinChart data={this.props.chartData} symbol={this.state.selectedSymbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
                             </div>
@@ -173,7 +170,7 @@ class BinanceCoin extends React.Component<Props, State>{
 
                     {/* Settings panel */}
                     <div className="col-md-3 pr-1 pl-1">
-                        <div className="card mt-5" style={{ width: 100 + '%' }}>
+                        <div className="card" style={{ width: 100 + '%' }}>
                             <div className="card-body">
                                 <h5 className="card-title">Settings</h5>
                                 <div className="row">
