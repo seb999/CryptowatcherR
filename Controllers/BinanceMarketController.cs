@@ -51,7 +51,22 @@ namespace cryptowatcherR.Controllers
             //Shorten Symbol
             Misc.Helper.ShortenSymbol(ref coinList, baseMarket);
 
+            //Add indicator for top 5
+            coinList.Take(5).Where(p=>GetTop10Indicator(p)).Select(p=>p).ToList();
+            
             return coinList;
+        }
+
+        private bool GetTop10Indicator(SymbolTransfer symbolTransfer)
+        {
+            symbolTransfer.Prediction = new List<PredictionTransfer>();
+            QuotationTransfer ct = GetIndicator(symbolTransfer.Symbol, "1d");
+            symbolTransfer.Rsi = ct.Rsi;
+            symbolTransfer.Macd = ct.Macd;
+            symbolTransfer.MacdSign = ct.MacdSign;
+            symbolTransfer.MacdHist = ct.MacdHist;
+            symbolTransfer.Prediction.Add(new PredictionTransfer(){FuturePrice = ct.FuturePrice });
+            return true;
         }
 
         [HttpGet("[action]/{symbol}/{interval}")]

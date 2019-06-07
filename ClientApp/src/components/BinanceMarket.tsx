@@ -124,13 +124,18 @@ class BinanceMarket extends React.Component<Props, State>{
                     <CoinIcon symbol={coin.symbolShort}></CoinIcon>
                     {coin.symbolShort}
                 </td>
-                <td>{Math.round(coin.volume).toLocaleString()}</td>
-                <td>{coin.lowPrice}</td>
-                <td>{coin.highPrice}</td>
+                <td className="d-none d-md-table-cell">{Math.round(coin.volume).toLocaleString()}</td>
+                <td className="d-none d-md-table-cell">{coin.lowPrice}</td>
+                <td className="d-none d-md-table-cell">{coin.highPrice}</td>
                 <td>{coin.lastPrice}</td>
                 <td className={coin.priceChangePercent >= 0 ? "Up" : "Down"}>{coin.priceChangePercent}</td>
                 <td>
-                    {coin.rsi === 0 ? "--":
+                    {coin.rsi === 0 ?
+                        <div>
+                            <div style={{ float: "left" }}>...</div>
+                            <div style={{float: "right" }}>...</div>
+                        </div>
+                        :
                         <div>
                             <div style={{ float: "left" }}>{coin.rsi}</div>
                             <div style={{ fontSize: 10, float: "right" }}> Macd {coin.macd} <br />Sign {coin.macdSign} <br />Hist {coin.macdHist}
@@ -139,7 +144,7 @@ class BinanceMarket extends React.Component<Props, State>{
                     }
                 </td>
                 <td>
-                    {coin.prediction === null ? <i className="fas fa-random" style={{color: "grey"}}></i> :
+                    {coin.prediction === null ? "..." :
                         coin.prediction[0].futurePrice == 0 ? "N/A" :
                             coin.prediction[0].futurePrice > 0 ? <i className="fas fa-arrow-up" style={{ color: 'green' }}></i> :
                                 coin.prediction[0].futurePrice < 0 ? <i className="fas fa-arrow-down" style={{ color: 'red' }}></i> : ""
@@ -155,7 +160,7 @@ class BinanceMarket extends React.Component<Props, State>{
                     <DropDown spin={this.state.showSpinner} itemList={this.state.marketList} onClick={this.handleChangeReferenceCoin} selectedItem={this.state.marketSelected}></DropDown>
                 </div>
 
-                <div className="input-group mb-1 mt-1" style={{ float: "right", width: 300 }}>
+                <div className="input-group mb-1 mt-1" style={{ float: "right", width: 200 }}>
                     <input type="text" className="form-control" placeholder="Search crypto" aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
                 </div>
                 <div style={{ opacity: this.state.opacity }} >
@@ -163,14 +168,14 @@ class BinanceMarket extends React.Component<Props, State>{
                         <thead className="thead thead-light">
                             <tr>
                                 <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[0].visibility} /></th>
-                                <th scope="col" id="volume" onClick={this.handleSort} className="tableTh">Volume<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[1].visibility} /></th>
-                                <th scope="col" id="lower" onClick={this.handleSort} className="tableTh">Lower<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[2].visibility} /></th>
-                                <th scope="col" id="higher" onClick={this.handleSort} className="tableTh">Higher<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[3].visibility} /></th>
+                                <th scope="col" id="volume" onClick={this.handleSort} className="tableTh d-none d-md-table-cell" >Volume<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[1].visibility} /></th>
+                                <th scope="col" id="lower" onClick={this.handleSort} className="tableTh d-none d-md-table-cell">Lower<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[2].visibility} /></th>
+                                <th scope="col" id="higher" onClick={this.handleSort} className="tableTh d-none d-md-table-cell">Higher<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[3].visibility} /></th>
                                 <th scope="col" id="last" onClick={this.handleSort} className="tableTh">Last<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[4].visibility} /></th>
                                 <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[5].visibility} /></th>
                                 <th scope="col" id="rsi">RSI / MACD</th>
                                 <th>Future</th>
-                                <th style={{width:20}}></th>
+                                <th style={{ width: 20 }}></th>
                             </tr>
                         </thead>
                         <tbody>
