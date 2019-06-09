@@ -6,12 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using cryptowatcherR.Misc;
 using cryptowatcherR.ClassTransfer;
 using Newtonsoft.Json;
+using cryptowatcherR.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace cryptowatcherR.Controllers
 {
     [Route("api/[controller]")]
     public class BinanceMarketController : Controller
     {
+         private readonly AppDbContext appDbContext;
+
+        public BinanceMarketController([FromServices] AppDbContext context)
+        {
+             appDbContext = context;
+        }
         /// <summary>
         /// Return list of coin with last value for default page
         /// </summary>
@@ -24,6 +32,12 @@ namespace cryptowatcherR.Controllers
 
             // //Get data from Binance API
             List<SymbolTransfer> coinList = HttpHelper.GetApiData<List<SymbolTransfer>>(apiUrl);
+
+             //Shorten Symbol
+            Misc.Helper.ShortenSymbol(ref coinList);
+
+            //Save symbolList in db
+            SaveNewCurrency(coinList);
 
             //Filter result
             if (baseMarket == BaseMarket.BNB ||  baseMarket == BaseMarket.BTC || baseMarket == BaseMarket.USDT)
@@ -48,11 +62,10 @@ namespace cryptowatcherR.Controllers
             //     Symbol = "ADAUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
             // });
 
-            //Shorten Symbol
-            Misc.Helper.ShortenSymbol(ref coinList, baseMarket);
+           
 
             //Add indicator for top 5
-            coinList.Take(5).Where(p=>GetTop10Indicator(p)).Select(p=>p).ToList();
+            coinList.Take(1).Where(p=>GetTop10Indicator(p)).Select(p=>p).ToList();
             
             return coinList;
         }
@@ -164,5 +177,42 @@ namespace cryptowatcherR.Controllers
 
             return coin;
         }
+    
+        [HttpGet]
+        [Route("GetNewCurrencyList")]
+        public List<Currency> GetNewCurrencyList()
+        {
+            try
+            {
+                //List new currency that are not older than 7 days 
+                List<Currency> localCurrencyList = 
+                    appDbContext.Currency.Where(p=>DateTime.Compare(p.DateAdded.AddDays(7),DateTime.Now) >0 ).Select(p=>p).ToList();
+
+                return localCurrencyList; 
+            }
+            catch (System.Exception e)
+            {
+                //use Serilog to store error in file here
+                return new List<Currency>();
+            }
+        }
+
+         private void SaveNewCurrency(List<SymbolTransfer> coinList)
+        {
+            //List of currency in local db
+            List<Currency> localCurrencyList = appDbContext.Currency.Select(p=>p).ToList();
+
+                foreach (var item in coinList)
+                {    
+                    if(localCurrencyList.Where(p=>p.CurrencyName == item.SymbolShort).Select(p=>p.Id).FirstOrDefault() == 0)
+                    {
+                        appDbContext.Currency.Add(new Currency() { 
+                           // CurrencyId = item..Id , 
+                            CurrencyName = item.SymbolShort,
+                            DateAdded = DateTime.Now});
+                    }
+                }
+                appDbContext.SaveChanges();
+            }
+        }
     }
-}

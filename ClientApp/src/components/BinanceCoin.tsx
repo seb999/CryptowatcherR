@@ -5,6 +5,7 @@ import { coinTransfer } from '../class/coinTransfer'
 import * as binanceActionCreator from '../actions/actions';
 import DropDown from './Element/DropDown'
 import CoinChart from './Element/CoinChart'
+import GaugeChart from './Element/GaugeChart'
 import { symbolTransfer } from '../class/symbolTransfer'
 import { predictionTransfer } from '../class/predictionTransfer'
 import './Css/BinanceCoin.css';
@@ -54,9 +55,7 @@ class BinanceCoin extends React.Component<Props, State>{
     componentDidMount() {
         this.props.getData(this.props.match.params.symbol, '1d');
         this.props.getSymbolList("USDT");
-        // this.props.getSymbol(this.props.match.params.symbol);
         this.props.getChartData(this.props.match.params.symbol, '1d');
-        // this.props.getPrediction(this.props.match.params.symbol);
         this.setState({
             selectedSymbol: this.props.match.params.symbol,
         })
@@ -89,7 +88,6 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     handleReloadSymbol = (p: any) => {
-        // this.props.getSymbol(this.state.selectedSymbol);
         this.props.getData(this.state.selectedSymbol, this.state.chartIntervalSelected);
         this.setState({
             showSpinner: true,
@@ -97,14 +95,13 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     handleChangeSymbol = (selectedSymbol: any) => {
+        console.log(selectedSymbol);
         this.setState({
             selectedSymbol: selectedSymbol,
             showSpinner: true,
         })
         this.props.getChartData(selectedSymbol, this.state.chartIntervalSelected);
         this.props.getData(selectedSymbol, this.state.chartIntervalSelected);
-        // this.props.getPrediction(selectedSymbol);
-        // this.props.getSymbol(selectedSymbol);
     }
 
     render() {
@@ -114,7 +111,7 @@ class BinanceCoin extends React.Component<Props, State>{
         
         let displaySymbolList = this.props.symbolList.map((coin, index) => (
             <button type="button" className="list-group-item list-group-item-action" onClick={() => this.handleChangeSymbol(coin.symbol)} >
-                {coin.symbol}
+                {coin.symbolShort}
             </button>
         ));
 
@@ -133,7 +130,7 @@ class BinanceCoin extends React.Component<Props, State>{
 
             <div>
                 <div className="row">
-
+                   
                     {/* Coin selector panel */}
                     <div className="col-md-2 pr-1 pl-1">
                         <div className="card mb-3 bg-light" style={{ width: 100 + '%' }}>
@@ -192,7 +189,9 @@ class BinanceCoin extends React.Component<Props, State>{
                                 <h5 className="card-title">
                                     AI prediction
                                     {this.state.showSpinner ? <div className="d-flex float-right"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
+                                    <GaugeChart />                                
                                 </h5>
+                                
                                 {this.props.prediction.length > 0 ?
                                     <table className="table" >
                                         <thead className="thead">
