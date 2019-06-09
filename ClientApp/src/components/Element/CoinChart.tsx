@@ -2,6 +2,10 @@ import * as React from 'react';
 import { coinTransfer } from '../../class/coinTransfer'
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
+// import DarkUnica from 'highcharts/themes/dark-unica';  //For Mikeldi if you want a dark Highchart background
+import DarkUnica from 'highcharts/themes/grid-light'; 
+
+DarkUnica(Highcharts);
 
 interface Props {
     data: Array<coinTransfer>,
