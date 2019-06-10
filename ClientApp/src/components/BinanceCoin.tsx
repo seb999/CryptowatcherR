@@ -6,6 +6,7 @@ import * as binanceActionCreator from '../actions/actions';
 import DropDown from './Element/DropDown'
 import CoinChart from './Element/CoinChart'
 import GaugeChart from './Element/GaugeChart'
+import Autocomplete from './Element/Autocomplete'
 import { symbolTransfer } from '../class/symbolTransfer'
 import { predictionTransfer } from '../class/predictionTransfer'
 import './Css/BinanceCoin.css';
@@ -70,10 +71,6 @@ class BinanceCoin extends React.Component<Props, State>{
         }
     }
 
-    handleFilterChange = (e: any) => {
-        this.props.filterList(e.target.value);
-    }
-
     handleChartIntervalChange = (e: any) => {
         this.props.getChartData(this.state.selectedSymbol, e);
         this.setState({
@@ -94,8 +91,9 @@ class BinanceCoin extends React.Component<Props, State>{
         })
     }
 
-    handleChangeSymbol = (selectedSymbol: any) => {
-        console.log(selectedSymbol);
+    handleChangeSymbol = (p: any) => {
+        if(p.length == 0) return;
+        var selectedSymbol = p[0].symbol;
         this.setState({
             selectedSymbol: selectedSymbol,
             showSpinner: true,
@@ -108,12 +106,6 @@ class BinanceCoin extends React.Component<Props, State>{
         let displayPriceChangePourcentage = this.props.symbolData.priceChangePercent >= 0 ?
             <h5 className="Up card-title">{this.props.symbolData.priceChangePercent} %</h5> :
             <h5 className="Down card-title">{this.props.symbolData.priceChangePercent} %</h5>
-
-        let displaySymbolList = this.props.symbolList.map((coin, index) => (
-            <button type="button" className="list-group-item list-group-item-action" onClick={() => this.handleChangeSymbol(coin.symbol)} >
-                {coin.symbolShort}
-            </button>
-        ));
 
         let predictionList = this.props.prediction.map((model, index) => (
             <tr key={index}>
@@ -129,6 +121,7 @@ class BinanceCoin extends React.Component<Props, State>{
         return (
 
             <div>
+
                 <div className="row mr-1 ml-1">
 
                     {/* Coin selector panel */}
@@ -145,15 +138,7 @@ class BinanceCoin extends React.Component<Props, State>{
                                 <div className="card-text"> {this.props.symbolData.lastPrice}</div>
                             </div>
                         </div>
-                        <div className="list-group mb-2">
-                            <div className="input-group mb-2">
-                                <input type="text" className="form-control" placeholder="Search..." aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
-                            </div>
-                            <div className="ScrollBar">
-                                {displaySymbolList}
-                            </div>
-
-                        </div>
+                        <Autocomplete symbolList={this.props.symbolList} onClick={this.handleChangeSymbol} multiple={false} />
                     </div>
 
                     {/* Chart panel */}
@@ -170,9 +155,9 @@ class BinanceCoin extends React.Component<Props, State>{
                                     </div>
                                 </div>
                                 <div className="row">
-                                <div className="col-md-12">
-                                    <CoinChart data={this.props.chartData} symbol={this.state.selectedSymbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
-                                </div>
+                                    <div className="col-md-12">
+                                        <CoinChart data={this.props.chartData} symbol={this.state.selectedSymbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -7,10 +7,12 @@ import './Css/BinanceMarket.css';
 import Sorter from './Element/Sorter'
 import DropDown from './Element/DropDown'
 import CoinIcon from './Element/CoinIcon'
+import Autocomplete from './Element/Autocomplete';
 
 interface AppFnProps {
     getSymbolList(baseMarket: string): void;
     filterList(symbol: string): void;
+    filterList2(symbolList: []): void;
     sortList(columnName: string, sortDirection: number): void;
     getIndicator(symbol: string, interval: string): void;
 }
@@ -18,6 +20,7 @@ interface AppFnProps {
 interface AppObjectProps {
     history?: any;
     symbolList: Array<symbolTransfer>;
+    symbolListInitial: Array<symbolTransfer>;
 }
 
 interface Props
@@ -105,7 +108,7 @@ class BinanceMarket extends React.Component<Props, State>{
     }
 
     handleFilterChange = (e: any) => {
-        this.props.filterList(e.target.value);
+        this.props.filterList2(e);
     }
 
     handleShowCoinDetail = (symbol: any) => {
@@ -133,7 +136,7 @@ class BinanceMarket extends React.Component<Props, State>{
                     {coin.rsi === 0 ?
                         <div>
                             <div style={{ float: "left" }}>...</div>
-                            <div style={{float: "right" }}>...</div>
+                            <div style={{ float: "right" }}>...</div>
                         </div>
                         :
                         <div>
@@ -159,9 +162,8 @@ class BinanceMarket extends React.Component<Props, State>{
                 <div style={{ float: "left" }}>
                     <DropDown spin={this.state.showSpinner} itemList={this.state.marketList} onClick={this.handleChangeReferenceCoin} selectedItem={this.state.marketSelected}></DropDown>
                 </div>
-
-                <div className="input-group mb-1 mt-1" style={{ float: "right", width: 200 }}>
-                    <input type="text" className="form-control" placeholder="Search crypto" aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
+                <div className="mb-1 mt-1" style={{ float: "right", minWidth: 350, maxWidth:500 }}>
+                    <Autocomplete symbolList={this.props.symbolListInitial} onClick={this.handleFilterChange} multiple={true} />
                 </div>
                 <div style={{ opacity: this.state.opacity }} >
                     <table className="table table-striped" >
@@ -192,6 +194,7 @@ class BinanceMarket extends React.Component<Props, State>{
 const mapStateToProps = (state: any) => {
     return {
         symbolList: state.symbolList,
+        symbolListInitial: state.symbolListInitial,
     }
 }
 
@@ -201,6 +204,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
         sortList: (columnName: string, sortDirection: number) => dispatch<any>(binanceActionCreator.binanceActions.SortList(columnName, sortDirection)),
         filterList: (p: string) => dispatch<any>(binanceActionCreator.binanceActions.FilterList(p)),
         getIndicator: (symbol: string, interval: string) => dispatch<any>(binanceActionCreator.binanceActions.GetIndicator(symbol, interval)),
+        filterList2: (p: []) => dispatch<any>(binanceActionCreator.binanceActions.FilterList2(p)),
     }
 }
 

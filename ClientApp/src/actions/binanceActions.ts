@@ -92,3 +92,10 @@ export const FilterList = (data: any) => {
     payload: data
   }
 }
+
+  export const FilterList2 = (data: any) => {
+    return {
+      type: "BINANCE_SYMBOL_LIST_FILTER2",
+      payload: data
+    }
+}
