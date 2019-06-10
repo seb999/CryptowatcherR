@@ -20,7 +20,7 @@ class Autocomplete extends React.Component<Props, State> {
 
     render() {
         return (
-            <Typeahead id="assignedToTypeahead" multiple={this.props.multiple} labelKey="symbolShort" options={this.props.symbolList} placeholder="search for crypto..." onChange={(p: any) => this.props.onClick(p)} />
+            <Typeahead id="assignedToTypeahead" multiple={this.props.multiple} labelKey="symbolShort" options={this.props.symbolList} placeholder="Search crypto..." onChange={(p: any) => this.props.onClick(p)} />
         );
     }
 }

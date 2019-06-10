@@ -179,8 +179,8 @@ namespace cryptowatcherR.Controllers
         }
     
         [HttpGet]
-        [Route("GetNewCurrencyList")]
-        public List<Currency> GetNewCurrencyList()
+        [HttpGet("[action]")]
+        public List<string> GetNewCurrencyList()
         {
             try
             {
@@ -188,12 +188,12 @@ namespace cryptowatcherR.Controllers
                 List<Currency> localCurrencyList = 
                     appDbContext.Currency.Where(p=>DateTime.Compare(p.DateAdded.AddDays(7),DateTime.Now) >0 ).Select(p=>p).ToList();
 
-                return localCurrencyList; 
+                return localCurrencyList.Select(p=>p.CurrencyName).ToList(); 
             }
             catch (System.Exception e)
             {
                 //use Serilog to store error in file here
-                return new List<Currency>();
+                return new List<string>();
             }
         }
 

@@ -3,14 +3,14 @@ import './../Css/GaugeChart.css'
 import { predictionTransfer } from '../../class/predictionTransfer';
 
 interface Props {
-    prediction: Array<predictionTransfer>;
+    predictionList: Array<predictionTransfer>;
 }
 
 interface State {
     to : string;
 }
 
-class GaugeChart extends React.Component<Props, State> {
+class GaugePrediction extends React.Component<Props, State> {
     svgAnimate : any;
     constructor(props: any) {
         super(props);
@@ -25,9 +25,9 @@ class GaugeChart extends React.Component<Props, State> {
     }
 
     componentDidUpdate(nextProps: any) {
-        if (this.props.prediction != nextProps.prediction) {
+        if (this.props.predictionList != nextProps.predictionList) {
             var temp : number = 0;
-            this.props.prediction.map((item, index) => (
+            this.props.predictionList.map((item, index) => (
                 item.futurePrice > 0 ? temp++ : temp
              ));
 
@@ -63,4 +63,4 @@ class GaugeChart extends React.Component<Props, State> {
     }
 }
 
-export default GaugeChart
+export default GaugePrediction

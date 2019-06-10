@@ -79,6 +79,25 @@ export const GetChartDataSuccess = (data: any) => {
   }
 }
 
+export const GetNewCurrencyList = () => {
+  return async (dispatch: any) => {
+    try {
+      const res = await axios.get<any>(cryptowatcherApiUrl + "GetNewCurrencyList");
+      return dispatch(GetNewCurrencyListSuccess(res.data));
+    }
+    catch (error) {
+      throw (error)
+    }
+  }
+}
+
+export const GetNewCurrencyListSuccess = (data: any) => {
+  return {
+    type: "BINANCE_NEW_CURRENCY_LIST",
+    payload: data
+  }
+}
+
 export const SortList = (columnName: string, sortDirection: number) => {
   return {
     type: "BINANCE_SYMBOL_LIST_SORT",

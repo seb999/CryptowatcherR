@@ -5,7 +5,8 @@ import { coinTransfer } from '../class/coinTransfer'
 import * as binanceActionCreator from '../actions/actions';
 import DropDown from './Element/DropDown'
 import CoinChart from './Element/CoinChart'
-import GaugeChart from './Element/GaugeChart'
+import GaugeIndicator from './Element/GaugeIndicator'
+import GaugePrediction from './Element/GaugePrediction'
 import Autocomplete from './Element/Autocomplete'
 import { symbolTransfer } from '../class/symbolTransfer'
 import { predictionTransfer } from '../class/predictionTransfer'
@@ -171,7 +172,7 @@ class BinanceCoin extends React.Component<Props, State>{
                                 <h5 className="card-title">
                                     AI prediction
                                     {this.state.showSpinner ? <div className="d-flex float-right"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
-                                    <GaugeChart prediction={this.props.prediction} />
+                                    <GaugePrediction predictionList={this.props.prediction}/>
                                 </h5>
 
                                 {this.props.prediction.length > 0 ?
@@ -198,7 +199,7 @@ class BinanceCoin extends React.Component<Props, State>{
                                 <h5 className="card-title">
                                     Indicators
                                     {this.state.showSpinner ? <div className="d-flex float-right"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
-                                    <GaugeChart prediction={this.props.prediction} />
+                                    <GaugeIndicator indicatorList={this.props.symbolData} />
                                 </h5>
                                 <div className="row" style={{ fontSize: 'smaller' }}>
                                     <div className="col-md-8">Rsi(14)</div>

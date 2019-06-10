@@ -10,13 +10,18 @@ const initState = {
   chartData: new Array<coinTransfer>(),
   indicatorTransfer: any,
   prediction: [] as any,
-  symbolData: any
+  symbolData: any,
+  newCurrencyList : new Array<string>(),
 }
 
 const rootReducer = (state = initState, action: any) => {
   const newState = { ...state };
 
   switch (action.type) {
+
+    case "BINANCE_NEW_CURRENCY_LIST":
+      newState.newCurrencyList = action.payload;
+      return newState
 
     case "BINANCE_SYMBOL_DATA":
       newState.symbolData = action.payload;
