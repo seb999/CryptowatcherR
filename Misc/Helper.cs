@@ -7,18 +7,28 @@ using cryptowatcherR.ClassTransfer;
 namespace cryptowatcherR.Misc
 {
     public static class Helper{
-        public static void ShortenSymbol(ref List<SymbolTransfer> coinList, BaseMarket baseMarket)
+        public static void ShortenSymbol(ref List<SymbolTransfer> coinList)
         {
             foreach (var item in coinList)
             {
-                if(item.Symbol.Substring(item.Symbol.Length-3) == BaseMarket.BNB.ToString()
-                ||item.Symbol.Substring(item.Symbol.Length-3) == BaseMarket.BTC.ToString())
+                 item.SymbolShort = item.Symbol;
+
+                if(item.Symbol.Substring(item.Symbol.Length-3) == BaseMarket.ETH.ToString())
                 {
-                    item.SymbolShort = item.Symbol.Substring(0, item.Symbol.Length-3) + "/" + baseMarket.ToString();
+                     item.SymbolShort = item.Symbol.Substring(0, item.Symbol.Length-3) + "/" + BaseMarket.ETH.ToString();
+                }
+
+                if(item.Symbol.Substring(item.Symbol.Length-3) == BaseMarket.BNB.ToString())
+                {
+                    item.SymbolShort = item.Symbol.Substring(0, item.Symbol.Length-3) + "/" + BaseMarket.BNB.ToString();
+                }
+                if (item.Symbol.Substring(item.Symbol.Length-3) == BaseMarket.BTC.ToString())
+                {
+                    item.SymbolShort = item.Symbol.Substring(0, item.Symbol.Length-3) + "/" + BaseMarket.BTC.ToString();
                 }
                 if(item.Symbol.Substring(item.Symbol.Length-4) == BaseMarket.USDT.ToString())
                 {
-                    item.SymbolShort = item.Symbol.Substring(0, item.Symbol.Length-4) + "/" + baseMarket.ToString();
+                    item.SymbolShort = item.Symbol.Substring(0, item.Symbol.Length-4) + "/" + BaseMarket.USDT.ToString();
                 }
             }
         }

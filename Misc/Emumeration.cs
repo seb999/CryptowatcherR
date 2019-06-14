@@ -8,6 +8,7 @@ namespace cryptowatcherR.Misc
     {
         USDT,
         BTC,
-        BNB
+        BNB,
+        ETH
     }
 }

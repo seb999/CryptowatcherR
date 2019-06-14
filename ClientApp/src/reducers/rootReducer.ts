@@ -10,13 +10,18 @@ const initState = {
   chartData: new Array<coinTransfer>(),
   indicatorTransfer: any,
   prediction: [] as any,
-  symbolData: any
+  symbolData: any,
+  newCurrencyList : new Array<string>(),
 }
 
 const rootReducer = (state = initState, action: any) => {
   const newState = { ...state };
 
   switch (action.type) {
+
+    case "BINANCE_NEW_CURRENCY_LIST":
+      newState.newCurrencyList = action.payload;
+      return newState
 
     case "BINANCE_SYMBOL_DATA":
       newState.symbolData = action.payload;
@@ -48,6 +53,20 @@ const rootReducer = (state = initState, action: any) => {
     case "BINANCE_SYMBOL_LIST_FILTER":
       newState.symbolList = newState.symbolListInitial;
       newState.symbolList = newState.symbolList.filter(p => p.symbol.toLowerCase().substr(0, action.payload.length) == action.payload.toLowerCase());
+      return newState;
+
+    case "BINANCE_SYMBOL_LIST_FILTER2":
+      // if no selection we return the original list
+      if (action.payload.length == 0) {
+        newState.symbolList = newState.symbolListInitial;
+      }
+      else {
+        newState.symbolList = [];
+        action.payload.map((coin: any, index: any) => {
+          var item = newState.symbolListInitial.filter(p => p.symbol.toLowerCase().substr(0, coin.symbol.length) == coin.symbol.toLowerCase());
+          newState.symbolList.push(item[0]);
+        });
+      }
       return newState;
 
     case "BINANCE_SYMBOL_LIST_SORT":

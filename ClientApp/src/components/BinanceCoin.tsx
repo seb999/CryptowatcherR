@@ -5,6 +5,9 @@ import { coinTransfer } from '../class/coinTransfer'
 import * as binanceActionCreator from '../actions/actions';
 import DropDown from './Element/DropDown'
 import CoinChart from './Element/CoinChart'
+import GaugeIndicator from './Element/GaugeIndicator'
+import GaugePrediction from './Element/GaugePrediction'
+import Autocomplete from './Element/Autocomplete'
 import { symbolTransfer } from '../class/symbolTransfer'
 import { predictionTransfer } from '../class/predictionTransfer'
 import './Css/BinanceCoin.css';
@@ -20,7 +23,7 @@ interface AppObjectProps {
     prediction: Array<predictionTransfer>;
     symbolList: Array<symbolTransfer>;
     symbolData: symbolTransfer,
-    chartData:  Array<coinTransfer>;
+    chartData: Array<coinTransfer>;
 }
 
 interface Props
@@ -54,9 +57,7 @@ class BinanceCoin extends React.Component<Props, State>{
     componentDidMount() {
         this.props.getData(this.props.match.params.symbol, '1d');
         this.props.getSymbolList("USDT");
-        // this.props.getSymbol(this.props.match.params.symbol);
         this.props.getChartData(this.props.match.params.symbol, '1d');
-        // this.props.getPrediction(this.props.match.params.symbol);
         this.setState({
             selectedSymbol: this.props.match.params.symbol,
         })
@@ -69,10 +70,6 @@ class BinanceCoin extends React.Component<Props, State>{
                 showSpinner: false,
             })
         }
-    }
-
-    handleFilterChange = (e: any) => {
-        this.props.filterList(e.target.value);
     }
 
     handleChartIntervalChange = (e: any) => {
@@ -89,34 +86,27 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     handleReloadSymbol = (p: any) => {
-        // this.props.getSymbol(this.state.selectedSymbol);
         this.props.getData(this.state.selectedSymbol, this.state.chartIntervalSelected);
         this.setState({
             showSpinner: true,
         })
     }
 
-    handleChangeSymbol = (selectedSymbol: any) => {
+    handleChangeSymbol = (p: any) => {
+        if(p.length == 0) return;
+        var selectedSymbol = p[0].symbol;
         this.setState({
             selectedSymbol: selectedSymbol,
             showSpinner: true,
         })
         this.props.getChartData(selectedSymbol, this.state.chartIntervalSelected);
         this.props.getData(selectedSymbol, this.state.chartIntervalSelected);
-        // this.props.getPrediction(selectedSymbol);
-        // this.props.getSymbol(selectedSymbol);
     }
 
     render() {
         let displayPriceChangePourcentage = this.props.symbolData.priceChangePercent >= 0 ?
-        <h5 className="Up card-title">{this.props.symbolData.priceChangePercent} %</h5> :
-        <h5 className="Down card-title">{this.props.symbolData.priceChangePercent} %</h5>
-        
-        let displaySymbolList = this.props.symbolList.map((coin, index) => (
-            <button type="button" className="list-group-item list-group-item-action" onClick={() => this.handleChangeSymbol(coin.symbol)} >
-                {coin.symbol}
-            </button>
-        ));
+            <h5 className="Up card-title">{this.props.symbolData.priceChangePercent} %</h5> :
+            <h5 className="Down card-title">{this.props.symbolData.priceChangePercent} %</h5>
 
         let predictionList = this.props.prediction.map((model, index) => (
             <tr key={index}>
@@ -132,7 +122,8 @@ class BinanceCoin extends React.Component<Props, State>{
         return (
 
             <div>
-                <div className="row">
+
+                <div className="row mr-1 ml-1">
 
                     {/* Coin selector panel */}
                     <div className="col-md-2 pr-1 pl-1">
@@ -148,51 +139,42 @@ class BinanceCoin extends React.Component<Props, State>{
                                 <div className="card-text"> {this.props.symbolData.lastPrice}</div>
                             </div>
                         </div>
-                        <div className="list-group mb-2">
-                            <div className="input-group mb-2">
-                                <input type="text" className="form-control" placeholder="Search..." aria-label="Search crypto" aria-describedby="basic-addon2" onChange={this.handleFilterChange}></input>
-                            </div>
-                            <div className="ScrollBar">
-                                {displaySymbolList}
-                            </div>
-
-                        </div>
+                        <Autocomplete symbolList={this.props.symbolList} onClick={this.handleChangeSymbol} multiple={false} />
                     </div>
 
                     {/* Chart panel */}
-                    <div className="col-md-7">
-                        <div className="card pr-1 pl-1" style={{ width: 100 + '%' }}>
+                    <div className="col-md-7 pr-1 pl-1">
+                        <div className="card mb-3" style={{ width: 100 + '%' }}>
                             <div className="card-body">
-                                <CoinChart data={this.props.chartData} symbol={this.state.selectedSymbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Settings panel */}
-                    <div className="col-md-3 pr-1 pl-1">
-                        <div className="card" style={{ width: 100 + '%' }}>
-                            <div className="card-body">
-                                <h5 className="card-title">Settings</h5>
                                 <div className="row">
-                                    <div className="col-md-5">Interval</div>
-                                    <div className="col-md-7"><DropDown spin={false} itemList={this.state.chartIntervalList} onClick={this.handleChartIntervalChange} selectedItem={this.state.chartIntervalSelected}></DropDown></div>
+                                    <div className="col-md-2">
+                                        Interval  <DropDown spin={false} itemList={this.state.chartIntervalList} onClick={this.handleChartIntervalChange} selectedItem={this.state.chartIntervalSelected}></DropDown>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        Indicators <DropDown spin={false} itemList={this.state.chartIndicatorList} onClick={this.handleChartIndicatorChange} selectedItem={this.state.chartIndicatorSelected}></DropDown>
+                                    </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-md-5">indicators</div>
-                                    <div className="col-md-7">
-                                        <DropDown spin={false} itemList={this.state.chartIndicatorList} onClick={this.handleChartIndicatorChange} selectedItem={this.state.chartIndicatorSelected}></DropDown>
+                                    <div className="col-md-12">
+                                        <CoinChart data={this.props.chartData} symbol={this.state.selectedSymbol} indicator={this.state.chartIndicatorSelected}  ></CoinChart>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+
+                    <div className="col-md-3 pr-1 pl-1">
                         {/* Prediction panel */}
-                        <div className="card mt-3 pr-1 pl-1" style={{ width: 100 + '%' }}>
+                        <div className="card" style={{ width: 100 + '%' }}>
                             <div className="card-body">
                                 <h5 className="card-title">
                                     AI prediction
                                     {this.state.showSpinner ? <div className="d-flex float-right"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
+                                    <GaugePrediction predictionList={this.props.prediction}/>
                                 </h5>
+
                                 {this.props.prediction.length > 0 ?
                                     <table className="table" >
                                         <thead className="thead">
@@ -212,12 +194,12 @@ class BinanceCoin extends React.Component<Props, State>{
                         </div>
 
                         {/* Indicators panel */}
-                        <div className="card mt-3 mb-3 pr-1 pl-1" style={{ width: 100 + '%' }}>
+                        <div className="card mt-3 mb-3" style={{ width: 100 + '%' }}>
                             <div className="card-body">
                                 <h5 className="card-title">
                                     Indicators
                                     {this.state.showSpinner ? <div className="d-flex float-right"><span className="spinner-border text-info" role="status" aria-hidden="true"></span></div> : ""}
-
+                                    <GaugeIndicator indicatorList={this.props.symbolData} />
                                 </h5>
                                 <div className="row" style={{ fontSize: 'smaller' }}>
                                     <div className="col-md-8">Rsi(14)</div>
@@ -238,10 +220,10 @@ class BinanceCoin extends React.Component<Props, State>{
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-            </div>
+            </div >
+
         )
     }
 }
