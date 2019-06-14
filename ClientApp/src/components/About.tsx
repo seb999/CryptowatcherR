@@ -14,13 +14,15 @@ class About extends React.Component<Props, State>{
 
     render(){
         return (
+            <div className="container">
             <div>
                 <div className="jumbotron">
                     <h1 className="display-4">Cryptowatcher 2.0</h1>
-                    <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                    <p className="lead">We trained AI models based on last 20 000 quotations points for each crypto currencies </p>
                     <hr className="my-4"></hr>
-                    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                    <p>The result is a predictive quotation dashboard for the most commun cryptos/pair from Binance market</p>
                 </div>
+            </div>
             </div>
         )
     }
