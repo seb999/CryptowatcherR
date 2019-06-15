@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom'
-import logo from '../images/Logo.png'
+import logo from '../images/LogoCryptowatcher-inv.png'
 import './Css/NavBar.css';
 import MyNavLink from './Element/MyNavLink'
 
@@ -23,7 +23,7 @@ class NavBar extends React.Component<Props, State> {
   }
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar transparent navbar-expand-lg navbar-dark bg-dark">
         <a className="navbar-brand d-none d-md-table-cell" href="/"><img src={logo} className="logo" /></a>
         <h3 className="brand" style={{color : "white"}}>Cryptowatcher 2.0</h3>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

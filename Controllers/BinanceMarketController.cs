@@ -200,7 +200,7 @@ namespace cryptowatcherR.Controllers
          private void SaveNewCurrency(List<SymbolTransfer> coinList)
         {
             //List of currency in local db
-            List<Currency> localCurrencyList = appDbContext.Currency.Select(p=>p).ToList();
+            //List<Currency> localCurrencyList = appDbContext.Currency.Select(p=>p).ToList();
 
                 foreach (var item in coinList)
                 {    
