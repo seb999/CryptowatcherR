@@ -190,7 +190,7 @@ namespace cryptowatcherR.Controllers
 
                 return localCurrencyList.Select(p=>p.CurrencyName).ToList(); 
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
                 //use Serilog to store error in file here
                 return new List<string>();

@@ -70,6 +70,8 @@ class BinanceMarket extends React.Component<Props, State>{
     componentDidMount() {
         this.props.getSymbolList("USDT");
         this.props.getNewCurrencyList();
+
+       // $('[data-toggle="tooltip"]').tooltip();
     }
 
     componentDidUpdate(nextProps: any) {
@@ -177,8 +179,8 @@ class BinanceMarket extends React.Component<Props, State>{
             <div>
                 <div style={{ position: "absolute", zIndex: 99, top: 150, right: 10 }}>
                     <Toast onClose={handleClose} show={this.state.showToast} transition={false} delay={6000} autohide>
-                        <Toast.Header className="bg-light">
-                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+                        <Toast.Header className="bg-dark light">
+                           
                             <strong className="mr-auto">Info</strong>
                             <small>Binance</small>
                         </Toast.Header>
@@ -186,10 +188,10 @@ class BinanceMarket extends React.Component<Props, State>{
                     </Toast>
 
                 </div>
-                <div className="float-left">
+                <div className="float-md-left mb-1">
                     <DropDown spin={this.state.showSpinner} itemList={this.state.marketList} onClick={this.handleChangeReferenceCoin} selectedItem={this.state.marketSelected}></DropDown>
                 </div>
-                <div className="mb-1 mt-1 float-right col-md-3 pr-0 pl-0">
+                <div className="mb-1 float-md-right col-md-3 pr-0 pl-0">
                     <Autocomplete symbolList={this.props.symbolListInitial} onClick={this.handleFilterChange} multiple={true} />
                 </div>
                 <div style={{ opacity: this.state.opacity }} >
