@@ -5,7 +5,7 @@ class Footer extends React.Component {
 
     render() {
         return (
-            <footer className="bg-dark page-footer footer">
+            <footer className="page-footer footer">
                 <div className="row">
                     <div className="col-md-4"><h3 className="brand">Cryptowatcher 2.0</h3></div>
 
