@@ -2,10 +2,50 @@ import * as React from 'react';
 import { coinTransfer } from '../../class/coinTransfer'
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
-// import DarkUnica from 'highcharts/themes/dark-unica';  //For Mikeldi if you want a dark Highchart background
-import DarkUnica from 'highcharts/themes/grid-light'; 
+//import DarkUnica from 'highcharts/themes/dark-unica';  //For Mikeldi if you want a dark Highchart background
+import DarkUnica from 'highcharts/themes/dark-unica'; 
 
-DarkUnica(Highcharts);
+//DarkUnica(Highcharts);
+
+var ttt : any;
+ttt = {
+    colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', 
+             '#FF9655', '#FFF263', '#6AF9C4'],
+    chart: {
+        backgroundColor: {
+            linearGradient: [0, 0, 500, 500],
+            stops: [
+                [0, 'rgb(1, 1, 255)'],
+                [1, 'rgb(6, 240, 255)']
+            ]
+        },
+    },
+    title: {
+        style: {
+            color: '#000',
+            font: 'bold 16px "Trebuchet MS", Verdana, sans-serif'
+        }
+    },
+    subtitle: {
+        style: {
+            color: '#666666',
+            font: 'bold 12px "Trebuchet MS", Verdana, sans-serif'
+        }
+    },
+
+    legend: {
+        itemStyle: {
+            font: '9pt Trebuchet MS, Verdana, sans-serif',
+            color: 'black'
+        },
+        itemHoverStyle:{
+            color: 'gray'
+        }   
+    }
+};
+
+
+Highcharts.setOptions(ttt);
 
 interface Props {
     data: Array<coinTransfer>,

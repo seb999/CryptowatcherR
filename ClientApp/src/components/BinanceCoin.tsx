@@ -55,9 +55,9 @@ class BinanceCoin extends React.Component<Props, State>{
     }
 
     componentDidMount() {
-        this.props.getData(this.props.match.params.symbol, '1d');
-        this.props.getSymbolList("USDT");
-        this.props.getChartData(this.props.match.params.symbol, '1d');
+       // this.props.getData(this.props.match.params.symbol, '1d');
+       // this.props.getSymbolList("USDT");
+       // this.props.getChartData(this.props.match.params.symbol, '1d');
         this.setState({
             selectedSymbol: this.props.match.params.symbol,
         })
@@ -127,7 +127,7 @@ class BinanceCoin extends React.Component<Props, State>{
 
                     {/* Coin selector panel */}
                     <div className="col-md-2 pr-1 pl-1">
-                        <div className="card mb-3 bg-light" style={{ width: 100 + '%' }}>
+                        <div className="card mb-3" style={{ width: 100 + '%' }}>
                             <div className="card-header">
                                 {this.state.selectedSymbol}
                                 <button style={{ marginLeft: 3, border: 0 }} data-toggle="tooltip" title="Reload" className="btn btn-outline-info btn-sm" onClick={this.handleReloadSymbol}><i className="fas fa-sync" ></i></button>
@@ -144,7 +144,7 @@ class BinanceCoin extends React.Component<Props, State>{
 
                     {/* Chart panel */}
                     <div className="col-md-7 pr-1 pl-1">
-                        <div className="card mb-3" style={{ width: 100 + '%' }}>
+                        <div className="card mb-3">
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-md-2">

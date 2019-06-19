@@ -31,41 +31,41 @@ namespace cryptowatcherR.Controllers
             Uri apiUrl = new Uri("https://api.binance.com/api/v1/ticker/24hr");
 
             // //Get data from Binance API
-            List<SymbolTransfer> coinList = HttpHelper.GetApiData<List<SymbolTransfer>>(apiUrl);
+            //List<SymbolTransfer> coinList = HttpHelper.GetApiData<List<SymbolTransfer>>(apiUrl);
 
              //Shorten Symbol
-            Misc.Helper.ShortenSymbol(ref coinList);
+           // Misc.Helper.ShortenSymbol(ref coinList);
 
             //Save symbolList in db
-            SaveNewCurrency(coinList);
+            //SaveNewCurrency(coinList);
 
             //Filter result
-            if (baseMarket == BaseMarket.BNB ||  baseMarket == BaseMarket.BTC || baseMarket == BaseMarket.USDT)
-            {
-                coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - baseMarket.ToString().Length) == baseMarket.ToString()).Select(p => p).ToList();
-                //Remove obsolete coins
-                coinList = coinList.Where(p=>p.Volume != 0 && p.OpenPrice != 0).Select(p=>p).ToList();
-            }
+            // if (baseMarket == BaseMarket.BNB ||  baseMarket == BaseMarket.BTC || baseMarket == BaseMarket.USDT)
+            // {
+            //     coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - baseMarket.ToString().Length) == baseMarket.ToString()).Select(p => p).ToList();
+            //     //Remove obsolete coins
+            //     coinList = coinList.Where(p=>p.Volume != 0 && p.OpenPrice != 0).Select(p=>p).ToList();
+            // }
 
              //FOR OFFICE
-            //  List<SymbolTransfer> coinList = new List<SymbolTransfer>();
-            // coinList.Add(new SymbolTransfer()
-            // {
-            //     Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
-            // });
-            // coinList.Add(new SymbolTransfer()
-            // {
-            //     Symbol = "ETHUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
-            // });
-            //  coinList.Add(new SymbolTransfer()
-            // {
-            //     Symbol = "ADAUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
-            // });
+             List<SymbolTransfer> coinList = new List<SymbolTransfer>();
+            coinList.Add(new SymbolTransfer()
+            {
+                Symbol = "BTCUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            });
+            coinList.Add(new SymbolTransfer()
+            {
+                Symbol = "ETHUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            });
+             coinList.Add(new SymbolTransfer()
+            {
+                Symbol = "ADAUSDT", Volume = 999999, LastPrice = 99999, HighPrice = 99999, LowPrice = 99999, OpenPrice = 99999, PriceChangePercent = 10,
+            });
 
            
 
             //Add indicator for top 5
-            coinList.Take(1).Where(p=>GetTop10Indicator(p)).Select(p=>p).ToList();
+           // coinList.Take(1).Where(p=>GetTop10Indicator(p)).Select(p=>p).ToList();
             
             return coinList;
         }
@@ -200,19 +200,19 @@ namespace cryptowatcherR.Controllers
          private void SaveNewCurrency(List<SymbolTransfer> coinList)
         {
             //List of currency in local db
-            //List<Currency> localCurrencyList = appDbContext.Currency.Select(p=>p).ToList();
+            // List<Currency> localCurrencyList = appDbContext.Currency.Select(p=>p).ToList();
 
-                foreach (var item in coinList)
-                {    
-                    if(localCurrencyList.Where(p=>p.CurrencyName == item.SymbolShort).Select(p=>p.Id).FirstOrDefault() == 0)
-                    {
-                        appDbContext.Currency.Add(new Currency() { 
-                           // CurrencyId = item..Id , 
-                            CurrencyName = item.SymbolShort,
-                            DateAdded = DateTime.Now});
-                    }
-                }
-                appDbContext.SaveChanges();
-            }
+            //     foreach (var item in coinList)
+            //     {    
+            //         if(localCurrencyList.Where(p=>p.CurrencyName == item.SymbolShort).Select(p=>p.Id).FirstOrDefault() == 0)
+            //         {
+            //             appDbContext.Currency.Add(new Currency() { 
+            //                // CurrencyId = item..Id , 
+            //                 CurrencyName = item.SymbolShort,
+            //                 DateAdded = DateTime.Now});
+            //         }
+            //     }
+            //     appDbContext.SaveChanges();
+             }
         }
     }

@@ -23,7 +23,7 @@ class NavBar extends React.Component<Props, State> {
   }
   render() {
     return (
-      <nav className="navbar transparent navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar transparent navbar-expand-lg navbar-dark">
 
         <a className="navbar-brand" href="/"><img src={logo} className="logo" /></a>
 
