@@ -142,7 +142,7 @@ class BinanceMarket extends React.Component<Props, State>{
             <tr key={coin.symbol}>
                 <td>
                     <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={() => this.handleShowCoinDetail(coin.symbol)}><i className="fa fa-chart-line"></i></button>
-                    <CoinIcon symbol={coin.symbolShort}></CoinIcon>
+                    <CoinIcon symbol={coin.symbolShort} width={20} height={20}></CoinIcon>
                     {coin.symbolShort}
                 </td>
                 <td className="d-none d-md-table-cell">{Math.round(coin.volume).toLocaleString()}</td>
