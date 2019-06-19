@@ -30,16 +30,16 @@ namespace cryptowatcherR.Controllers
         {
             Uri apiUrl = new Uri("https://api.binance.com/api/v1/ticker/24hr");
 
-            // //Get data from Binance API
+            //Get data from Binance API
             List<SymbolTransfer> coinList = HttpHelper.GetApiData<List<SymbolTransfer>>(apiUrl);
 
-             //Shorten Symbol
-            Misc.Helper.ShortenSymbol(ref coinList);
+            // Shorten Symbol
+           Misc.Helper.ShortenSymbol(ref coinList);
 
             //Save symbolList in db
             SaveNewCurrency(coinList);
 
-            //Filter result
+           // Filter result
             if (baseMarket == BaseMarket.BNB ||  baseMarket == BaseMarket.BTC || baseMarket == BaseMarket.USDT)
             {
                 coinList = coinList.Where(p => p.Symbol.Substring(p.Symbol.Length - baseMarket.ToString().Length) == baseMarket.ToString()).Select(p => p).ToList();
@@ -65,7 +65,7 @@ namespace cryptowatcherR.Controllers
            
 
             //Add indicator for top 5
-            coinList.Take(1).Where(p=>GetTop10Indicator(p)).Select(p=>p).ToList();
+           // coinList.Take(1).Where(p=>GetTop10Indicator(p)).Select(p=>p).ToList();
             
             return coinList;
         }
@@ -175,6 +175,9 @@ namespace cryptowatcherR.Controllers
             AIController aiController = new AIController();
             coin.Prediction = aiController.GetPrediction(symbol, coin);
 
+            //Add short symbol
+            Misc.Helper.ShortenSymbol(ref coin);
+
             return coin;
         }
     
@@ -200,19 +203,19 @@ namespace cryptowatcherR.Controllers
          private void SaveNewCurrency(List<SymbolTransfer> coinList)
         {
             //List of currency in local db
-            //List<Currency> localCurrencyList = appDbContext.Currency.Select(p=>p).ToList();
+            // List<Currency> localCurrencyList = appDbContext.Currency.Select(p=>p).ToList();
 
-                foreach (var item in coinList)
-                {    
-                    if(localCurrencyList.Where(p=>p.CurrencyName == item.SymbolShort).Select(p=>p.Id).FirstOrDefault() == 0)
-                    {
-                        appDbContext.Currency.Add(new Currency() { 
-                           // CurrencyId = item..Id , 
-                            CurrencyName = item.SymbolShort,
-                            DateAdded = DateTime.Now});
-                    }
-                }
-                appDbContext.SaveChanges();
-            }
+            //     foreach (var item in coinList)
+            //     {    
+            //         if(localCurrencyList.Where(p=>p.CurrencyName == item.SymbolShort).Select(p=>p.Id).FirstOrDefault() == 0)
+            //         {
+            //             appDbContext.Currency.Add(new Currency() { 
+            //                // CurrencyId = item..Id , 
+            //                 CurrencyName = item.SymbolShort,
+            //                 DateAdded = DateTime.Now});
+            //         }
+            //     }
+            //     appDbContext.SaveChanges();
+             }
         }
     }
