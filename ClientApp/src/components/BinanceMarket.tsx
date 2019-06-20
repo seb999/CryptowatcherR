@@ -177,7 +177,7 @@ class BinanceMarket extends React.Component<Props, State>{
 
         return (
             <div>
-                <div style={{ position: "absolute", zIndex: 99, top: 150, right: 10 }}>
+                <div style={{ position: "absolute", zIndex: 99, top: 10, right: 10 }}>
                     <Toast onClose={handleClose} show={this.state.showToast} transition={false} delay={6000} autohide>
                         <Toast.Header className="bg-dark light">
                            
