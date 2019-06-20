@@ -22,8 +22,12 @@ namespace cryptowatcherR
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<AppDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("cryptoConnection")));
+            // services.AddDbContextPool<AppDbContext>(options =>
+            //     options.UseMySql(Configuration.GetConnectionString("cryptoConnection")));
+
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlite(
+                    Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
