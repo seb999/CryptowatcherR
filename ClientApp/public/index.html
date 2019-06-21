@@ -19,6 +19,7 @@
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
+
       Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
@@ -41,14 +42,265 @@
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
+
       You can add webfonts, meta tags, or analytics to this file.
       The build step will place the bundled scripts into the <body> tag.
+
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <div class="ocean">
+        <div class="wave w01"></div>
+        <div class="wave w02"></div>
+        <div class="wave w03"></div> 
+      </div>
   </body>
 
 <style>
-    @import url('https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,700&display=swap');
 </style>
+<style>
+
+
+
+#root{
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100 */
+  background: rgba(18,21,38,1);
+  background: -moz-linear-gradient(45deg, rgba(18,21,38,1) 0%, rgba(37,39,88,1) 71%, rgba(45,47,108,1) 100%);
+  background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(18,21,38,1)), color-stop(71%, rgba(37,39,88,1)), color-stop(100%, rgba(45,47,108,1)));
+  background: -webkit-linear-gradient(45deg, rgba(18,21,38,1) 0%, rgba(37,39,88,1) 71%, rgba(45,47,108,1) 100%);
+  background: -o-linear-gradient(45deg, rgba(18,21,38,1) 0%, rgba(37,39,88,1) 71%, rgba(45,47,108,1) 100%);
+  background: -ms-linear-gradient(45deg, rgba(18,21,38,1) 0%, rgba(37,39,88,1) 71%, rgba(45,47,108,1) 100%);
+  background: linear-gradient(45deg, rgba(18,21,38,1) 0%, rgba(37,39,88,1) 71%, rgba(45,47,108,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#121526', endColorstr='#2d2f6c', GradientType=1 );
+  
+  background-size: 100% 100%;
+  position:relative;
+  height: 100vh;
+  width: 100vw;
+}
+
+.ocean { 
+  height: 10%;
+  position: fixed;
+  bottom: -33px;
+  width: 100%;
+}
+
+.w01{
+  opacity: .1;
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1600 198' style='enable-background:new 0 0 1600 198;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:url(%23SVGID_1_);%7D%0A%3C/style%3E%3ClinearGradient id='SVGID_1_' gradientUnits='userSpaceOnUse' x1='320.6993' y1='377.5869' x2='320.7004' y2='378.692' gradientTransform='matrix(-1600 0 0 -198.0004 513920 75060.1484)'%3E%3Cstop offset='1.805556e-02' style='stop-color:%233141BE'/%3E%3Cstop offset='0.4847' style='stop-color:%235F5BD5'/%3E%3Cstop offset='0.8708' style='stop-color:%238545C5'/%3E%3Cstop offset='0.9917' style='stop-color:%239A39BC'/%3E%3C/linearGradient%3E%3Cpath class='st0' d='M1600,121c-121.2,0-257-32.4-347-31c-130,2-195.2,62.8-440,63C636,153,536,41,417,41c-98,0-255.9,80-417,80v77 h1600C1600,198,1600,150,1600,121z'/%3E%3C/svg%3E%0A");
+}
+
+.w02{
+  opacity: .1;
+  background-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1600 198' style='enable-background:new 0 0 1600 198;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:url(%23SVGID_1_);%7D%0A%3C/style%3E%3ClinearGradient id='SVGID_1_' gradientUnits='userSpaceOnUse' x1='320.6993' y1='377.5869' x2='320.7004' y2='378.692' gradientTransform='matrix(-1600 0 0 -198.0004 513920 75060.1484)'%3E%3Cstop offset='1.805556e-02' style='stop-color:%233141BE'/%3E%3Cstop offset='0.4847' style='stop-color:%235F5BD5'/%3E%3Cstop offset='0.8708' style='stop-color:%238545C5'/%3E%3Cstop offset='0.9917' style='stop-color:%239A39BC'/%3E%3C/linearGradient%3E%3Cpath class='st0' d='M1600,121c-121.2,0-257-32.4-347-31c-130,2-195.2,62.8-440,63C636,153,536,41,417,41c-98,0-255.9,80-417,80v77 h1600C1600,198,1600,150,1600,121z'/%3E%3C/svg%3E%0A");
+}
+
+.w03{  
+  opacity:.1;
+  background-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1600 198' style='enable-background:new 0 0 1600 198;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:url(%23SVGID_1_);%7D%0A%3C/style%3E%3ClinearGradient id='SVGID_1_' gradientUnits='userSpaceOnUse' x1='320.6993' y1='377.6415' x2='320.7003' y2='378.6267' gradientTransform='matrix(-1600 0 0 -198.0004 513920 75060.1484)'%3E%3Cstop offset='1.805556e-02' style='stop-color:%233141BE'/%3E%3Cstop offset='0.4847' style='stop-color:%235F5BD5'/%3E%3Cstop offset='0.8708' style='stop-color:%238545C5'/%3E%3Cstop offset='0.9917' style='stop-color:%239A39BC'/%3E%3C/linearGradient%3E%3Cpath class='st0' d='M1600,121c-121.2,0-216,36.6-306,38c-130,2-237.2-101.2-482-101c-177,0-359,95-478,95c-98,0-172.9-32-334-32v77 h1600C1600,198,1600,150,1600,121z'/%3E%3C/svg%3E%0A");
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  width: 6400px;
+  height: 198px;
+  animation: wave 5s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
+
+} 
+
+.wave:nth-of-type(2) {
+
+  animation: wave 5s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
+}
+
+.wave:nth-of-type(3) {
+
+  animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 16s ease -1.25s infinite;
+
+}
+
+@keyframes wave {
+  0% {
+    margin-left: 0;
+  }
+  100% {
+    margin-left: -1600px;
+  }
+}
+
+@keyframes swell {
+  0%, 100% {
+    transform: translate3d(0,-25px,0);
+  }
+  50% {
+    transform: translate3d(0,5px,0);
+  }
+}
+
+
+
+  body{/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#242b48+0,363a64+100 */
+  background: #242b48; /* Old browsers */
+  background: -moz-linear-gradient(top,  #242b48 0%, #363a64 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #242b48 0%,#363a64 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #242b48 0%,#363a64 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242b48', endColorstr='#363a64',GradientType=0 ); /* IE6-9 */
+  
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 500;
+}
+
+.navbar {
+  background-color: transparent !important;
+}
+body {
+  overflow-x: hidden;
+  font-family: 'Signika','Roboto Slab', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+p {
+  line-height: 1.75;
+}
+
+a {
+  color: #69b023;
+}
+
+a:hover {
+  color: #69b023;
+}
+
+.text-primary {
+  color: #69b023 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+   font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
+}
+
+section {
+  padding: 50px 0;
+}
+
+
+
+.btn {
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
+  font-weight: 400;
+}
+
+.btn-xl {
+  font-size: 18px;
+  padding: 20px 40px;
+}
+
+.btn-primary {
+  background-color: #69b023;
+  border-color: #69b026;
+}
+
+.btn-primary:active, .btn-primary:focus, .btn-primary:hover {
+     background-color: #50851b !important;
+    border-color: #4b7d19 !important;
+  color: white;
+}
+
+.btn-primary:active, .btn-primary:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
+  box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
+}
+
+::-moz-selection {
+  background: #fed136;
+  text-shadow: none;
+}
+
+::selection {
+  background: #fed136;
+  text-shadow: none;
+}
+
+img::-moz-selection {
+  background: transparent;
+}
+
+img::selection {
+  background: transparent;
+}
+
+img::-moz-selection {
+  background: transparent;
+}
+
+#mainNav .nav-item{
+    padding:1.25em
+}
+
+#mainNav .navbar-toggler {
+  font-size: 13px;
+  right: 0;
+  padding: 15px;
+  text-transform: uppercase;
+  color: #FEFEFE;
+  border: 0;
+  }
+
+#mainNav .navbar-brand {
+	-webkit-transition: transform 1.05s ease-in-out;
+	-moz-transition:transform 1.05s ease-in-out;
+	-ms-transition:transform 1.05s ease-in-out;
+	transition: transform 1.05s ease-in-out;
+}
+
+#mainNav .navbar-nav .nav-item .nav-link {
+  font-size: 1.313em;
+  font-weight: 700;
+  padding: 0.25em 0;
+  letter-spacing: 1px;
+  color: #999;
+  font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+#mainNav .navbar-nav .nav-item .nav-link.active, #mainNav .navbar-nav .nav-item .nav-link:hover {
+  color: #FEFEFE;
+}
+
+footer{background-color: none !important}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {  
+ 
+}
+ 
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
+
+}
+ 
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  .navbar-nav .nav-link {
+    text-align: center;
+  }
+}
+ 
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  
+    
+}
+</style>
+
+
 </html>

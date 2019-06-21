@@ -1,0 +1,74 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="427.11" height="35.22" viewBox="0 0 427.11 35.22">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 26.34px;
+        fill: #fff;
+        font-family: Montserrat-SemiBold, Montserrat;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .cls-2 {
+        letter-spacing: 0.04em;
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        letter-spacing: -0.02em;
+      }
+
+      .cls-5 {
+        letter-spacing: -0.03em;
+      }
+
+      .cls-6 {
+        letter-spacing: 0.02em;
+      }
+
+      .cls-7 {
+        letter-spacing: 0.03em;
+      }
+
+      .cls-8 {
+        letter-spacing: 0.02em;
+      }
+
+      .cls-9 {
+        letter-spacing: 0.01em;
+      }
+
+      .cls-10 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-11 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-12 {
+        fill: #fffeff;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="49.65" y1="37.62" x2="68.16" y2="37.62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3591cf"/>
+      <stop offset="0.04" stop-color="#3595cd"/>
+      <stop offset="0.46" stop-color="#30bbb4"/>
+      <stop offset="0.79" stop-color="#2dd3a5"/>
+      <stop offset="1" stop-color="#2cdc9f"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="30.89" y1="37.65" x2="86.96" y2="37.65" xlink:href="#linear-gradient"/>
+  </defs>
+  <title>cryptowatcher_LOGO_001_i</title>
+  <text class="cls-1" transform="translate(170.96 28.24)">C<tspan class="cls-2" x="19.73" y="0">r</tspan><tspan x="31.76" y="0">yp</tspan><tspan class="cls-3" x="66.21" y="0">t</tspan><tspan class="cls-4" x="77.48" y="0">o</tspan><tspan class="cls-5" x="93.99" y="0">W</tspan><tspan x="123.25" y="0">a</tspan><tspan class="cls-3" x="139.82" y="0">t</tspan><tspan class="cls-6" x="151.09" y="0">c</tspan><tspan class="cls-7" x="166.84" y="0">h</tspan><tspan class="cls-8" x="185.59" y="0">e</tspan><tspan class="cls-9" x="202.55" y="0">r.</tspan><tspan class="cls-8" x="220.67" y="0">eu</tspan></text>
+  <g>
+    <path class="cls-10" d="M65.52,34.74a3.05,3.05,0,0,1-2.15-5.22A9.24,9.24,0,1,0,67.44,34,3,3,0,0,1,65.52,34.74Z" transform="translate(-30.89 -20.3)"/>
+    <path class="cls-11" d="M58.92,55c-6.63,0-11.47-1.08-15.69-3.5C38.8,49,35.07,44.89,31.48,38.68l-.6-1,.6-1c3.58-6.2,7.31-10.28,11.75-12.82,4.23-2.42,9.07-3.5,15.69-3.5s11.47,1.08,15.69,3.5c4.43,2.54,8.17,6.61,11.75,12.82l.6,1-.6,1C82.78,44.89,79.05,49,74.62,51.5,70.39,53.92,65.55,55,58.92,55ZM35.67,37.65c5.89,9.74,12.1,13.22,23.26,13.22s17.37-3.49,23.26-13.22c-5.89-9.74-12.1-13.22-23.26-13.22S41.56,27.91,35.67,37.65Z" transform="translate(-30.89 -20.3)"/>
+    <path class="cls-12" d="M192,25a3.56,3.56,0,1,0-7.1.39v10.9h0V37.6a9.21,9.21,0,0,1-18.43,0V36.27h0V25.07s0-.08,0-.12a3.55,3.55,0,0,0-7.09-.07h0V37.6a16.33,16.33,0,0,0,32.67,0V25.2C192,25.13,192,25.05,192,25Z" transform="translate(-30.89 -20.3)"/>
+    <path class="cls-12" d="M166.36,25a3.56,3.56,0,1,0-7.1.39v10.9h0V37.6a9.21,9.21,0,0,1-18.43,0V36.27h0V25.07s0-.08,0-.12a3.55,3.55,0,0,0-7.09-.07h0V37.6a16.33,16.33,0,0,0,32.67,0V25.2C166.35,25.13,166.36,25.05,166.36,25Z" transform="translate(-30.89 -20.3)"/>
+    <path class="cls-12" d="M122.31,54a3.56,3.56,0,0,0,0-7.12l-.39,0H113v0h-1.34a9.21,9.21,0,0,1,0-18.43H113v0h9.29a3.55,3.55,0,0,0,.07-7.09h-10.7a16.33,16.33,0,0,0,0,32.67h10.6Z" transform="translate(-30.89 -20.3)"/>
+  </g>
+</svg>
