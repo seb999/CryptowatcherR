@@ -25,7 +25,7 @@ class NavBar extends React.Component<Props, State> {
   render() {
     return (
       <nav className="navbar transparent navbar-expand-lg navbar-dark" id="mainNav">
-        <div className="container">
+        <div className="container-fluid">
           <a className="navbar-brand js-scroll-trigger" href="/">
             <span className="d-lg-none">
               <img src={logoMobile} className="logoMobile" />
@@ -39,7 +39,7 @@ class NavBar extends React.Component<Props, State> {
       <i className="fas fa-bars" />
           </button>
           <div className="collapse navbar-collapse" id="navbarResponsive">
-            <ul className="navbar-nav mr-auto">
+            <ul className="navbar-nav ml-auto">
               {this.props.commands.map((link, i) => {
                 if (link.type === "NavLink") {
                   return (
@@ -47,7 +47,8 @@ class NavBar extends React.Component<Props, State> {
                       path={link.path}
                       text={link.text}
                       isActive={link.isActive}
-                    />
+                    />                    
+
                   );
                 }
                 return (<div key={i}></div>)
