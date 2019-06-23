@@ -9,6 +9,9 @@ import About from './components/About';
 import Contact from './components/Contact';
 import BinanceCoin from './components/BinanceCoin'
 import './App.css';
+import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
+import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
+import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 
 interface State {
   redirectTo?: string;
@@ -46,6 +49,7 @@ class App extends React.Component<Props, State>{
             <Route exact path='/About' component={About} />
             <Route exact path='/Contact' component={Contact} />
             <Route exact path='/BinanceCoin/:symbol' component={BinanceCoin}  />
+            <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
         </Switch>
         </div>
         <Footer />

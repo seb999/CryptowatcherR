@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import logo from '../images/LogoCryptowatcher-inv.png'
 import './Css/NavBar.css';
 import MyNavLink from './Element/MyNavLink'
+import { LoginMenu } from './api-authorization/LoginMenu';
 
 export interface NavCommand {
   type: string,
@@ -45,6 +46,7 @@ class NavBar extends React.Component<Props, State> {
               }
               return (<div key={i}></div>)
             })}
+         <LoginMenu></LoginMenu>
           </ul>
         </div>
       </nav>
