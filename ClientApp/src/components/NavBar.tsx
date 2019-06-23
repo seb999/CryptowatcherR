@@ -46,7 +46,6 @@ class NavBar extends React.Component<Props, State> {
               }
               return (<div key={i}></div>)
             })}
-         <LoginMenu></LoginMenu>
           </ul>
         </div>
       </nav>
