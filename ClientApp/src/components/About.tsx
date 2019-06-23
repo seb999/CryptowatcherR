@@ -14,7 +14,6 @@ class About extends React.Component<Props, State>{
 
     render(){
         return (
-            <div className="container">
             <div>
                 <div className="jumbotron">
                     <h1 className="display-4">Cryptowatcher 2.0</h1>
@@ -22,7 +21,6 @@ class About extends React.Component<Props, State>{
                     <hr className="my-4"></hr>
                     <p>The result is a predictive quotation dashboard for the most commun cryptos/pair from Binance market</p>
                 </div>
-            </div>
             </div>
         )
     }
