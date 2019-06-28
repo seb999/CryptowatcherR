@@ -8,13 +8,7 @@ ttt = {
     colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', 
              '#FF9655', '#FFF263', '#6AF9C4'],
     chart: {
-        backgroundColor: {
-            linearGradient: [0, 0, 500, 500],
-            stops: [
-                [0, 'rgb(46, 53, 82)'],
-                [1, 'rgb(46, 53, 82)']
-            ]
-        },
+        backgroundColor:'rgba(255, 255, 255, 0.0)',
     },
     title: {
         style: {
@@ -171,7 +165,11 @@ ttt = {
             fillColor: '#505053'
         },
         candlestick: {
-            lineColor: 'white'
+            upColor: '#41c9ad',
+            color: '#cb585f',
+            upLineColor: '#41c9ad',
+            lineColor: '#cb585f'
+            
         },
         errorbar: {
             color: 'white'
@@ -265,8 +263,8 @@ class CoinChart extends React.Component<Props, State> {
             },
             plotOptions: {
                 candlestick: {
-                    upColor: '#00e600',
-                    color: '#ff0000',
+                    upColor: '#41c9ad',
+                    color: '#cb585f'
                 },
             },
             yAxis: {

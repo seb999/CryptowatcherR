@@ -139,7 +139,7 @@ class BinanceMarket extends React.Component<Props, State>{
         const handleClose = () => this.setState({ showToast: false });
 
         let displayList = this.props.symbolList.map((coin, index) => (
-            <tr key={coin.symbol}>
+            <tr key={coin.symbol} className="table-dark zoom">
                 <td>
                     <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={() => this.handleShowCoinDetail(coin.symbol)}><i className="fa fa-chart-line"></i></button>
                     <CoinIcon symbol={coin.symbolShort} width={20} height={20}></CoinIcon>
@@ -177,7 +177,7 @@ class BinanceMarket extends React.Component<Props, State>{
 
         return (
             <div>
-                <div style={{ position: "absolute", zIndex: 99, top: 150, right: 10 }}>
+                <div style={{ position: "absolute", zIndex: 99, top: 10, right: 10 }}>
                     <Toast onClose={handleClose} show={this.state.showToast} transition={false} delay={6000} autohide>
                         <Toast.Header className="bg-dark light">
                            
@@ -195,7 +195,7 @@ class BinanceMarket extends React.Component<Props, State>{
                     <Autocomplete symbolList={this.props.symbolListInitial} onClick={this.handleFilterChange} multiple={true} />
                 </div>
                 <div style={{ opacity: this.state.opacity }} >
-                    <table className="table table-striped" >
+                    <table className="table table-cryptowatcheR" >
                         <thead className="thead thead-light">
                             <tr>
                                 <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[0].visibility} /></th>

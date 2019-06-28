@@ -16,7 +16,7 @@ class Contact extends React.Component<Props, State>{
 
     render() {
         return (
-            <div className="container">
+            <div>
 
                 <h2>Contact</h2>
                 <h4>Adress all your questions at </h4>
