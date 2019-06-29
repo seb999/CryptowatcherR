@@ -4,12 +4,11 @@
    bottom:0;
    right:0; 
    height: 100px;
-   background-color: #242b49 !important;
+   background-color: none !important;
 }
 
 .brand {
    color : slategray;
-   font-family: 'Times New Roman', Times, serif;
    font-weight: 700;
    margin-left: 20px;
    margin-top: 10px;
@@ -19,6 +18,5 @@
     color : whitesmoke;
     margin-top: 70px;
     padding-right: 10px;
-    font-family: 'Times New Roman', Times, serif;
     font-size: small;
  }

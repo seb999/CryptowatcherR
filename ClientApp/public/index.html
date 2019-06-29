@@ -116,7 +116,7 @@ code {
 	padding-left: 35px !important;
 }
 
-#root {
+.main-container {
 	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100 */
 	background: rgba(18, 21, 38, 1);
 	background: -moz-linear-gradient(45deg, rgba(18, 21, 38, 1) 0%, rgba(37, 39, 88, 1) 50%, rgba(45, 47, 108, 1) 100%);
@@ -312,13 +312,13 @@ img::-moz-selection {
 }
 
 .zoom:hover {
-  transform: scale(1.06); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  transform: scale(1.04s); 
 }
 
 
 
 #mainNav .nav-item {
-	padding: 1.25em .25em;
+	padding: .5em 0;
 }
 
 #mainNav .navbar-toggler {
@@ -429,15 +429,19 @@ footer {
 
 /* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
 
-@media (min-width: 768px) {}
+@media (min-width: 768px) {
 
+
+	
+	#mainNav .nav-item {
+		padding: 1.25em 3.25em;	
+	}
+}
 
 /* Large devices (desktops, 992px and up) */
 
 @media (min-width: 992px) {
-	.navbar-nav .nav-link {
-		text-align: center;
-	}
+
 }
 
 
