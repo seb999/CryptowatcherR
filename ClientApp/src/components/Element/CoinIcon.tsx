@@ -178,12 +178,12 @@ class CoinIcon extends React.Component<Props, State> {
 
 
                 default:
-                    icon = <i className="fas fa-coins" style={{fontSize:24}}></i>
+                    icon = <i className="fas fa-coins" ></i>
                     break;
             }
         }
         catch (exception) {
-            icon = <i className="fas fa-coins" style={{fontSize:24}}></i>
+            icon = <i className="fas fa-coins" ></i>
         }
 
         return (

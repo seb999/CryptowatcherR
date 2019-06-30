@@ -4,7 +4,6 @@ import logo from '../images/cryptowatcher_LOGO_001_i.svg'
 import logoMobile from '../images/cryptowatcher_LOGO_001_i_mobile.svg'
 import './Css/NavBar.css';
 import MyNavLink from './Element/MyNavLink'
-import { LoginMenu } from './api-authorization/LoginMenu';
 
 export interface NavCommand {
   type: string,
@@ -49,7 +48,6 @@ class NavBar extends React.Component<Props, State> {
                       text={link.text}
                       isActive={link.isActive}
                     />                    
-
                   );
                 }
                 return (<div key={i}></div>)
