@@ -7,7 +7,7 @@ class Footer extends React.Component {
         return (
             <footer className="page-footer footer">
                 <div>
-                    <div className="float-left"><h4 className="brand">Cryptowatcher 2.1</h4></div>
+                    <div className="float-left"><h4 className="brand">Cryptowatcher 2.2</h4></div>
 
                     <div className="float-right copyright">© Copyright 2019 CRYPTOWATCHER. All Rights Reserved</div>
                 </div>

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import sebastienPortrait from '../images/Sebastien.png'
-import mikeldiPortrait from '../images/Mikeldi.jpg'
+import sebastienPortrait from '../images/defaultUser.png'
+import mikeldiPortrait from '../images/defaultUser.png'
 
 interface Props {
 }
@@ -16,7 +16,7 @@ class Contact extends React.Component<Props, State>{
 
     render() {
         return (
-            <div>
+            <div style={{color:"whitesmoke"}}> 
 
                 <h2>Contact</h2>
                 <h4>Adress all your questions at </h4>
@@ -33,7 +33,7 @@ class Contact extends React.Component<Props, State>{
 
                 <div className="row">
                     <div className="col-md-3">
-                    <div className="card" style={{width:170}}>
+                    <div className="card" style={{width:250}}>
                         <img className="card-img-top img-fluid" src={sebastienPortrait} alt="Card cap"></img>
                         <div className="card-body">
                             <h5 className="card-title">Sebastien</h5>
@@ -43,7 +43,7 @@ class Contact extends React.Component<Props, State>{
                     </div>
                     </div>
                     <div className="col-md-3">
-                    <div className="card" style={{width:170}}>
+                    <div className="card" style={{width:250}}>
                         <img className="card-img-top img-fluid" src={mikeldiPortrait} alt="Card cap"></img>
                         <div className="card-body">
                             <h5 className="card-title">Mikeldi</h5>

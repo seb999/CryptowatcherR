@@ -84,7 +84,7 @@ class BinanceMarket extends React.Component<Props, State>{
 
             if (!this.state.pageFirstLoaded) {
                 this.props.newCurrencyList.length > 0 ? this.setState({ showToast: true }) : this.setState({ showToast: false });
-                setTimeout( () => { this.setState({ showToast: false }) }, 6000 );
+                setTimeout(() => { this.setState({ showToast: false }) }, 6000);
             }
         }
     }
@@ -127,6 +127,12 @@ class BinanceMarket extends React.Component<Props, State>{
         this.props.filterList2(e);
     }
 
+    handleShowCoinDetailMobile = (symbol: any) => {
+        if (window.innerWidth < 760) {
+            this.props.history.push("/BinanceCoin/" + symbol);
+        }
+    }
+
     handleShowCoinDetail = (symbol: any) => {
         this.props.history.push("/BinanceCoin/" + symbol);
     }
@@ -139,8 +145,8 @@ class BinanceMarket extends React.Component<Props, State>{
         const handleClose = () => this.setState({ showToast: false });
 
         let displayList = this.props.symbolList.map((coin, index) => (
-            <tr key={coin.symbol} className="table-dark zoom">
-                <td>
+            <tr key={coin.symbol} className="table-dark zoom" onClick={() => this.handleShowCoinDetailMobile(coin.symbol)}>
+                <td className="d-none d-md-table-cell">
                     <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={() => this.handleShowCoinDetail(coin.symbol)}><i className="fa fa-chart-line"></i></button>
                 </td>
                 <td>
@@ -194,7 +200,7 @@ class BinanceMarket extends React.Component<Props, State>{
                     <table className="table table-cryptowatcheR" >
                         <thead className="thead thead-light">
                             <tr>
-                                <th className="d-md-table-cell" style={{ width: 3 + "%" }}></th>
+                                <th className="d-md-table-cell d-none" style={{ width: 3 + "%" }}></th>
                                 <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[0].visibility} /></th>
                                 <th scope="col" id="volume" onClick={this.handleSort} className="tableTh d-none d-md-table-cell" >Volume<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[1].visibility} /></th>
                                 <th scope="col" id="lower" onClick={this.handleSort} className="tableTh d-none d-md-table-cell">Lower<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[2].visibility} /></th>
