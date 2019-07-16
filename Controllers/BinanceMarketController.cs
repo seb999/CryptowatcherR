@@ -207,6 +207,7 @@ namespace cryptowatcherR.Controllers
 
                 foreach (var item in coinList)
                 {    
+                    var ttt = localCurrencyList.Select(p=>p.CurrencyName).ToList();
                     if(localCurrencyList.Where(p=>p.CurrencyName == item.SymbolShort).Select(p=>p.Id).FirstOrDefault() == 0)
                     {
                         appDbContext.Currency.Add(new Currency() { 
