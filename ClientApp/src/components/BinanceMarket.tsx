@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Toast from 'react-bootstrap/Toast';
+import Alert from 'react-bootstrap/Alert';
 import * as binanceActionCreator from '../actions/actions';
 import { symbolTransfer } from '../class/symbolTransfer'
 import './Css/BinanceMarket.css';
@@ -70,8 +71,6 @@ class BinanceMarket extends React.Component<Props, State>{
     componentDidMount() {
         this.props.getSymbolList("USDT");
         this.props.getNewCurrencyList();
-
-       // $('[data-toggle="tooltip"]').tooltip();
     }
 
     componentDidUpdate(nextProps: any) {
@@ -85,6 +84,7 @@ class BinanceMarket extends React.Component<Props, State>{
 
             if (!this.state.pageFirstLoaded) {
                 this.props.newCurrencyList.length > 0 ? this.setState({ showToast: true }) : this.setState({ showToast: false });
+                setTimeout(() => { this.setState({ showToast: false }) }, 6000);
             }
         }
     }
@@ -127,6 +127,12 @@ class BinanceMarket extends React.Component<Props, State>{
         this.props.filterList2(e);
     }
 
+    handleShowCoinDetailMobile = (symbol: any) => {
+        if (window.innerWidth < 760) {
+            this.props.history.push("/BinanceCoin/" + symbol);
+        }
+    }
+
     handleShowCoinDetail = (symbol: any) => {
         this.props.history.push("/BinanceCoin/" + symbol);
     }
@@ -139,9 +145,11 @@ class BinanceMarket extends React.Component<Props, State>{
         const handleClose = () => this.setState({ showToast: false });
 
         let displayList = this.props.symbolList.map((coin, index) => (
-            <tr key={coin.symbol} className="table-dark zoom">
-                <td>
+            <tr key={coin.symbol} className="table-dark zoom" onClick={() => this.handleShowCoinDetailMobile(coin.symbol)}>
+                <td className="d-none d-md-table-cell">
                     <button style={{ marginRight: 10 }} className="btn btn-outline-info btn-sm" onClick={() => this.handleShowCoinDetail(coin.symbol)}><i className="fa fa-chart-line"></i></button>
+                </td>
+                <td>
                     <CoinIcon symbol={coin.symbolShort} width={20} height={20}></CoinIcon>
                     {coin.symbolShort}
                 </td>
@@ -177,27 +185,22 @@ class BinanceMarket extends React.Component<Props, State>{
 
         return (
             <div>
-                <div style={{ position: "absolute", zIndex: 99, top: 150, right: 10 }}>
-                    <Toast onClose={handleClose} show={this.state.showToast} transition={false} delay={6000} autohide>
-                        <Toast.Header className="bg-dark light">
-                           
-                            <strong className="mr-auto">Info</strong>
-                            <small>Binance</small>
-                        </Toast.Header>
-                        <Toast.Body>New cryptos : {this.props.newCurrencyList.map((item) => (item + " "))}</Toast.Body>
-                    </Toast>
-
-                </div>
-                <div className="float-md-left mb-1">
+                <div className="float-md-left mb-2 mr-2 hidden">
                     <DropDown spin={this.state.showSpinner} itemList={this.state.marketList} onClick={this.handleChangeReferenceCoin} selectedItem={this.state.marketSelected}></DropDown>
                 </div>
-                <div className="mb-1 float-md-right col-md-3 pr-0 pl-0">
+                <div>
+                    <Alert variant="secondary" className="float-md-left" show={this.state.showToast}>
+                        New cryptos : {this.props.newCurrencyList.map((item) => (item + " "))}
+                    </Alert>
+                </div>
+                <div className="float-md-right col-md-3 pr-0 pl-0 mb-2">
                     <Autocomplete symbolList={this.props.symbolListInitial} onClick={this.handleFilterChange} multiple={true} />
                 </div>
                 <div style={{ opacity: this.state.opacity }} >
                     <table className="table table-cryptowatcheR" >
                         <thead className="thead thead-light">
                             <tr>
+                                <th className="d-md-table-cell d-none" style={{ width: 3 + "%" }}></th>
                                 <th scope="col" id="symbol" onClick={this.handleSort} className="tableTh">Symbol<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[0].visibility} /></th>
                                 <th scope="col" id="volume" onClick={this.handleSort} className="tableTh d-none d-md-table-cell" >Volume<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[1].visibility} /></th>
                                 <th scope="col" id="lower" onClick={this.handleSort} className="tableTh d-none d-md-table-cell">Lower<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[2].visibility} /></th>
@@ -205,8 +208,8 @@ class BinanceMarket extends React.Component<Props, State>{
                                 <th scope="col" id="last" onClick={this.handleSort} className="tableTh ">Last<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[4].visibility} /></th>
                                 <th scope="col" id="change" onClick={this.handleSort} className="tableTh">% change<Sorter sortDirection={this.state.sortDirection} visible={this.state.sorterVisibility[5].visibility} /></th>
                                 <th scope="col" id="rsi" className="d-none d-md-table-cell">RSI / MACD</th>
-                                <th className="d-none d-md-table-cell">Future</th>
-                                <th className="d-none d-md-table-cell" style={{ width: 20 }}></th>
+                                <th className="d-none d-md-table-cell" style={{ width: 5 + "%" }}>Future</th>
+                                <th className="d-none d-md-table-cell" style={{ width: 7 + "%" }} ></th>
                             </tr>
                         </thead>
                         <tbody>

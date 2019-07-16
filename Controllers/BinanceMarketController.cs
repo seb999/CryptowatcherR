@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using cryptowatcherR.Misc;
 using cryptowatcherR.ClassTransfer;
-using Newtonsoft.Json;
 using cryptowatcherR.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace cryptowatcherR.Controllers
 {
@@ -21,7 +18,7 @@ namespace cryptowatcherR.Controllers
              appDbContext = context;
         }
         /// <summary>
-        /// Return list of coin with last value for default page
+        /// Return list of coin with last price for default page
         /// </summary>
         /// <param name="baseMarket">The base market : USDT or BNB or BTC</param>
         /// <returns></returns>
@@ -34,7 +31,7 @@ namespace cryptowatcherR.Controllers
             List<SymbolTransfer> coinList = HttpHelper.GetApiData<List<SymbolTransfer>>(apiUrl);
 
             // Shorten Symbol
-           Misc.Helper.ShortenSymbol(ref coinList);
+            Misc.Helper.ShortenSymbol(ref coinList);
 
             //Save symbolList in db
             SaveNewCurrency(coinList);
@@ -65,12 +62,12 @@ namespace cryptowatcherR.Controllers
            
 
             //Add indicator for top 5
-           // coinList.Take(1).Where(p=>GetTop10Indicator(p)).Select(p=>p).ToList();
+            coinList.Take(1).Where(p=>GetTopIndicator(p)).Select(p=>p).ToList();
             
             return coinList;
         }
 
-        private bool GetTop10Indicator(SymbolTransfer symbolTransfer)
+        private bool GetTopIndicator(SymbolTransfer symbolTransfer)
         {
             symbolTransfer.Prediction = new List<PredictionTransfer>();
             QuotationTransfer ct = GetIndicator(symbolTransfer.Symbol, "1d");
@@ -156,6 +153,13 @@ namespace cryptowatcherR.Controllers
             return quotation;
         }
 
+        
+        /// <summary>
+        ///  Return coin last price, indicators and AI prediction
+        /// </summary>
+        /// <param name="symbol">The symbol</param>
+        /// <param name="interval">The </param>
+        /// <returns></returns>
         [HttpGet("[action]/{symbol}/{interval}")]
         public SymbolTransfer GetSymbolData(string symbol, string interval)
         {
@@ -203,19 +207,19 @@ namespace cryptowatcherR.Controllers
          private void SaveNewCurrency(List<SymbolTransfer> coinList)
         {
             //List of currency in local db
-            // List<Currency> localCurrencyList = appDbContext.Currency.Select(p=>p).ToList();
+            List<Currency> localCurrencyList = appDbContext.Currency.Select(p=>p).ToList();
 
-            //     foreach (var item in coinList)
-            //     {    
-            //         if(localCurrencyList.Where(p=>p.CurrencyName == item.SymbolShort).Select(p=>p.Id).FirstOrDefault() == 0)
-            //         {
-            //             appDbContext.Currency.Add(new Currency() { 
-            //                // CurrencyId = item..Id , 
-            //                 CurrencyName = item.SymbolShort,
-            //                 DateAdded = DateTime.Now});
-            //         }
-            //     }
-            //     appDbContext.SaveChanges();
+                foreach (var item in coinList)
+                {    
+                    if(localCurrencyList.Where(p=>p.CurrencyName == item.SymbolShort).Select(p=>p.Id).FirstOrDefault() == 0)
+                    {
+                        appDbContext.Currency.Add(new Currency() { 
+                           // CurrencyId = item..Id , 
+                            CurrencyName = item.SymbolShort,
+                            DateAdded = DateTime.Now});
+                    }
+                }
+                appDbContext.SaveChanges();
              }
         }
     }

@@ -59,5 +59,30 @@ namespace cryptowatcherR.Misc
 
         }
 
+        public static string GetSymbolPair(string symbol)
+        {
+            if (symbol.Substring(symbol.Length - 3) == BaseMarket.ETH.ToString())
+            {
+                return BaseMarket.ETH.ToString();
+            }
+
+            if (symbol.Substring(symbol.Length - 3) == BaseMarket.BNB.ToString())
+            {
+                return BaseMarket.BNB.ToString();
+            }
+
+            if (symbol.Substring(symbol.Length - 3) == BaseMarket.BTC.ToString())
+            {
+                return BaseMarket.BTC.ToString();
+            }
+
+            if (symbol.Substring(symbol.Length - 4) == BaseMarket.USDT.ToString())
+            {
+                return BaseMarket.USDT.ToString();
+            }
+
+            return "";
+
+        }
     }
 }

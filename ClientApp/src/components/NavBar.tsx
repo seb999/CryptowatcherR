@@ -48,7 +48,6 @@ class NavBar extends React.Component<Props, State> {
                       text={link.text}
                       isActive={link.isActive}
                     />                    
-
                   );
                 }
                 return (<div key={i}></div>)

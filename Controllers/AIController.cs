@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using cryptowatcherR.Misc;
 using cryptowatcherR.ClassTransfer;
-using Newtonsoft.Json;
 using System.IO;
 using Microsoft.ML;
-using Microsoft.ML.Data;
 using static CryptowatcherR.Misc.Prediction;
 
 namespace cryptowatcherR.Controllers
@@ -22,7 +18,8 @@ namespace cryptowatcherR.Controllers
             List<PredictionTransfer> predictionList = new List<PredictionTransfer>();
 
             //1 - List models available for symbol
-            var rootFolder = Environment.CurrentDirectory + "/aiModel/";
+            var symbolPair = Helper.GetSymbolPair(symbol);
+            var rootFolder = Environment.CurrentDirectory + "/aiModel/" + symbolPair + "/";
             var modelPathList = Directory.GetFiles(rootFolder, symbol + "*", SearchOption.AllDirectories);
 
             if (modelPathList.Length == 0)
@@ -84,7 +81,8 @@ namespace cryptowatcherR.Controllers
 
         private static bool CheckModelExist(string symbol)
         {
-            var rootFolder = Environment.CurrentDirectory + "/aiModel/";
+            var symbolPair = Helper.GetSymbolPair(symbol);
+            var rootFolder = Environment.CurrentDirectory + "/aiModel/" + symbolPair + "/";
             return Directory.GetFiles(rootFolder, symbol + "*", SearchOption.AllDirectories).Length > 0 ? true : false;
         }
 
