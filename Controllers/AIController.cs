@@ -9,7 +9,6 @@ using static CryptowatcherR.Misc.Prediction;
 
 namespace cryptowatcherR.Controllers
 {
-
     [Route("api/[controller]")]
     public class AIController : Controller
     {
@@ -59,7 +58,10 @@ namespace cryptowatcherR.Controllers
         {
             if (CheckModelExist(symbol) == true)
             {
-                string modelPath = Environment.CurrentDirectory + "/aiModel/" + symbol + "-Fast Tree.zip";
+                var symbolPair = Helper.GetSymbolPair(symbol);
+                var modelPath = Environment.CurrentDirectory + "/aiModel/" + symbolPair + "/" + symbol + "-Fast Tree.zip";;
+
+               // string modelPath = Environment.CurrentDirectory + "/aiModel/" + symbol + "-Fast Tree.zip";
 
                 //Load model
                 ITransformer loadedModel = LoadModel(modelPath);
