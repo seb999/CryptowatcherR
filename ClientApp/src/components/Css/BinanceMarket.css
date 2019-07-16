@@ -18,3 +18,10 @@
   .loader{
       opacity: 0.5;
   }
+
+  .alert {
+    margin-top: 4px;
+    height: 36px;
+    line-height:15px;
+    margin-bottom: 0px;
+  }

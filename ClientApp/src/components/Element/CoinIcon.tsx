@@ -174,16 +174,40 @@ class CoinIcon extends React.Component<Props, State> {
                 case "BNB":
                     icon = <img src={require('../../images/CoinIcon/BNB.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
                     break;
-             
-
-
+                case "ALGO":
+                    icon = <img src={require('../../images/CoinIcon/ALGO.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
+                    break;
+                case "TUSD":
+                    icon = <img src={require('../../images/CoinIcon/TUSD.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
+                    break;
+                case "ONG":
+                    icon = <img src={require('../../images/CoinIcon/ONG.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
+                    break;
+                case "ONE":
+                    icon = <img src={require('../../images/CoinIcon/ONE.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
+                    break;
+                case "FTM":
+                    icon = <img src={require('../../images/CoinIcon/FTM.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
+                    break;
+                case "USDSB":
+                    icon = <img src={require('../../images/CoinIcon/USDSB.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
+                    break;
+                case "GTO":
+                    icon = <img src={require('../../images/CoinIcon/GTO.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
+                    break;
+                case "ERD":
+                    icon = <img src={require('../../images/CoinIcon/ERD.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
+                    break;
+                case "DOGE":
+                    icon = <img src={require('../../images/CoinIcon/DOGE.png')} className="card-img-top img-fluid" style={{ height: this.props.width, width: this.props.height }} />
+                    break;
                 default:
-                    icon = <i className="fas fa-coins" style={{fontSize:24}}></i>
+                    icon = <i className="fas fa-coins" ></i>
                     break;
             }
         }
         catch (exception) {
-            icon = <i className="fas fa-coins" style={{fontSize:24}}></i>
+            icon = <i className="fas fa-coins" ></i>
         }
 
         return (
