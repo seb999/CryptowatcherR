@@ -1,4 +1,4 @@
-export const ApplicationName = 'TestReact2019Template';
+export const ApplicationName = 'cryptowatcherR';
 
 export const QueryParameterNames = {
   ReturnUrl: 'returnUrl',
