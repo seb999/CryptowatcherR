@@ -113,7 +113,7 @@ namespace cryptowatcherR.Controllers
 
             //Add Default Prediction
             var result = quotation.Last();
-            AIController.CalculatePredictionDefaultModel(symbol, ref result);
+           // AIController.CalculatePredictionDefaultModel(symbol, ref result);
 
             return result;
         }
